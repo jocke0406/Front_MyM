@@ -1,1 +1,8 @@
-<p>locations-list works!</p>
+<ul>
+  <li *ngFor="let location of locationsList">
+    {{ location._id }}<br />
+    {{ location.address.street }}<br />
+    {{ location.eventsByLocation }}<br />
+    {{ location.createdAt }}
+  </li>
+</ul>

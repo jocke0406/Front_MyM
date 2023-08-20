@@ -11,7 +11,7 @@ import { LocationsDetailComponent } from './components/locations-detail/location
     LocationsDetailComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
   ]
 })
 export class LocationsModule { }
