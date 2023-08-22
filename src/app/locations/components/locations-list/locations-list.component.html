@@ -1,8 +1,16 @@
 <ul>
   <li *ngFor="let location of locationsList">
-    {{ location._id }}<br />
-    {{ location.address.street }}<br />
-    {{ location.eventsByLocation }}<br />
-    {{ location.createdAt }}
+    _id : {{ location._id }}<br />
+    nbr : {{ location.address.nbr }} box : {{ location.address.box }}<br />
+    street : {{ location.address.street }}<br />
+    postcode : {{ location.address.postCode }} city : {{ location.address.city
+    }}<br />
+    <br />
+    country : {{ location.address.country }}<br />
+    events id : {{ location.eventsId }} <br />created at :
+    {{ location.createdAt }}<br />
+    deleted at : {{ location.deletedAt }} geolocalisation :
+    {{ location.geolocalisation?.latitude }}<br />
+    events : {{ location.eventsByLocation }}<br />
   </li>
 </ul>

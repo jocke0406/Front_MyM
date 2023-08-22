@@ -4,6 +4,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { LocationsModule } from './locations/locations.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { LocationsRoutingModule } from "./locations/locations-routing.module";
+import { CerclesModule } from './cercles/cercles.module';
+import { CerclesRoutingModule } from './cercles/cerclers.routing.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, HttpClientModule, LocationsModule
+    AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule, CerclesModule, CerclesRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

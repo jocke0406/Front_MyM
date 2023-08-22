@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LocationsService } from '../../services/locations.service';
 import { Location } from '../../models/location';
-import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-locations-list',
@@ -10,25 +11,27 @@ import { Subscription } from 'rxjs';
 })
 export class LocationsListComponent implements OnInit, OnDestroy {
   public locationsList!: Location[];
-  private _subscription01!: Subscription;
+  private _unsubscribeAll = new Subject<void>();
 
   constructor(private _locationService: LocationsService) { }
 
   ngOnInit(): void {
-    this._subscription01 = this._locationService.getLocationsAll().subscribe(
-      {
+    this._locationService.getLocationsAll()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
         next: (data) => {
-          console.log(data);
-          this.locationsList = data;
+          this.locationsList = data.filter((location: Location) => !location.deletedAt);
         },
         error: (error) => {
           console.log(error);
         }
       }
-    );
+
+      );
   }
 
   ngOnDestroy(): void {
-    this._subscription01?.unsubscribe();
+    this._unsubscribeAll.next();
+    this._unsubscribeAll.complete();
   }
 }

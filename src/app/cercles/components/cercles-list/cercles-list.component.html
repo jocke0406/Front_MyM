@@ -1,1 +1,11 @@
 <p>cercles-list works!</p>
+<ul>
+  <li *ngFor="let cercle of cerclesList">
+    _id : {{ cercle._id }}<br />
+    adresse : {{ cercle.address }}<br />
+    description : {{ cercle.description }}<br />
+    hymne : {{ cercle.hymne }}<br />
+    members : {{ cercle.members_ids }}<br />
+    name : {{ cercle.name }}<br />
+  </li>
+</ul>

@@ -1,1 +1,24 @@
 <p>locations-detail works!</p>
+name =
+<h2>{{ location?.name }}</h2>
+adresse = <br />
+<p>
+  {{ location?.address?.street }}, {{ location?.address?.nbr }},
+  {{ location?.address?.box }}
+</p>
+<p>{{ location?.address?.city }}</p>
+<h3>Événements associés:</h3>
+{{ location?.geolocalisation?.latitude }}
+<!-- Vérifiez si eventsByLocation existe et s'il a au moins un élément -->
+
+<div *ngIf="location && location.eventsByLocation">
+  {{ location.eventsByLocation[0].name }}<br />
+  {{ location.eventsByLocation[0].startAt }}<br />
+  {{ location.eventsByLocation[0].endAt }}<br />
+  {{ location.eventsByLocation[0].organizer }}<br />
+  {{ location.eventsByLocation[0].participants_ids }}<br />
+  <div *ngIf="location.eventsByLocation[0].participants">
+    {{ location.eventsByLocation[0].participants[0].pseudo }}<br />
+    {{ location.eventsByLocation[0].participants[0]._id }}<br />
+  </div>
+</div>

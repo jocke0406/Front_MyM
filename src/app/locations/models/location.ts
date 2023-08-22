@@ -3,6 +3,7 @@ export class Location {
   name: string;
   address: Address;
   geolocalisation?: Geolocalisation;
+  eventsId: string[];
   eventsByLocation?: EventByLocation[];
   createdAt: Date;
   updatedAt: Date;
@@ -13,6 +14,7 @@ export class Location {
     this._id = data._id;
     this.name = data.name;
     this.address = new Address(data.address);
+    this.eventsId = data.eventsId;
     if (data.geolocalisation) {
       this.geolocalisation = new Geolocalisation(data.geolocalisation);
     }
@@ -59,7 +61,7 @@ export class EventByLocation {
   startAt: Date;
   endAt: Date;
   organizer: string;
-  participants_ids: string[];
+  participants_ids?: string[];
   participants?: Participant[];
 
   constructor(data: any) {
