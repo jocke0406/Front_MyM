@@ -1,1 +1,12 @@
 <p>users-list works!</p>
+<ul>
+  <li *ngFor="let user of usersList">
+    {{ user._id }}<br />
+    {{ user.name.first }}<br />
+    {{ user.pseudo }}<br />
+    {{ user.cap?.hasCap }}<br />
+    {{ user.address?.city }}<br />
+    {{ user.friends.length }}<br />
+    {{ user.student_association?.association_id }}<br />
+  </li>
+</ul>

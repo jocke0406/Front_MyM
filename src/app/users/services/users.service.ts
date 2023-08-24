@@ -1,9 +1,29 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
+import { User } from '../models/user';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-
-  constructor() { }
+  url = environment.backUrl + "/users";
+  constructor(private _http: HttpClient) { }
+  getUsersAll(): Observable<User[]> {
+    return this._http.get<User[]>(`${this.url}`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la récupération des users.'));
+      }),
+    );
+  };
+  getUsersOne(id: string): Observable<User> {
+    return this._http.get<User>(`${this.url}/${id}`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la récupération de user.'));
+      }),
+    );
+  };
 }

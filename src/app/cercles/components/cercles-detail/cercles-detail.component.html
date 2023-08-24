@@ -1,1 +1,5 @@
 <p>cercles-detail works!</p>
+<div *ngIf="eventsOfCercle">
+  {{ eventsOfCercle[0].events?.[0]?.name }}
+  {{ eventsOfCercle[0].events?.[0]?.startAt }}
+</div>

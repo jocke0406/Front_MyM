@@ -1,1 +1,11 @@
 <p>events-list works!</p>
+<ul>
+  <li *ngFor="let event of eventsList">
+    {{ event._id }}<br />
+    {{ event.name }}<br />
+    {{ event.startAt }}<br />
+    {{ event.endAt }}<br />
+    {{ event.description }}<br />
+    {{ event.participants_ids?.length }}
+  </li>
+</ul>

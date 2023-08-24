@@ -1,1 +1,14 @@
 <p>events-detail works!</p>
+<div *ngIf="event">
+  {{ event._id }}<br />
+  {{ event.name }}<br />
+  {{ event.description }}<br />
+  {{ event.startAt }}<br />
+  {{ event.endAt }}<br />
+  <div *ngIf="event.organizer">{{ event.organizer[0].name }}<br /></div>
+  <div *ngIf="event.location && event.location[0].address">
+    {{ event.location[0].address.city }}<br />
+  </div>
+  <div *ngIf="event"></div>
+  {{ event.participants?.[0]?.name?.first }}
+</div>

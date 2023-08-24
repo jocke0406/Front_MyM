@@ -7,6 +7,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { LocationsRoutingModule } from "./locations/locations-routing.module";
 import { CerclesModule } from './cercles/cercles.module';
 import { CerclesRoutingModule } from './cercles/cerclers.routing.module';
+import { EventsModule } from './events/events.module';
+import { EventsRoutingModule } from './events/events.routing.module';
+import { UsersModule } from './users/users.module';
+import { UsersRoutingModule } from './users/users-routing.module';
 
 @NgModule({
   declarations: [
@@ -14,7 +18,8 @@ import { CerclesRoutingModule } from './cercles/cerclers.routing.module';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule, CerclesModule, CerclesRoutingModule
+    AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule,
+    EventsRoutingModule, CerclesModule, CerclesRoutingModule, EventsModule, UsersModule, UsersRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

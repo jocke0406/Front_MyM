@@ -18,7 +18,7 @@ export class LocationsService {
     return this._http.get<Location[]>(`${this.url}`).pipe(
       catchError(error => {
         console.error(error);
-        return throwError(() => new Error('Oups'));
+        return throwError(() => new Error('Oups !?! Erreur lors de la récupération des locations.'));
       }),
     );
   }
@@ -27,7 +27,7 @@ export class LocationsService {
     return this._http.get<Location[]>(`${this.url}/${id}/full`).pipe(
       catchError(error => {
         console.error(error);
-        return throwError(() => new Error('Erreur lors de la récupération de la location complète.'));
+        return throwError(() => new Error('Oups !?! Erreur lors de la récupération de la location.'));
       })
     );
   }

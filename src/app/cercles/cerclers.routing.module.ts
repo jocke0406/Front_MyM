@@ -6,7 +6,7 @@ import { CerclesDetailComponent } from './components/cercles-detail/cercles-deta
 
 const routes: Routes = [
   { path: 'cerclesList', component: CerclesListComponent },
-  { path: 'cerclesDetail/:id', component: CerclesDetailComponent }
+  { path: 'cerclesDetail/:id/events', component: CerclesDetailComponent }
 ];
 
 @NgModule({
