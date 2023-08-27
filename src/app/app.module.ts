@@ -11,14 +11,20 @@ import { EventsModule } from './events/events.module';
 import { EventsRoutingModule } from './events/events.routing.module';
 import { UsersModule } from './users/users.module';
 import { UsersRoutingModule } from './users/users-routing.module';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
+import { AuthModule } from './auth/auth.module';
+import { AuthRoutingModule } from './auth/auth.routing.modules';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule,
+    AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule, AuthModule, AuthRoutingModule,
     EventsRoutingModule, CerclesModule, CerclesRoutingModule, EventsModule, UsersModule, UsersRoutingModule
   ],
   providers: [],

@@ -1,5 +1,13 @@
-<!-- Autres éléments de votre application, comme la barre de navigation, etc. -->
-
-<router-outlet></router-outlet>
-
+<app-header></app-header>
+<main class="container">
+  <div class="row">
+    <div class="col-sm-9">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="d-none d-sm-block col-sm-3">
+      <div class="row">col admin</div>
+    </div>
+  </div>
+</main>
+<app-footer></app-footer>
 <!-- Autres éléments, comme le pied de page, etc. -->

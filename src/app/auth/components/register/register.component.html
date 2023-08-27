@@ -1,1 +1,24 @@
-<p>register works!</p>
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+  <div formGroupName="name">
+    <label for="first">First Name:</label>
+    <input type="text" id="first" pInputText formControlName="first" />
+
+    <label for="last">Last Name:</label>
+    <input type="text" id="last" pInputText formControlName="last" />
+  </div>
+
+  <label for="pseudo">Pseudo:</label>
+  <input type="text" id="pseudo" pInputText formControlName="pseudo" />
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" pInputText formControlName="email" />
+
+  <!-- ... autres champs ... -->
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" pInputText formControlName="password" />
+
+  <!-- ... autres champs ... -->
+
+  <button pButton type="submit" label="Register"></button>
+</form>
