@@ -1,0 +1,31 @@
+<form [formGroup]="eventForm">
+  <label for="name">Name:</label>
+  <input id="name" type="text" pInputText formControlName="name" />
+
+  <label for="startAt">Start At:</label>
+  <input
+    id="startAt"
+    type="datetime-local"
+    pInputText
+    formControlName="startAt"
+  />
+
+  <label for="endAt">End At:</label>
+  <input id="endAt" type="datetime-local" pInputText formControlName="endAt" />
+
+  <label for="description">Description:</label>
+  <textarea
+    id="description"
+    pInputTextarea
+    formControlName="description"
+  ></textarea>
+
+  <label for="lieu_id">Location ID:</label>
+  <input id="lieu_id" type="text" pInputText formControlName="lieu_id" />
+
+  <label for="organizer">Organizer ID:</label>
+  <input id="organizer" type="text" pInputText formControlName="organizer" />
+
+  <!-- Logique UI pour ajouter des IDs de participants. -->
+</form>
+<button pButton type="submit" label="Submit"></button>

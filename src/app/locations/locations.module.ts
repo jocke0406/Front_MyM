@@ -2,16 +2,19 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LocationsListComponent } from './components/locations-list/locations-list.component';
 import { LocationsDetailComponent } from './components/locations-detail/locations-detail.component';
-
-
+import { ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { LocationsFormComponent } from './components/locations-form/locations-form.component';
 
 @NgModule({
   declarations: [
     LocationsListComponent,
-    LocationsDetailComponent
+    LocationsDetailComponent,
+    LocationsFormComponent
   ],
   imports: [
-    CommonModule,
+    CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule
   ]
 })
 export class LocationsModule { }

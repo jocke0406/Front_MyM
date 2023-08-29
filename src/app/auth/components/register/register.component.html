@@ -1,24 +1,154 @@
 <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+  <!-- Name Group -->
   <div formGroupName="name">
-    <label for="first">First Name:</label>
+    <label for="first">Prénom:</label>
     <input type="text" id="first" pInputText formControlName="first" />
+    <div
+      *ngIf="
+        registrationForm.get('name.first')?.errors &&
+        registrationForm.get('name.first')?.touched
+      "
+    >
+      <!-- You can add specific error messages here based on the error type -->
+    </div>
 
-    <label for="last">Last Name:</label>
+    <label for="last">Nom:</label>
     <input type="text" id="last" pInputText formControlName="last" />
+    <div
+      *ngIf="
+        registrationForm.get('name.last')?.errors &&
+        registrationForm.get('name.last')?.touched
+      "
+    >
+      <!-- You can add specific error messages here based on the error type -->
+    </div>
   </div>
 
+  <!-- Other fields -->
   <label for="pseudo">Pseudo:</label>
   <input type="text" id="pseudo" pInputText formControlName="pseudo" />
 
   <label for="email">Email:</label>
   <input type="email" id="email" pInputText formControlName="email" />
 
-  <!-- ... autres champs ... -->
+  <label for="role">Role:</label>
+  <input type="text" id="role" pInputText formControlName="role" />
 
   <label for="password">Password:</label>
   <input type="password" id="password" pInputText formControlName="password" />
 
-  <!-- ... autres champs ... -->
+  <label for="confirmPassword">Confirm Password:</label>
+  <input
+    type="password"
+    id="confirmPassword"
+    pInputText
+    formControlName="confirmPassword"
+  />
 
-  <button pButton type="submit" label="Register"></button>
+  <!-- Address Group -->
+  <div formGroupName="address">
+    <label for="street">Street:</label>
+    <input type="text" id="street" pInputText formControlName="street" />
+
+    <label for="nbr">Number:</label>
+    <input type="text" id="nbr" pInputText formControlName="nbr" />
+
+    <label for="box">Box:</label>
+    <input type="text" id="box" pInputText formControlName="box" />
+
+    <label for="postCode">Post Code:</label>
+    <input type="text" id="postCode" pInputText formControlName="postCode" />
+
+    <label for="city">City:</label>
+    <input type="text" id="city" pInputText formControlName="city" />
+
+    <label for="country">Country:</label>
+    <input type="text" id="country" pInputText formControlName="country" />
+  </div>
+
+  <!-- Date of Birth -->
+  <label for="dateOfBirth">Date of Birth:</label>
+  <input
+    type="date"
+    id="dateOfBirth"
+    pInputText
+    formControlName="dateOfBirth"
+  />
+  <div formGroupName="study">
+    <label for="studyField">Field of Study:</label>
+    <input
+      type="text"
+      id="studyField"
+      pInputText
+      formControlName="studyField"
+    />
+
+    <label for="year">Year:</label>
+    <input type="number" id="year" pInputText formControlName="year" />
+  </div>
+
+  <!-- Phone -->
+  <label for="phone">Phone:</label>
+  <input type="text" id="phone" pInputText formControlName="phone" />
+
+  <!-- Photo URL (assuming it's a URL input) -->
+  <label for="photo">Photo URL:</label>
+  <input type="text" id="photo" pInputText formControlName="photo" />
+
+  <!-- CAP Group -->
+  <div formGroupName="cap">
+    Cap <input type="checkbox" formControlName="hasCap" />
+
+    <label for="provider">Provider:</label>
+    <input type="text" id="provider" pInputText formControlName="provider" />
+
+    <label for="deliveryDate">Delivery Date:</label>
+    <input
+      type="date"
+      id="deliveryDate"
+      pInputText
+      formControlName="deliveryDate"
+    />
+
+    <label for="goldStars">Gold Stars:</label>
+    <input
+      type="number"
+      id="goldStars"
+      pInputText
+      formControlName="goldStars"
+    />
+
+    <label for="silverStars">Silver Stars:</label>
+    <input
+      type="number"
+      id="silverStars"
+      pInputText
+      formControlName="silverStars"
+    />
+
+    <label for="comments">Comments:</label>
+    <textarea
+      id="comments"
+      pInputTextarea
+      formControlName="comments"
+    ></textarea>
+  </div>
+
+  <!-- Student Association Group -->
+  <div formGroupName="student_association">
+    <input type="checkbox" formControlName="member" />
+
+    <label for="association_id">Association ID:</label>
+    <input
+      type="text"
+      id="association_id"
+      pInputText
+      formControlName="association_id"
+    />
+
+    <label for="function">Function:</label>
+    <input type="text" id="function" pInputText formControlName="function" />
+  </div>
 </form>
+<!-- Submit Button -->
+<button pButton type="submit" label="Submit"></button>

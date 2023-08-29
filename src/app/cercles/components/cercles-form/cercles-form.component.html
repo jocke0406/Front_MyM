@@ -1,0 +1,21 @@
+<p>cercles-form works!</p>
+<form [formGroup]="cercleForm">
+  <label for="name">Name:</label>
+  <input id="name" type="text" pInputText formControlName="name" />
+
+  <label for="hymne">Hymne:</label>
+  <input id="hymne" type="text" pInputText formControlName="hymne" />
+
+  <label for="address">Address:</label>
+  <input id="address" type="text" pInputText formControlName="address" />
+
+  <label for="description">Description:</label>
+  <textarea
+    id="description"
+    pInputTextarea
+    formControlName="description"
+  ></textarea>
+</form>
+
+<!-- Button for submit -->
+<p-button type="submit" label="Submit"></p-button>

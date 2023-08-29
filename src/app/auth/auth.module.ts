@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { CalendarModule } from 'primeng/calendar';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { InputTextModule } from 'primeng/inputtext';
   imports: [
     CommonModule, ReactiveFormsModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule, CalendarModule
   ]
 })
 export class AuthModule { }

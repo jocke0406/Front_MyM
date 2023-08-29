@@ -1,0 +1,27 @@
+<p>locations-form works!</p>
+<form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+  <label for="name">Name:</label>
+  <input id="name" pInputText formControlName="name" />
+
+  <div formGroupName="address">
+    <label for="street">Street:</label>
+    <input id="street" pInputText formControlName="street" />
+    <label for="nbr:">nbr::</label>
+    <input id="nbr:" pInputText formControlName="street" />
+    <label for="postCode">postCode:</label>
+    <input id="postCode" pInputText formControlName="postCode" />
+    <label for="city">city:</label>
+    <input id="city" pInputText formControlName="city" />
+  </div>
+
+  <div formGroupName="geolocalisation">
+    <label for="latitude">Latitude:</label>
+    <input id="latitude" pInputText formControlName="latitude" />
+    <label for="longitude">longitude:</label>
+    <input id="longitude" pInputText formControlName="longitude" />
+    <label for="precision">precision:</label>
+    <input id="precision" pInputText formControlName="precision" />
+  </div>
+
+  <button pButton type="submit" label="Submit"></button>
+</form>
