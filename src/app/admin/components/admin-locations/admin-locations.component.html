@@ -1,0 +1,68 @@
+<p>admin-locations works!</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Nom</th>
+      <th>Adresse</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let location of locationsList">
+      <td>{{ location.name }}</td>
+      <td>{{ location.address }}</td>
+      <td>
+        <button class="btn btn-info">Voir</button>
+        <button class="btn btn-danger">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p-toast></p-toast>
+<div class="container">
+  <h1>
+    Lieux
+    <button
+      type="button"
+      class="btn btn-outline-success"
+      [routerLink]="['/locationsForm']"
+    >
+      Créer
+    </button>
+  </h1>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col-3">
+            <a>Nom<i class="bi bi-caret-down-fill"></i></a>
+          </th>
+          <th scope="col-6">Adresse</th>
+          <th scope="col-1 text-end"><i class="bi bi-pencil-fill"></i></th>
+          <th scope="col-1 text-end"><i class="bi bi-trash-fill"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let location of locationsList">
+          <td class="col-3">{{ location.name }}</td>
+          <td>{{ location.address.street }} {{ location.address.nbr }}</td>
+          <td class="col-1">
+            <a
+              [routerLink]="['/locationsForm/', location._id]"
+              pTooltip="Modifier l' endroit"
+              class="btn btn-warning"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </a>
+          </td>
+
+          <td class="col-1">
+            <a class="btn btn-secondary" pTooltip="Supprimer le Cercle">
+              <i class="bi bi-trash-fill"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

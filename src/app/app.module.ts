@@ -15,17 +15,19 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { AuthModule } from './auth/auth.module';
 import { AuthRoutingModule } from './auth/auth.routing.modules';
-
+import { ColAdminComponent } from './shared/components/col-admin/col-admin.component';
+import { AdminModule } from './admin/admin.module';
+import { AdminRoutingModule } from './admin/admin.routing.module';
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent, ColAdminComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule, AuthModule, AuthRoutingModule,
-    EventsRoutingModule, CerclesModule, CerclesRoutingModule, EventsModule, UsersModule, UsersRoutingModule
+    EventsRoutingModule, CerclesModule, CerclesRoutingModule, EventsModule, UsersModule, UsersRoutingModule, AdminModule, AdminRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

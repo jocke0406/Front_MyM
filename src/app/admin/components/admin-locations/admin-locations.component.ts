@@ -1,22 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LocationsService } from '../../services/locations.service';
-import { Location } from '../../models/location';
-import { takeUntil } from 'rxjs/operators';
+import { LocationsService } from '../../../locations/services/locations.service'
+import { Location } from 'src/app/locations/models/location';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-locations-list',
-  templateUrl: './locations-list.component.html',
-  styleUrls: ['./locations-list.component.css']
+  selector: 'app-admin-locations',
+  templateUrl: './admin-locations.component.html',
+  styleUrls: ['./admin-locations.component.css']
 })
-export class LocationsListComponent implements OnInit, OnDestroy {
-  public locationsList!: Location[];
-  private _unsubscribeAll = new Subject<void>();
+export class AdminLocationsComponent implements OnInit, OnDestroy {
 
-  constructor(private _locationService: LocationsService) { }
+  private _unsubscribeAll = new Subject<void>();
+  locationsList!: Location[];
+
+  constructor(private _locationsService: LocationsService) { }
 
   ngOnInit(): void {
-    this._locationService.getLocationsAll()
+    this._locationsService.getLocationsAll()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data) => {

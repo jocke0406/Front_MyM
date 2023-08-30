@@ -31,6 +31,33 @@ export class LocationsService {
       })
     );
   }
-}
 
+  submitFormLocation(locationForm: Location): Observable<Location> {
+    return this._http.post<Location>(`${this.url}`, locationForm).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de l\' envoi du formulaire.'));
+      })
+    );
+  }
+
+  updateLocation(id: string, locationForm: Location): Observable<any> {
+    return this._http.patch(`${this.url}/${id}`, locationForm).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la mise à jour de la location.'));
+      })
+    );
+  }
+
+  deleteLocation(id: string): Observable<any> {
+    return this._http.delete(`${this.url}/${id}`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la suppression de la location.'));
+      })
+    );
+  }
+
+}
 
