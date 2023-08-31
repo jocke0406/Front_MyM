@@ -7,7 +7,8 @@ import { LocationsFormComponent } from './components/locations-form/locations-fo
 const routes: Routes = [
   { path: 'locationsList', component: LocationsListComponent },
   { path: 'locationsDetail/:id', component: LocationsDetailComponent },
-  { path: 'locationsForm', component: LocationsFormComponent }
+  { path: 'locationsForm', component: LocationsFormComponent },
+  { path: 'locationsForm/:id', component: LocationsFormComponent }
 ];
 
 @NgModule({

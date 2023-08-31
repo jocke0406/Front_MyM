@@ -1,27 +1,243 @@
-<p>locations-form works!</p>
-<form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
-  <label for="name">Name:</label>
-  <input id="name" pInputText formControlName="name" />
+<p-toast></p-toast>
+<h1 class="text-center mt-3 mb-3">Location</h1>
+<div class="shadow-lg pt-3 pb-3 bg-body-tertiary rounded">
+  <form [formGroup]="locationForm" (ngSubmit)="save()">
+    <div class="p-field">
+      <div class="row mb-3">
+        <div class="col-3 d-flex align-items-center">
+          <label for="name"><h6>Nom :</h6></label>
+        </div>
+        <div class="col">
+          <input
+            id="name"
+            class="input-wide"
+            type="text"
+            pInputText
+            formControlName="name"
+          />
+          <div
+            *ngIf="
+              locationForm?.get('name')?.errors?.['required'] &&
+              locationForm?.get('name')?.touched
+            "
+          >
+            Le nom est requis.
+          </div>
+          <div
+            *ngIf="
+              locationForm?.get('name')?.errors?.['maxlength'] &&
+              locationForm?.get('name')?.touched
+            "
+          >
+            Le nom ne peut pas dépasser 100 caractères.
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div formGroupName="address">
-    <label for="street">Street:</label>
-    <input id="street" pInputText formControlName="street" />
-    <label for="nbr:">nbr::</label>
-    <input id="nbr:" pInputText formControlName="street" />
-    <label for="postCode">postCode:</label>
-    <input id="postCode" pInputText formControlName="postCode" />
-    <label for="city">city:</label>
-    <input id="city" pInputText formControlName="city" />
-  </div>
+    <div formGroupName="address">
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="street"><h6>Rue :</h6></label>
+          </div>
+          <div class="col">
+            <input
+              id="street"
+              type="text"
+              pInputText
+              formControlName="street"
+              class="input-wide"
+            />
+          </div>
+        </div>
+      </div>
 
-  <div formGroupName="geolocalisation">
-    <label for="latitude">Latitude:</label>
-    <input id="latitude" pInputText formControlName="latitude" />
-    <label for="longitude">longitude:</label>
-    <input id="longitude" pInputText formControlName="longitude" />
-    <label for="precision">precision:</label>
-    <input id="precision" pInputText formControlName="precision" />
-  </div>
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="nbr"><h6>Numero :</h6> </label>
+          </div>
+          <div class="col">
+            <input id="nbr" type="text" pInputText formControlName="nbr" />
+            <div
+              *ngIf="locationForm?.get('address.nbr')?.errors?.['required'] && locationForm?.get('address.nbr')?.touched"
+            >
+              Le numéro est requis.
+            </div>
+            <div
+              *ngIf="locationForm?.get('address.nbr')?.errors?.['maxlength'] && locationForm?.get('address.nbr')?.touched"
+              class="error-message"
+            >
+              Le numéro ne peut pas dépasser 5 caractères.
+            </div>
+            <div
+              *ngIf="locationForm?.get('address.nbr')?.errors?.['numberValidator'] && locationForm?.get('address.nbr')?.touched"
+            >
+              Veuillez entrer un numéro valide.
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <button pButton type="submit" label="Submit"></button>
-</form>
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="postCode"><h6>Code Postal:</h6></label>
+          </div>
+          <div class="col">
+            <input
+              id="postCode"
+              type="text"
+              pInputText
+              formControlName="postCode"
+            />
+            <div
+              *ngIf="
+                locationForm?.get('address.postCode')?.errors?.['required'] &&
+                locationForm.get('address.postCode')?.touched
+              "
+            >
+              Le code postal est requis.
+            </div>
+            <div
+              *ngIf="
+                locationForm?.get('address.postCode')?.errors?.['maxlength'] &&
+                locationForm.get('address.postCode')?.touched
+              "
+            >
+              Le code postal ne peut pas dépasser 5 caractères.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="city"><h6>Localité :</h6></label>
+          </div>
+          <div class="col">
+            <input id="city" type="text" pInputText formControlName="city" />
+            <div
+              *ngIf="
+                locationForm?.get('address.city')?.errors?.['required'] &&
+                locationForm.get('address.city')?.touched
+              "
+              class="error-message"
+            >
+              La localité est requise.
+            </div>
+            <div
+              *ngIf="
+                locationForm?.get('address.city')?.errors?.['maxlength'] &&
+                locationForm.get('address.city')?.touched
+              "
+              class="error-message"
+            >
+              La localité ne peut pas dépasser 100 caractères.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="district"><h6>Quartier :</h6></label>
+          </div>
+          <div class="col">
+            <input
+              id="district"
+              type="text"
+              pInputText
+              formControlName="district"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="country"><h6>Pays :</h6></label>
+          </div>
+          <div class="col">
+            <input
+              id="country"
+              type="text"
+              pInputText
+              formControlName="country"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div formGroupName="geolocalisation">
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="latitude"><h6>Latitude:</h6></label>
+          </div>
+          <div class="col">
+            <input
+              id="latitude"
+              type="text"
+              pInputText
+              formControlName="latitude"
+            />
+            <div
+              *ngIf="locationForm?.get('geolocalisation.latitude')?.errors?.['pattern']"
+            >
+              Veuillez entrer une latitude valide.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="longitude"><h6>Longitude:</h6></label>
+          </div>
+          <div class="col">
+            <input
+              id="longitude"
+              type="text"
+              pInputText
+              formControlName="longitude"
+            />
+            <div
+              *ngIf="locationForm?.get('geolocalisation.longitude')?.errors?.['pattern']"
+            >
+              Veuillez entrer une longitude valide.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-field">
+        <div class="row mb-3">
+          <div class="col-3 d-flex align-items-center">
+            <label for="precision"><h6>Precision:</h6></label>
+          </div>
+          <div class="col">
+            <input
+              id="precision"
+              type="text"
+              pInputText
+              formControlName="precision"
+            />
+            <div
+              *ngIf="locationForm?.get('geolocalisation.precision')?.errors?.['pattern']"
+            >
+              Veuillez entrer une précision valide.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button type="submit">Save</button>
+  </form>
+</div>

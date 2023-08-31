@@ -23,6 +23,16 @@ export class LocationsService {
     );
   }
 
+  getLocationOne(id: string | null): Observable<Location> {
+    return this._http.get<Location>(`${this.url}/${id}`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la récupération de la location.'))
+
+      }),
+    );
+  }
+
   getLocationFull(id: string): Observable<Location[]> {
     return this._http.get<Location[]>(`${this.url}/${id}/full`).pipe(
       catchError(error => {
@@ -41,8 +51,8 @@ export class LocationsService {
     );
   }
 
-  updateLocation(id: string, locationForm: Location): Observable<any> {
-    return this._http.patch(`${this.url}/${id}`, locationForm).pipe(
+  updateLocation(id: string, locationForm: Location): Observable<Location> {
+    return this._http.patch<Location>(`${this.url}/${id}`, locationForm).pipe(
       catchError(error => {
         console.error(error);
         return throwError(() => new Error('Oups !?! Erreur lors de la mise à jour de la location.'));
