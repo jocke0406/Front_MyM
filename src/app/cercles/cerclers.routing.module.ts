@@ -7,7 +7,9 @@ import { CerclesFormComponent } from './components/cercles-form/cercles-form.com
 const routes: Routes = [
   { path: 'cerclesList', component: CerclesListComponent },
   { path: 'cerclesDetail/:id/events', component: CerclesDetailComponent },
-  { path: 'cerclesForm', component: CerclesFormComponent }
+  { path: 'cerclesForm', component: CerclesFormComponent },
+  { path: 'cerclesForm/:id', component: CerclesFormComponent }
+
 ];
 
 @NgModule({

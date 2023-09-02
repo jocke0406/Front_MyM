@@ -238,6 +238,13 @@
         </div>
       </div>
     </div>
-    <button type="submit">Save</button>
+    <div class="row text-center">
+      <p-button
+        type="submit"
+        styleClass="p-button-warning"
+        label="Enregistrer"
+        [disabled]="!locationForm.valid"
+      ></p-button>
+    </div>
   </form>
 </div>

@@ -11,12 +11,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { HttpClientModule } from '@angular/common/http';
 
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
   declarations: [AdminCerclesComponent, AdminEventsComponent, AdminUsersComponent, AdminLocationsComponent],
   imports: [
-    CommonModule, ToastModule, RouterModule, TooltipModule, HttpClientModule
+    CommonModule, ToastModule, RouterModule, TooltipModule, HttpClientModule, BrowserAnimationsModule
   ],
   providers: [MessageService]
 })

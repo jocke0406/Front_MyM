@@ -64,8 +64,31 @@ export class CerclesService {
     );
   }
 
+  submitCercleLocation(cercleForm: Cercle): Observable<Cercle> {
+    return this._http.post<Cercle>(`${this.url}`, cercleForm).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de l\' envoi du formulaire.'));
+      })
+    );
+  }
 
-
+  updateCercle(id: string, cercleForm: Cercle): Observable<Cercle> {
+    return this._http.patch<Cercle>(`${this.url}/${id}`, cercleForm).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la mise à jour du cercle.'));
+      })
+    );
+  }
+  deleteCercle(id: string): Observable<any> {
+    return this._http.delete(`${this.url}/${id}`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la suppression du cercle.'));
+      })
+    );
+  }
 
 
 

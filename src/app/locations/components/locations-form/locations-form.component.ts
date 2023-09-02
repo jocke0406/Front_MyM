@@ -43,7 +43,7 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
     if (this.id) {
       this._LocationsService.getLocationOne(this.id)
         .pipe(
-          takeUntil(this._unsubscribeAll),
+
           tap((location) => {
             this.locationForm.patchValue(location);
           }),
@@ -51,7 +51,8 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
             console.error("Quelque chose s'est mal passé", error);
             this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données de la location.' });
             throw error;
-          })
+          }),
+          takeUntil(this._unsubscribeAll)
         )
         .subscribe();
     }
@@ -62,30 +63,34 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
       if (this.id) {
         // Update
         this._LocationsService.updateLocation(this.id, this.locationForm.value)
-          .pipe(takeUntil(this._unsubscribeAll),
+          .pipe(
             tap(() => {
-              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mise à jour réussie !' });
-              this._router.navigate(['/locations']);
+              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mise à jour réussie !', life: 2000 });
+              this._router.navigate(['/adminLocations']);
+
             }),
             catchError((error) => {
-              console.error("Oups, mise à jour échouée", error);
-              this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Mise à jour échouée.' });
+
+              console.error("Oups, création échouée", error);
+              this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Echec de la mise à jour.' });
               throw error;
-            })
+            }), takeUntil(this._unsubscribeAll),
           ).subscribe();
       } else {
         // Create
         this._LocationsService.submitFormLocation(this.locationForm.value)
-          .pipe(takeUntil(this._unsubscribeAll),
+          .pipe(
             tap(() => {
-              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Création réussie !' });
-              this._router.navigate(['/locations']);
+              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Création réussie !', life: 2000 });
+              this._router.navigate(['/adminLocations']);
+
             }),
             catchError((error) => {
+
               console.error("Oups, création échouée", error);
               this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Création échouée.' });
               throw error;
-            })
+            }), takeUntil(this._unsubscribeAll)
           ).subscribe();
       }
     } else {
@@ -95,12 +100,7 @@ export class LocationsFormComponent implements OnInit, OnDestroy {
   }
 
 
-  onSubmit() {
-    if (this.locationForm.valid) {
-      const formData = this.locationForm.value;
 
-    }
-  }
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();

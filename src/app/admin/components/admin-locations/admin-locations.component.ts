@@ -3,6 +3,7 @@ import { LocationsService } from '../../../locations/services/locations.service'
 import { Location } from 'src/app/locations/models/location';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-locations',
@@ -14,7 +15,7 @@ export class AdminLocationsComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
   locationsList!: Location[];
 
-  constructor(private _locationsService: LocationsService) { }
+  constructor(private _locationsService: LocationsService, private _messageService: MessageService) { }
 
   ngOnInit(): void {
     this._locationsService.getLocationsAll()
@@ -28,6 +29,40 @@ export class AdminLocationsComponent implements OnInit, OnDestroy {
         }
       });
   }
+
+  deleteLocation(locationId: string): void {
+    this._locationsService.deleteLocation(locationId)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: () => {
+          this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Endroit supprimé avec succès' });
+          this.refreshLocations();
+        },
+        error: (error) => {
+          console.error('Erreur lors de la suppression de l\'endroit, détails :', error);
+          this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur s\'est produite lors de la suppression du Cercle' });
+        }
+      });
+  }
+
+  refreshLocations(): void {
+    this._locationsService.getLocationsAll()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: (locations: Location[]) => {
+          this.locationsList = locations.filter(location => !location.deletedAt);
+        },
+        error: (error) => {
+          console.error('Erreur lors de la récupération des locations, détails:', error);
+          this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Une erreur s\'est produite lors de la mise à jour de la liste' });
+
+        }
+      });
+  }
+
+
+
+
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();

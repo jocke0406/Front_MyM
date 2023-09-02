@@ -1,1 +1,54 @@
-<p>admin-cercles works!</p>
+<p-toast></p-toast>
+<div class="container">
+  <h1>
+    Cercles
+    <button
+      type="button"
+      class="btn btn-outline-dark"
+      [routerLink]="['/cerclesForm']"
+    >
+      Créer
+    </button>
+  </h1>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col-10">
+            <a (click)="sortCerclesByName()"
+              >Dénomination : <i class="bi bi-caret-down-fill"></i
+            ></a>
+          </th>
+
+          <th scope="col-1 text-end"><i class="bi bi-pencil-fill"></i></th>
+          <th scope="col-1 text-end"><i class="bi bi-trash-fill"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cercle of cerclesList">
+          <td class="col-10">{{ cercle.name }}</td>
+
+          <td class="col-1">
+            <a
+              [routerLink]="['/cerclesForm', cercle._id]"
+              pTooltip="Modifier le Cercle"
+              class="btn btn-warning"
+            >
+              <i class="bi bi-pencil-fill"></i>
+            </a>
+          </td>
+
+          <td class="col-1">
+            <a
+              class="btn btn-secondary"
+              pTooltip="Supprimer le Cercle"
+              (click)="cercle._id && deleteCercle(cercle._id)"
+            >
+              <i class="bi bi-trash-fill"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,31 +1,197 @@
-<form [formGroup]="eventForm">
-  <label for="name">Name:</label>
-  <input id="name" type="text" pInputText formControlName="name" />
+<p-toast></p-toast>
+<h1 class="text-center mt-3 mb-3">Evènement</h1>
+<div class="shadow-lg pt-3 pb-3 bg-body-tertiary rounded">
+  <form [formGroup]="eventForm" (ngSubmit)="save()">
+    <div class="row mb-3">
+      <div class="col-3 d-flex align-items-center">
+        <label for="name"><h6>Titre :</h6></label>
+      </div>
+      <div class="col">
+        <input
+          id="name"
+          type="text"
+          class="input-wide"
+          pInputText
+          formControlName="name"
+        />
+        <div
+          *ngIf="
+            eventForm.get('name')?.invalid &&
+            (eventForm.get('name')?.dirty || eventForm.get('name')?.touched)
+          "
+        >
+          <small
+            *ngIf="eventForm.get('name')?.errors?.['required']"
+            class="text-danger"
+            >Le nom est obligatoire.</small
+          >
+          <small
+            *ngIf="eventForm.get('name')?.errors?.['maxLength']"
+            class="text-danger"
+            >Le nom ne doit pas dépasser 100 caractères.</small
+          >
+        </div>
+      </div>
+    </div>
 
-  <label for="startAt">Start At:</label>
-  <input
-    id="startAt"
-    type="datetime-local"
-    pInputText
-    formControlName="startAt"
-  />
+    <div class="row mb-3">
+      <div class="col-3 d-flex align-items-center">
+        <label for="startAt"><h6>Début :</h6></label>
+      </div>
+      <div class="col">
+        <p-calendar
+          id="startAt"
+          formControlName="startAt"
+          placeholder="Début"
+          [showTime]="true"
+          hourFormat="24"
+          [dateFormat]="'dd MM yy'"
+        ></p-calendar>
+        <div
+          *ngIf="
+            eventForm.get('startAt')?.invalid &&
+            (eventForm.get('startAt')?.dirty ||
+              eventForm.get('startAt')?.touched)
+          "
+        >
+          <small
+            *ngIf="eventForm.get('startAt')?.errors?.['required']"
+            class="text-danger"
+            >La date de début est obligatoire.</small
+          >
+          <small
+            *ngIf="eventForm.get('startAt')?.errors?.['dateIsInThePast']"
+            class="text-danger"
+            >La date de début doit être dans le futur.</small
+          >
+        </div>
+      </div>
+    </div>
 
-  <label for="endAt">End At:</label>
-  <input id="endAt" type="datetime-local" pInputText formControlName="endAt" />
+    <div class="row mb-3">
+      <div class="col-3 d-flex align-items-center">
+        <label for="endAt"><h6>Fin :</h6></label>
+      </div>
+      <div class="col">
+        <p-calendar
+          formControlName="endAt"
+          placeholder="Fin"
+          [showTime]="true"
+          hourFormat="24"
+          [dateFormat]="'dd MM yy'"
+        />
+        <div
+          *ngIf="
+            eventForm.get('endAt')?.invalid &&
+            (eventForm.get('endAt')?.dirty || eventForm.get('endAt')?.touched)
+          "
+        >
+          <small
+            *ngIf="eventForm.get('endAt')?.errors?.['required']"
+            class="text-danger"
+            >La date de fin est obligatoire.</small
+          >
+          <small
+            *ngIf="eventForm.get('endAt')?.errors?.['endBeforeStart']"
+            class="text-danger"
+            >La date de fin doit être après la date de début.</small
+          >
+        </div>
+      </div>
+    </div>
 
-  <label for="description">Description:</label>
-  <textarea
-    id="description"
-    pInputTextarea
-    formControlName="description"
-  ></textarea>
+    <div class="row mb-3">
+      <div class="col-3 d-flex align-items-center">
+        <label for="description"><h6>Description</h6></label>
+      </div>
+      <div class="col">
+        <textarea
+          id="description"
+          pInputTextarea
+          formControlName="description"
+          class="textarea-wide"
+        ></textarea>
+        <div
+          *ngIf="
+            eventForm.get('description')?.invalid &&
+            (eventForm.get('description')?.dirty ||
+              eventForm.get('description')?.touched)
+          "
+        >
+          <small
+            *ngIf="eventForm.get('description')?.errors?.['maxLength']"
+            class="text-danger"
+            >La description ne doit pas dépasser 200 caractères.</small
+          >
+        </div>
+      </div>
+    </div>
 
-  <label for="lieu_id">Location ID:</label>
-  <input id="lieu_id" type="text" pInputText formControlName="lieu_id" />
+    <div class="row mb-3">
+      <div class="col-3 d-flex align-items-center">
+        <label for="lieu_id"><h6>Lieu :</h6></label>
+      </div>
+      <div class="col">
+        <p-dropdown
+          id="lieu_id"
+          formControlName="lieu_id"
+          [options]="locations"
+          optionLabel="name"
+          optionValue="_id"
+          class="dropdown-wide"
+        ></p-dropdown>
+        <div
+          *ngIf="
+            eventForm.controls['lieu_id'].invalid &&
+            (eventForm.controls['lieu_id'].dirty ||
+              eventForm.controls['lieu_id'].touched)
+          "
+        >
+          <p
+            class="error-text"
+            *ngIf="eventForm.controls['lieu_id'].errors?.['required']"
+          >
+            Le lieu est requis.
+          </p>
+        </div>
+      </div>
+    </div>
 
-  <label for="organizer">Organizer ID:</label>
-  <input id="organizer" type="text" pInputText formControlName="organizer" />
-
-  <!-- Logique UI pour ajouter des IDs de participants. -->
-</form>
-<button pButton type="submit" label="Submit"></button>
+    <div class="row mb-3">
+      <div class="col-3 d-flex align-items-center">
+        <label for="organizer"><h6>Organisteur:</h6></label>
+      </div>
+      <div class="col">
+        <p-dropdown
+          id="organizer"
+          formControlName="organizer"
+          [options]="cercles"
+          optionLabel="name"
+          optionValue="_id"
+        ></p-dropdown>
+        <div
+          *ngIf="
+            eventForm.controls['organizer'].invalid &&
+            (eventForm.controls['organizer'].dirty ||
+              eventForm.controls['organizer'].touched)
+          "
+        >
+          <p
+            class="error-text"
+            *ngIf="eventForm.controls['organizer'].errors?.['required']"
+          >
+            L'organisateur est requis.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="row text-center">
+      <p-button
+        type="submit"
+        styleClass="p-button-warning"
+        label="Enregistrer"
+        [disabled]="!eventForm.valid"
+      ></p-button>
+    </div>
+  </form>
+</div>

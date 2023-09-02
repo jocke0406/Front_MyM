@@ -1,21 +1,113 @@
-<p>cercles-form works!</p>
-<form [formGroup]="cercleForm">
-  <label for="name">Name:</label>
-  <input id="name" type="text" pInputText formControlName="name" />
+<p-toast></p-toast>
+<h1 class="text-center mt-3 mb-3">Cercles</h1>
+<div class="shadow-lg pt-3 pb-3 bg-body-tertiary rounded">
+  <form [formGroup]="cercleForm" (ngSubmit)="save()">
+    <div class="p-field">
+      <div class="row mb-3">
+        <div class="col-3 d-flex align-items-center">
+          <label for="name"><h6>Nom :</h6></label>
+        </div>
+        <div class="col">
+          <input
+            id="name"
+            type="text"
+            class="input-wide"
+            pInputText
+            formControlName="name"
+          />
+          <div
+            *ngIf="
+      cercleForm?.get('name')?.errors?.['required'] &&
+      cercleForm?.get('name')?.touched
+    "
+          >
+            Le nom du cercle est requis.
+          </div>
+          <div
+            *ngIf="
+      cercleForm?.get('name')?.errors?.['maxlength'] &&
+      cercleForm?.get('name')?.touched
+    "
+          >
+            Le nom du cercle ne peut pas dépasser 100 caractères.
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <label for="hymne">Hymne:</label>
-  <input id="hymne" type="text" pInputText formControlName="hymne" />
+    <div class="p-field">
+      <div class="row mb-3">
+        <div class="col-3 d-flex align-items-center">
+          <label for="hymne"><h6>Hymne :</h6></label>
+        </div>
+        <div class="col">
+          <textarea
+            id="hymne"
+            pInputTextarea
+            formControlName="hymne"
+            class="textarea-wide"
+          ></textarea>
+          <div *ngIf="cercleForm?.get('hymne')?.touched">
+            <div *ngIf="cercleForm?.get('hymne')?.errors?.['required']">
+              L' hymne est requis.
+            </div>
+            <div *ngIf="cercleForm?.get('hymne')?.errors?.['maxlength']">
+              L' hymne ne peut pas dépasser 1000 caractères.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <label for="address">Address:</label>
-  <input id="address" type="text" pInputText formControlName="address" />
+    <div class="p-field">
+      <div class="row mb-3">
+        <div class="col-3 d-flex align-items-center">
+          <label for="address"><h6>Adresse :</h6></label>
+        </div>
+        <div class="col">
+          <p-dropdown
+            [options]="locations"
+            formControlName="address"
+            placeholder="Sélectionner une location"
+            optionLabel="name"
+            optionValue="id"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+    </div>
 
-  <label for="description">Description:</label>
-  <textarea
-    id="description"
-    pInputTextarea
-    formControlName="description"
-  ></textarea>
-</form>
+    <div class="p-field">
+      <div class="row mb-3">
+        <div class="col-3 d-flex align-items-center">
+          <label for="description"><h6>Description :</h6></label>
+        </div>
+        <div class="col">
+          <textarea
+            id="description"
+            pInputText
+            class="textarea-wide"
+            formControlName="description"
+          ></textarea>
+          <div *ngIf="cercleForm?.get('description')?.touched">
+            <div *ngIf="cercleForm?.get('description')?.errors?.['required']">
+              La description est requise.
+            </div>
+            <div *ngIf="cercleForm?.get('description')?.errors?.['maxlength']">
+              La description ne peut pas dépasser 200 caractères.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<!-- Button for submit -->
-<p-button type="submit" label="Submit"></p-button>
+    <div class="row text-center">
+      <p-button
+        type="submit"
+        styleClass="p-button-warning"
+        label="Enregistrer"
+        [disabled]="!cercleForm.valid"
+      ></p-button>
+    </div>
+  </form>
+</div>

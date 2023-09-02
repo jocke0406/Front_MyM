@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { LocationsFormComponent } from './components/locations-form/locations-form.component';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     LocationsListComponent,
@@ -16,7 +16,7 @@ import { ToastModule } from 'primeng/toast';
     LocationsFormComponent
   ],
   imports: [
-    CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule, ToastModule,
+    CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule, ToastModule, BrowserAnimationsModule
   ],
   providers: [MessageService]
 

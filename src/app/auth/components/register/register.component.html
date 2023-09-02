@@ -1,154 +1,270 @@
-<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
-  <!-- Name Group -->
-  <div formGroupName="name">
-    <label for="first">Prénom:</label>
-    <input type="text" id="first" pInputText formControlName="first" />
-    <div
-      *ngIf="
-        registrationForm.get('name.first')?.errors &&
-        registrationForm.get('name.first')?.touched
-      "
-    >
-      <!-- You can add specific error messages here based on the error type -->
+<h1 class="text-center mt-3 mb-3">Inscription</h1>
+<div class="shadow-lg pt-3 pb-3 bg-body-tertiary rounded">
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <div formGroupName="name">
+      <div class="row pt-2 pb-2">
+        <div class="col-6">
+          <input
+            type="text"
+            pInputText
+            formControlName="first"
+            class="form-control"
+            placeholder="Prénom"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('name.first')?.invalid &&
+              (registrationForm.get('name.first')?.dirty ||
+                registrationForm.get('name.first')?.touched)
+            "
+          >
+            <small
+              *ngIf="registrationForm.get('name.first')?.errors?.['required']"
+              class="text-danger"
+              >Le prénom est obligatoire.</small
+            >
+            <small
+              *ngIf="registrationForm.get('name.first')?.errors?.['pattern']"
+              class="text-danger"
+              >Le prénom doit être alphabétique.</small
+            >
+            <small
+              *ngIf="registrationForm.get('name.first')?.errors?.['maxLength']"
+              class="text-danger"
+              >Le prénom est trop long.</small
+            >
+          </div>
+        </div>
+
+        <div class="col-6">
+          <input
+            type="text"
+            formControlName="last"
+            class="form-control"
+            placeholder="Nom"
+            pInputText
+          />
+          <div
+            *ngIf="
+              registrationForm.get('name.last')?.invalid &&
+              (registrationForm.get('name.last')?.dirty ||
+                registrationForm.get('name.last')?.touched)
+            "
+          >
+            <small
+              *ngIf="registrationForm.get('name.last')?.errors?.['required']"
+              class="text-danger"
+              >Le nom est obligatoire.</small
+            >
+            <small
+              *ngIf="registrationForm.get('name.last')?.errors?.['pattern']"
+              class="text-danger"
+              >Le nom doit être alphabétique.</small
+            >
+            <small
+              *ngIf="registrationForm.get('name.last')?.errors?.['maxLength']"
+              class="text-danger"
+              >Le nom est trop long.</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="form-group">
+          <input
+            type="text"
+            formControlName="pseudo"
+            pInputText
+            class="form-control"
+            placeholder="Pseudo"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('pseudo')?.invalid &&
+              (registrationForm.get('pseudo')?.dirty ||
+                registrationForm.get('pseudo')?.touched)
+            "
+          >
+            <small
+              *ngIf="registrationForm.get('pseudo')?.errors?.['required']"
+              class="text-danger"
+              >Le pseudo est obligatoire.</small
+            >
+            <small
+              *ngIf="registrationForm.get('pseudo')?.errors?.['maxLength']"
+              class="text-danger"
+              >Le pseudo ne peut pas avoir plus de 50 caractères.</small
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="form-group">
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control"
+            pInputText
+            placeholder="Email"
+          />
+          <div
+            *ngIf="
+              registrationForm.get('email')?.invalid &&
+              (registrationForm.get('email')?.dirty ||
+                registrationForm.get('email')?.touched)
+            "
+          >
+            <small
+              *ngIf="registrationForm.get('email')?.errors?.['required']"
+              class="text-danger"
+              >L'email est obligatoire.</small
+            >
+            <small
+              *ngIf="registrationForm.get('email')?.errors?.['email']"
+              class="text-danger"
+              >Ce n'est pas un email valide.</small
+            >
+          </div>
+        </div>
+      </div>
     </div>
 
-    <label for="last">Nom:</label>
-    <input type="text" id="last" pInputText formControlName="last" />
-    <div
-      *ngIf="
-        registrationForm.get('name.last')?.errors &&
-        registrationForm.get('name.last')?.touched
+    <input type="hidden" formControlName="role" />
+    <div class="row mt-2">
+      <div class="col-6">
+        <div class="form-group">
+          <input
+            type="password"
+            placeholder="Mot de passe"
+            formControlName="password"
+            class="form-control"
+            pInputText
+          />
+          <div
+            *ngIf="
+              registrationForm.get('password')?.errors &&
+              (registrationForm.get('password')?.touched ||
+                registrationForm.get('password')?.dirty)
+            "
+          >
+            <small
+              class="text-danger"
+              *ngIf="registrationForm.get('password')?.errors?.['required']"
+            >
+              Le mot de passe est obligatoire.
+            </small>
+            <small
+              class="text-danger"
+              *ngIf="registrationForm.get('password')?.errors?.['minLength']"
+            >
+              Le mot de passe doit comporter au moins 8 caractères.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <input
+            type="password"
+            placeholder="Confirmer le mot de passe"
+            formControlName="confirmPassword"
+            pInputText
+            class="form-control"
+          />
+          <div
+            *ngIf="
+        registrationForm.errors?.['notSame'] &&
+        (registrationForm.get('confirmPassword')?.touched ||
+          registrationForm.get('confirmPassword')?.dirty)
       "
-    >
-      <!-- You can add specific error messages here based on the error type -->
+          >
+            <small class="text-danger">
+              Les mots de passe ne correspondent pas.
+            </small>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+    <!-- Adresse -->
+    <div formGroupName="address">
+      <input type="text" placeholder="Rue" formControlName="street" />
+      <input type="text" placeholder="N°" formControlName="nbr" />
+      <input type="text" placeholder="Boîte" formControlName="box" />
+      <input type="text" placeholder="Code Postal" formControlName="postCode" />
+      <input type="text" placeholder="Ville" formControlName="city" />
+      <input type="text" placeholder="Pays" formControlName="country" />
+    </div>
 
-  <!-- Other fields -->
-  <label for="pseudo">Pseudo:</label>
-  <input type="text" id="pseudo" pInputText formControlName="pseudo" />
-
-  <label for="email">Email:</label>
-  <input type="email" id="email" pInputText formControlName="email" />
-
-  <label for="role">Role:</label>
-  <input type="text" id="role" pInputText formControlName="role" />
-
-  <label for="password">Password:</label>
-  <input type="password" id="password" pInputText formControlName="password" />
-
-  <label for="confirmPassword">Confirm Password:</label>
-  <input
-    type="password"
-    id="confirmPassword"
-    pInputText
-    formControlName="confirmPassword"
-  />
-
-  <!-- Address Group -->
-  <div formGroupName="address">
-    <label for="street">Street:</label>
-    <input type="text" id="street" pInputText formControlName="street" />
-
-    <label for="nbr">Number:</label>
-    <input type="text" id="nbr" pInputText formControlName="nbr" />
-
-    <label for="box">Box:</label>
-    <input type="text" id="box" pInputText formControlName="box" />
-
-    <label for="postCode">Post Code:</label>
-    <input type="text" id="postCode" pInputText formControlName="postCode" />
-
-    <label for="city">City:</label>
-    <input type="text" id="city" pInputText formControlName="city" />
-
-    <label for="country">Country:</label>
-    <input type="text" id="country" pInputText formControlName="country" />
-  </div>
-
-  <!-- Date of Birth -->
-  <label for="dateOfBirth">Date of Birth:</label>
-  <input
-    type="date"
-    id="dateOfBirth"
-    pInputText
-    formControlName="dateOfBirth"
-  />
-  <div formGroupName="study">
-    <label for="studyField">Field of Study:</label>
-    <input
-      type="text"
-      id="studyField"
-      pInputText
-      formControlName="studyField"
-    />
-
-    <label for="year">Year:</label>
-    <input type="number" id="year" pInputText formControlName="year" />
-  </div>
-
-  <!-- Phone -->
-  <label for="phone">Phone:</label>
-  <input type="text" id="phone" pInputText formControlName="phone" />
-
-  <!-- Photo URL (assuming it's a URL input) -->
-  <label for="photo">Photo URL:</label>
-  <input type="text" id="photo" pInputText formControlName="photo" />
-
-  <!-- CAP Group -->
-  <div formGroupName="cap">
-    Cap <input type="checkbox" formControlName="hasCap" />
-
-    <label for="provider">Provider:</label>
-    <input type="text" id="provider" pInputText formControlName="provider" />
-
-    <label for="deliveryDate">Delivery Date:</label>
+    <!-- Date de naissance -->
     <input
       type="date"
-      id="deliveryDate"
-      pInputText
-      formControlName="deliveryDate"
+      placeholder="Date de naissance"
+      formControlName="dateOfBirth"
     />
 
-    <label for="goldStars">Gold Stars:</label>
-    <input
-      type="number"
-      id="goldStars"
-      pInputText
-      formControlName="goldStars"
-    />
+    <!-- Téléphone -->
+    <input type="tel" placeholder="Téléphone" formControlName="phone" />
 
-    <label for="silverStars">Silver Stars:</label>
-    <input
-      type="number"
-      id="silverStars"
-      pInputText
-      formControlName="silverStars"
-    />
+    <!-- Photo -->
+    <input type="file" formControlName="photo" />
 
-    <label for="comments">Comments:</label>
-    <textarea
-      id="comments"
-      pInputTextarea
-      formControlName="comments"
-    ></textarea>
-  </div>
+    <!-- Study -->
+    <div formGroupName="study">
+      <input
+        type="text"
+        placeholder="Domaine d'étude"
+        formControlName="studyField"
+      />
+      <input type="text" placeholder="Année" formControlName="year" />
+    </div>
 
-  <!-- Student Association Group -->
-  <div formGroupName="student_association">
-    <input type="checkbox" formControlName="member" />
+    <!-- CAP -->
+    <div formGroupName="cap">
+      <input type="checkbox" formControlName="hasCap" />
+      <input type="text" placeholder="Fournisseur" formControlName="provider" />
+      <input
+        type="date"
+        placeholder="Date de livraison"
+        formControlName="deliveryDate"
+      />
+      <input
+        type="number"
+        placeholder="Étoiles d'or"
+        formControlName="goldStars"
+      />
+      <input
+        type="number"
+        placeholder="Étoiles d'argent"
+        formControlName="silverStars"
+      />
+      <textarea
+        placeholder="Commentaires"
+        formControlName="comments"
+      ></textarea>
+    </div>
 
-    <label for="association_id">Association ID:</label>
-    <input
-      type="text"
-      id="association_id"
-      pInputText
-      formControlName="association_id"
-    />
+    <!-- Student Association -->
+    <div formGroupName="student_association">
+      <input type="checkbox" formControlName="member" />
+      <input
+        type="text"
+        placeholder="ID de l'association"
+        formControlName="association_id"
+      />
+      <input type="text" placeholder="Fonction" formControlName="function" />
+    </div>
 
-    <label for="function">Function:</label>
-    <input type="text" id="function" pInputText formControlName="function" />
-  </div>
-</form>
-<!-- Submit Button -->
-<button pButton type="submit" label="Submit"></button>
+    <!-- Géolocalisation -->
+    <div formGroupName="geolocalisation">
+      <input type="text" placeholder="Latitude" formControlName="latitude" />
+      <input type="text" placeholder="Longitude" formControlName="longitude" />
+      <input type="text" placeholder="Précision" formControlName="precision" />
+    </div>
+
+    <!-- Bouton de soumission -->
+    <button type="submit">S'inscrire</button>
+  </form>
+</div>

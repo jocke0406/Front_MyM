@@ -13,12 +13,12 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
     this.registrationForm = this._fb.group({
       name: this._fb.group({
-        first: ['', [Validators.required, Validators.pattern('[a-zA-ZÀ-ÿ]+'), Validators.maxLength(50)]],
-        last: ['', [Validators.required, Validators.pattern('[a-zA-ZÀ-ÿ]+'), Validators.maxLength(50)]]
+        first: ['', [Validators.required, Validators.pattern("[a-zA-ZÀ-ÿ-' ]+"), Validators.maxLength(50)]],
+        last: ['', [Validators.required, Validators.pattern("[a-zA-ZÀ-ÿ-' ]+"), Validators.maxLength(50)]]
       }),
       pseudo: ['', [Validators.required, Validators.maxLength(50)]],
       email: ['', [Validators.required, Validators.email]],
-      role: ['', [Validators.maxLength(30)]],
+      role: ['user', [Validators.maxLength(30)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.minLength(8)]],
       address: this._fb.group({
@@ -61,7 +61,7 @@ export class RegisterComponent implements OnInit {
 
 
 
-    });
+    }, { validators: [this.matchPasswords] });
   }
   onSubmit() {
     if (this.registrationForm.valid) {
@@ -92,4 +92,12 @@ export class RegisterComponent implements OnInit {
       return !valid ? { invalidObjectId: { value: control.value } } : null;
     };
   }
+
+  matchPasswords(group: FormGroup) {
+    const password = group.get('password')?.value;
+    const confirmPassword = group.get('confirmPassword')?.value;
+
+    return password === confirmPassword ? null : { notSame: true };
+  }
+
 }

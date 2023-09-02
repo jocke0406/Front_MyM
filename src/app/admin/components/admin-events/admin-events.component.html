@@ -1,1 +1,59 @@
-<p>admin-events works!</p>
+<p-toast></p-toast>
+<div class="container">
+  <h1>
+    Evénements
+    <button
+      type="button"
+      class="btn btn-outline-info"
+      [routerLink]="['/eventsForm']"
+    >
+      Créer
+    </button>
+  </h1>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">
+            <a (click)="sortEventsByName()"
+              >Nom <i class="bi bi-caret-down-fill"></i
+            ></a>
+          </th>
+          <th scope="col">
+            <a (click)="sortEventsByStartDate()"
+              >Début <i class="bi bi-caret-down-fill"></i
+            ></a>
+          </th>
+          <th scope="col">Fin</th>
+          <th scope="col-1 text-end"><i class="bi bi-pencil-fill"></i></th>
+          <th scope="col-1 text-end"><i class="bi bi-trash-fill"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of eventsList">
+          <td>{{ event.name }}</td>
+          <td>{{ event.startAt | date : "dd/MM/yyyy HH:mm" }}</td>
+          <td>{{ event.endAt | date : "dd/MM/yyyy HH:mm" }}</td>
+
+          <td class="col-1">
+            <a
+              [routerLink]="['/eventsForm', event._id]"
+              pTooltip="Modifierr l' Evénement"
+              class="btn btn-warning"
+              ><i class="bi bi-pencil-fill"></i
+            ></a>
+          </td>
+
+          <td class="col-1">
+            <a
+              class="btn btn-secondary"
+              pTooltip="Supprimer l' Evénement"
+              (click)="event._id && deleteEvent(event._id)"
+              ><i class="bi bi-trash-fill"></i
+            ></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
