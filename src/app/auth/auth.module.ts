@@ -6,7 +6,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
-
+import { DropdownModule } from 'primeng/dropdown';
+import { CheckboxModule } from 'primeng/checkbox';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -16,8 +21,9 @@ import { CalendarModule } from 'primeng/calendar';
   ],
   imports: [
     CommonModule, ReactiveFormsModule,
-    ButtonModule,
-    InputTextModule, CalendarModule
-  ]
+    ButtonModule, ToastModule, BrowserAnimationsModule,
+    InputTextModule, CalendarModule, DropdownModule, CheckboxModule, RadioButtonModule
+  ],
+  providers: [MessageService]
 })
 export class AuthModule { }

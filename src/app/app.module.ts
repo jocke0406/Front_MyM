@@ -18,6 +18,7 @@ import { AuthRoutingModule } from './auth/auth.routing.modules';
 import { ColAdminComponent } from './shared/components/col-admin/col-admin.component';
 import { AdminModule } from './admin/admin.module';
 import { AdminRoutingModule } from './admin/admin.routing.module';
+
 @NgModule({
   declarations: [
     AppComponent,

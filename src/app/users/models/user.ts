@@ -8,6 +8,8 @@ export class User {
   email: string;
   role: string;
   address?: Address;
+  password?: string;
+  confirmPassword?: string;
   dateOfBirth: Date;
   study?: Study;
   phone?: string;

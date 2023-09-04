@@ -10,7 +10,6 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropdownModule } from 'primeng/dropdown';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   declarations: [

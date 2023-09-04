@@ -1,6 +1,7 @@
+<p-toast></p-toast>
 <h1 class="text-center mt-3 mb-3">Inscription</h1>
 <div class="shadow-lg pt-3 pb-3 bg-body-tertiary rounded">
-  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="registrationForm" (ngSubmit)="save()">
     <div formGroupName="name">
       <div class="row pt-2 pb-2">
         <div class="col-6">
@@ -133,7 +134,7 @@
     </div>
 
     <input type="hidden" formControlName="role" />
-    <div class="row mt-2">
+    <div *ngIf="!id" class="row mt-2">
       <div class="col-6">
         <div class="form-group">
           <input
@@ -188,83 +189,186 @@
         </div>
       </div>
     </div>
-    <!-- Adresse -->
-    <div formGroupName="address">
-      <input type="text" placeholder="Rue" formControlName="street" />
-      <input type="text" placeholder="N°" formControlName="nbr" />
-      <input type="text" placeholder="Boîte" formControlName="box" />
-      <input type="text" placeholder="Code Postal" formControlName="postCode" />
-      <input type="text" placeholder="Ville" formControlName="city" />
-      <input type="text" placeholder="Pays" formControlName="country" />
+
+    <div class="row pb-2 pt-2">
+      <div class="col-6">
+        <p-calendar
+          formControlName="dateOfBirth"
+          placeholder="Date de Naissance"
+          [dateFormat]="'dd MM yy'"
+        />
+        <div
+          *ngIf="
+            registrationForm.get('dateOfBirth')?.invalid &&
+            (registrationForm.get('dateOfBirth')?.dirty ||
+              registrationForm.get('dateOfBirth')?.touched)
+          "
+        >
+          <small
+            *ngIf="registrationForm.get('dateOfBirth')?.errors?.['required']"
+            class="text-danger"
+          >
+            La date de naissance est obligatoire.
+          </small>
+          <small
+            *ngIf="registrationForm.get('dateOfBirth')?.errors?.['tropJeune']"
+            class="text-danger"
+          >
+            Tu es trop Jeune, reviens plus tard !
+          </small>
+        </div>
+      </div>
+
+      <!-- Photo -->
+      <div class="col-6">
+        <input
+          type="text"
+          formControlName="photo"
+          class="form-control"
+          pInputText
+          placeholder="Photo"
+        />
+      </div>
     </div>
-
-    <!-- Date de naissance -->
-    <input
-      type="date"
-      placeholder="Date de naissance"
-      formControlName="dateOfBirth"
-    />
-
-    <!-- Téléphone -->
-    <input type="tel" placeholder="Téléphone" formControlName="phone" />
-
-    <!-- Photo -->
-    <input type="file" formControlName="photo" />
-
     <!-- Study -->
     <div formGroupName="study">
-      <input
-        type="text"
-        placeholder="Domaine d'étude"
-        formControlName="studyField"
-      />
-      <input type="text" placeholder="Année" formControlName="year" />
-    </div>
+      <div class="row mb-2">
+        <div class="col-7">
+          <p-dropdown
+            class="fixed-width-dropdown"
+            [options]="studyFields"
+            formControlName="studyField"
+            placeholder="Etudes Poursuivies"
+          ></p-dropdown>
+          <!-- Messages de validation ici -->
+        </div>
 
+        <div class="col-4">
+          <p-dropdown
+            [options]="years"
+            formControlName="year"
+            placeholder="Année"
+          ></p-dropdown>
+          <!-- Messages de validation ici -->
+        </div>
+      </div>
+    </div>
     <!-- CAP -->
+
     <div formGroupName="cap">
-      <input type="checkbox" formControlName="hasCap" />
-      <input type="text" placeholder="Fournisseur" formControlName="provider" />
-      <input
-        type="date"
-        placeholder="Date de livraison"
-        formControlName="deliveryDate"
-      />
-      <input
-        type="number"
-        placeholder="Étoiles d'or"
-        formControlName="goldStars"
-      />
-      <input
-        type="number"
-        placeholder="Étoiles d'argent"
-        formControlName="silverStars"
-      />
-      <textarea
-        placeholder="Commentaires"
-        formControlName="comments"
-      ></textarea>
+      <div class="row">
+        <div class="col ms-2">
+          <label for="hasCap">Calotte</label>
+          <p-radioButton
+            class="ms-2"
+            name="hasCap"
+            value="false"
+            [value]="false"
+            label="Non"
+            formControlName="hasCap"
+          ></p-radioButton>
+          <p-radioButton
+            name="hasCap"
+            [value]="true"
+            label="Oui"
+            formControlName="hasCap"
+          ></p-radioButton>
+        </div>
+      </div>
+      <div *ngIf="registrationForm.get('cap')?.get('hasCap')?.value === true">
+        <div class="row mt-2">
+          <div class="col-6 align-items-center pt-3">
+            <p-dropdown
+              [options]="cerclesList"
+              formControlName="provider"
+              class="fixed-width-dropdown"
+              optionLabel="name"
+              optionValue="id"
+              placeholder="Origine"
+            ></p-dropdown>
+          </div>
+          <div class="col-3 align-items-center">
+            <span class="input-group-text">
+              <i class="pi pi-star-fill" style="color: gold"></i>
+            </span>
+            <p-dropdown
+              [options]="stars"
+              formControlName="goldStars"
+            ></p-dropdown>
+          </div>
+          <div class="col-3 align-items-center">
+            <span class="input-group-text">
+              <i class="pi pi-star"></i>
+            </span>
+            <p-dropdown
+              [options]="stars"
+              formControlName="silverStars"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Student Association -->
     <div formGroupName="student_association">
-      <input type="checkbox" formControlName="member" />
-      <input
-        type="text"
-        placeholder="ID de l'association"
-        formControlName="association_id"
-      />
-      <input type="text" placeholder="Fonction" formControlName="function" />
-    </div>
+      <div class="row">
+        <div class="col ms-2">
+          <label for="member">Membre d'une association</label>
+          <p-radioButton
+            class="ms-2"
+            name="member"
+            [value]="false"
+            label="Non"
+            formControlName="member"
+          ></p-radioButton>
+          <p-radioButton
+            name="member"
+            [value]="true"
+            label="Oui"
+            formControlName="member"
+          ></p-radioButton>
+        </div>
+      </div>
 
-    <!-- Géolocalisation -->
-    <div formGroupName="geolocalisation">
-      <input type="text" placeholder="Latitude" formControlName="latitude" />
-      <input type="text" placeholder="Longitude" formControlName="longitude" />
-      <input type="text" placeholder="Précision" formControlName="precision" />
-    </div>
+      <div
+        *ngIf="
+          registrationForm.get('student_association')?.get('member')?.value ===
+          true
+        "
+      >
+        <div class="row mt-2">
+          <!-- Dropdown pour les associations -->
+          <div class="col-6 align-items-center pt-3">
+            <p-dropdown
+              [options]="cerclesList"
+              formControlName="association_id"
+              optionLabel="name"
+              optionValue="_id"
+              placeholder="Association"
+              class="fixed-width-dropdown"
+            ></p-dropdown>
+          </div>
 
-    <!-- Bouton de soumission -->
-    <button type="submit">S'inscrire</button>
+          <div class="col-6 align-items-center pt-3">
+            <p-dropdown
+              [options]="functionsList"
+              formControlName="function"
+              placeholder="Fonction"
+            ></p-dropdown>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button
+      pButton
+      type="submit"
+      label="Envoyer"
+      [disabled]="!registrationForm.valid"
+    ></button>
   </form>
+  <button
+    pButton
+    type="button"
+    label="Show Success"
+    (click)="showSuccess()"
+  ></button>
 </div>

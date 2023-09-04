@@ -5,6 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   { path: 'registration', component: RegisterComponent },
+  { path: 'registration/:id', component: RegisterComponent },
   { path: 'login', component: LoginComponent }
 ];
 
