@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, ValidatorFn, AbstractControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { CerclesService } from 'src/app/cercles/services/cercles.service';
-import { Subject, takeUntil, tap, catchError } from 'rxjs';
+import { Subject, takeUntil, tap, catchError, of } from 'rxjs';
 import { Cercle } from 'src/app/cercles/models/cercle';
 import { AuthService } from '../../auth.service';
 import { User } from 'src/app/users/models/user';
@@ -9,7 +9,7 @@ import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from 'src/app/users/services/users.service';
-
+import { delay } from "rxjs/operators"
 
 @Component({
   selector: 'app-register',
@@ -81,11 +81,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
         .pipe(
 
           tap((user) => {
-            this.registrationForm.patchValue(user);
+            this.registrationForm.patchValue({ ...user, confirmPassword: user.password });
           }),
           catchError((error) => {
             console.error("Houston, nous avons un problème", error);
-            this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données du cercle.' });
+            this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de charger les données du user.' });
             throw error;
           }), takeUntil(this._unsubscribeAll)
         )
@@ -136,12 +136,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this._auth.updateUser(this.id, formData).pipe(
           tap(() => {
             this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Mise à jour réussie !', life: 2000 });
-            this._route.navigate(['/']);
           }),
           catchError((error) => {
             console.error("Oups, mise à jour échouée", error);
             this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Mise à jour échouée.' });
-            throw error;
+            return of(null);
+          }),
+          delay(2010),
+          tap(() => {
+            this._route.navigate(['/']);
           }),
           takeUntil(this._unsubscribeAll)
         ).subscribe();
@@ -150,13 +153,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this._auth.submitUser(formData)
           .pipe(
             tap(() => {
-              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Création réussie !', life: 2000 });
-              this._route.navigate(['/']);
+              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Création réussie !' });
             }),
             catchError((error) => {
               console.error("Oups, création échouée", error);
-              this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Création échouée.' });
-              throw error;
+              this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Création échouée. Tu peux à présent te connecter' });
+              return of(null);
+            }),
+            delay(2010),
+            tap(() => {
+              this._route.navigate(['/login']);
             }),
             takeUntil(this._unsubscribeAll),
           )
@@ -175,6 +181,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
   }
   showSuccess() {
+    console.log("message service", this._messageService)
+
     this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Opération réussie' });
   }
 

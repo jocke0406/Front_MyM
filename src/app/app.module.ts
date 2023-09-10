@@ -18,6 +18,13 @@ import { AuthRoutingModule } from './auth/auth.routing.modules';
 import { ColAdminComponent } from './shared/components/col-admin/col-admin.component';
 import { AdminModule } from './admin/admin.module';
 import { AdminRoutingModule } from './admin/admin.routing.module';
+import { MessageService } from 'primeng/api';
+import { JwtModule } from '@auth0/angular-jwt';
+import { ToastModule } from 'primeng/toast';
+
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [
@@ -26,11 +33,18 @@ import { AdminRoutingModule } from './admin/admin.routing.module';
     FooterComponent, ColAdminComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, ToastModule,
     AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule, AuthModule, AuthRoutingModule,
-    EventsRoutingModule, CerclesModule, CerclesRoutingModule, EventsModule, UsersModule, UsersRoutingModule, AdminModule, AdminRoutingModule
+    EventsRoutingModule, CerclesModule, CerclesRoutingModule, EventsModule, UsersModule, UsersRoutingModule, AdminModule, AdminRoutingModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ['exemple-domaine-api.com'],
+        disallowedRoutes: ['exemple-domaine-api.com/api/auth']
+      }
+    }),
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

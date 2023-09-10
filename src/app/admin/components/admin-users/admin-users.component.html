@@ -1,1 +1,56 @@
-<p>admin-users works!</p>
+<p-toast></p-toast>
+<div class="container">
+  <h1>Membres :</h1>
+  <div class="row">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col-4">
+            <a (click)="sortUsersByPseudo()"
+              >Pseudo : <i class="bi bi-caret-down-fill"></i
+            ></a>
+          </th>
+          <th scope="col-3">
+            <a (click)="sortUsersByName()"
+              >Nom : <i class="bi bi-caret-down-fill"></i
+            ></a>
+          </th>
+          <th scope="col-3">
+            <a (click)="sortUsersByFirst()"
+              >Prénom : <i class="bi bi-caret-down-fill"></i
+            ></a>
+          </th>
+          <th scope="col-1 text-end"><i class="bi bi-eye-fill"></i></th>
+          <th scope="col-1 text-end"><i class="bi bi-trash-fill"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of usersList">
+          <td class="col-4">{{ user.pseudo }}</td>
+          <td class="col-3">{{ user.name.last }}</td>
+          <td class="col-3">{{ user.name.first }}</td>
+
+          <td class="col-1">
+            <a
+              [routerLink]="['/registration', user._id]"
+              pTooltip="Voir le Profil de {{ user.pseudo }}"
+              class="btn btn-warning"
+            >
+              <i class="bi bi-eye-fill"></i>
+            </a>
+          </td>
+
+          <td class="col-1">
+            <a
+              class="btn btn-secondary"
+              pTooltip="Bannir {{ user.pseudo }}"
+              (click)="user._id && deleteUser(user._id)"
+            >
+              <i class="bi bi-trash-fill"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

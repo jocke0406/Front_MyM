@@ -34,4 +34,13 @@ export class UsersService {
       }),
     );
   }
+
+  deleteUser(id: string): Observable<any> {
+    return this._http.delete(`${this.url}/${id}`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors du profil'));
+      })
+    );
+  }
 }

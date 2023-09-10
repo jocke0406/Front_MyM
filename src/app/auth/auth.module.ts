@@ -9,7 +9,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -24,6 +23,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ButtonModule, ToastModule, BrowserAnimationsModule,
     InputTextModule, CalendarModule, DropdownModule, CheckboxModule, RadioButtonModule
   ],
-  providers: [MessageService]
+  providers: []
 })
 export class AuthModule { }

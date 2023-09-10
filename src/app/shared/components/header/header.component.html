@@ -1,9 +1,8 @@
+<p-toast></p-toast>
 <nav class="navbar navbar-expand-lg navbar-light bg-warning">
   <div class="container-fluid">
-    <span *ngIf="isConnected" class="connection-status"
-      >Connecté en tant que</span
-    >
-    <span *ngIf="!isConnected" class="connection-status">Non connecté</span>
+    <span *ngIf="isUserConnected">Salut, {{ userConnectedPseudo }}!</span>
+    <span *ngIf="!isUserConnected">Non connecté</span>
     <a class="navbar-brand mx-auto" href="#">MyM</a>
 
     <div class="btn-group dropstart">
@@ -18,21 +17,34 @@
 
       <ul class="dropdown-menu">
         <li>
-          <a *ngIf="!isConnected" class="dropdown-item" href="#"
+          <a
+            *ngIf="[!isUserConnected]"
+            class="dropdown-item"
+            [routerLink]="['/login']"
             >Se connecter</a
           >
         </li>
         <li>
-          <a *ngIf="!isConnected" class="dropdown-item" href="#">S' inscrire</a>
+          <a
+            *ngIf="!isUserConnected"
+            class="dropdown-item"
+            [routerLink]="['/registration']"
+            >S' inscrire</a
+          >
         </li>
 
         <li>
-          <a *ngIf="isConnected" class="dropdown-item" href="#"
+          <a *ngIf="isUserConnected" class="dropdown-item" (click)="logout()"
             >Se déconnecter</a
           >
         </li>
         <li>
-          <a *ngIf="isConnected" class="dropdown-item" href="#">Mon Profil</a>
+          <a
+            *ngIf="isUserConnected"
+            class="dropdown-item"
+            [routerLink]="['/userProfile', userConnectedId]"
+            >Mon Profil</a
+          >
         </li>
       </ul>
     </div>

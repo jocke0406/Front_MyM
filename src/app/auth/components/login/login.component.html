@@ -1,1 +1,53 @@
-<p>login works!</p>
+<p-toast></p-toast>
+<h1 class="text-center mt-3 mb-3">Connecte toi :</h1>
+<div class="shadow-lg pt-3 pb-3 bg-body-tertiary rounded">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="p-field">
+      <div class="row">
+        <div class="col-3">
+          <label for="email"><h4>Email</h4></label>
+        </div>
+        <div class="col-9">
+          <input
+            id="email"
+            type="email"
+            class="input-wide"
+            pInputText
+            formControlName="email"
+          />
+          <small
+            *ngIf="
+              loginForm.get('email')?.hasError('required') &&
+              loginForm.get('email')?.touched
+            "
+            ><br />L'email est requis.</small
+          >
+        </div>
+      </div>
+    </div>
+    <div class="p-field">
+      <div class="row mt-2 mb-3">
+        <div class="col-3">
+          <label for="password"><h4>Mot de passe</h4></label>
+        </div>
+        <div class="col-9">
+          <input
+            id="password"
+            type="password"
+            class="input-wide"
+            pInputText
+            formControlName="password"
+          />
+          <small
+            *ngIf="
+              loginForm.get('password')?.hasError('required') &&
+              loginForm.get('password')?.touched
+            "
+            ><br />Le mot de passe est requis.</small
+          >
+        </div>
+      </div>
+    </div>
+    <button pButton type="submit" label="Se connecter"></button>
+  </form>
+</div>

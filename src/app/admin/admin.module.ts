@@ -4,7 +4,6 @@ import { AdminCerclesComponent } from './components/admin-cercles/admin-cercles.
 import { AdminEventsComponent } from './components/admin-events/admin-events.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 import { AdminLocationsComponent } from './components/admin-locations/admin-locations.component';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
@@ -19,6 +18,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     CommonModule, ToastModule, RouterModule, TooltipModule, HttpClientModule, BrowserAnimationsModule
   ],
-  providers: [MessageService]
+  providers: []
 })
 export class AdminModule { }

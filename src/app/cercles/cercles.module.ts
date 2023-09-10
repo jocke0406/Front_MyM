@@ -6,7 +6,6 @@ import { CerclesFormComponent } from './components/cercles-form/cercles-form.com
 import { ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropdownModule } from 'primeng/dropdown';
@@ -20,6 +19,6 @@ import { DropdownModule } from 'primeng/dropdown';
   imports: [
     CommonModule, DropdownModule, ReactiveFormsModule, ButtonModule, InputTextModule, ToastModule, BrowserAnimationsModule
   ],
-  providers: [MessageService]
+  providers: []
 })
 export class CerclesModule { }

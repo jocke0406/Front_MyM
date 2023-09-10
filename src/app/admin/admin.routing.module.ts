@@ -4,11 +4,16 @@ import { AdminCerclesComponent } from './components/admin-cercles/admin-cercles.
 import { AdminLocationsComponent } from './components/admin-locations/admin-locations.component';
 import { AdminEventsComponent } from './components/admin-events/admin-events.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { AdminGuardService } from '../auth/admin-guard.service';
+
+
 const routes: Routes = [
-  { path: 'adminCercles', component: AdminCerclesComponent },
-  { path: 'adminLocations', component: AdminLocationsComponent },
-  { path: 'adminUsers', component: AdminUsersComponent },
-  { path: 'adminEvents', component: AdminEventsComponent }
+  { path: 'adminCercles', component: AdminCerclesComponent, canActivate: [AdminGuardService] },
+  { path: 'adminLocations', component: AdminLocationsComponent, canActivate: [AdminGuardService] },
+  { path: 'adminUsers', component: AdminUsersComponent, canActivate: [AdminGuardService] },
+  { path: 'adminEvents', component: AdminEventsComponent, canActivate: [AdminGuardService] },
+  { path: '', component: HomePageComponent },
 ];
 
 @NgModule({
