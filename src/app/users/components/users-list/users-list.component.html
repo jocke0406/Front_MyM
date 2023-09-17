@@ -1,17 +1,44 @@
 <ul>
-  <li *ngFor="let user of paginatedUsersList">
-    {{ user._id }}<br />
-    {{ user.name.first }}<br />
-    {{ user.pseudo }}<br />
-    {{ user.cap?.hasCap }}<br />
-    {{ user.address?.city }}<br />
-    {{ user.friends.length }}<br />
-    {{ user.student_association?.association_id }}<br />
-  </li>
-</ul>
+  <div class="card mb-4" *ngFor="let user of paginatedUsersList">
+    <div class="row no-gutters">
+      <div class="col-4">
+        <img
+          src="../../../../assets/logo_MyM_DallE.png"
+          alt="Photo de {{ user.pseudo }}"
+          class="card-img-top"
+        />
+        <div class="card-body">
+          <p class="card-text">
+            <i>{{ user.pseudo }}</i>
+          </p>
+        </div>
+      </div>
 
+      <div class="col-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ user.name.first }} {{ user.name.last }}</h5>
+          <p class="card-text">
+            {{ user.study?.studyField }} <br />{{
+              getYearLabel(user.study?.year)
+            }}
+          </p>
+          <div *ngIf="user.cap?.hasCap">
+            <p class="card-text">
+              calotté : {{ user.cap?.goldStars }} {{ user.cap?.silverStars }}
+            </p>
+          </div>
+          <p class="card-text">{{ user.friends.length }}</p>
+          <p class="card-text">{{ user.address?.city }}</p>
+          <a [routerLink]="['/userProfile', user._id]" class="btn btn-primary"
+            >Voir le profil</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</ul>
 <nav aria-label="Page navigation">
-  <ul class="pagination">
+  <ul class="pagination justify-content-center">
     <li class="page-item" [class.disabled]="currentPage === 1">
       <a
         class="page-link"
@@ -21,8 +48,15 @@
       >
     </li>
 
+    <li class="page-item" *ngIf="currentPage > 3">
+      <a class="page-link" href="javascript:void(0);" (click)="goToPage(1)"
+        >1</a
+      >
+    </li>
+    <li class="page-item" *ngIf="currentPage > 4">...</li>
+
     <li
-      *ngFor="let page of pagesArray"
+      *ngFor="let page of getVisiblePages()"
       class="page-item"
       [class.active]="currentPage === page"
     >
@@ -31,6 +65,16 @@
         href="javascript:void(0);"
         (click)="goToPage(page)"
         >{{ page }}</a
+      >
+    </li>
+
+    <li class="page-item" *ngIf="currentPage < totalPages - 3">...</li>
+    <li class="page-item" *ngIf="currentPage < totalPages - 2">
+      <a
+        class="page-link"
+        href="javascript:void(0);"
+        (click)="goToPage(totalPages)"
+        >{{ totalPages }}</a
       >
     </li>
 

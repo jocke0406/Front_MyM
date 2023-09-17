@@ -1,8 +1,73 @@
-<p>user-profile works!</p>
-<div *ngIf="user">
-  <p>{{ user._id }}</p>
-  <p>{{ user.pseudo }}</p>
-  <p>{{ user.photo }}</p>
-  <p>{{ user.address?.city }}</p>
-  <p>{{ user.cap?.hasCap }}</p>
+<div class="card">
+  <div *ngIf="user">
+    <!-- Image de l'utilisateur -->
+    <img
+      src="../../../../assets/logo_MyM_DallE.png"
+      class="card-img-top"
+      alt="{{ user.name.first }} {{ user.name.last }}"
+    />
+
+    <!-- Contenu de la carte -->
+    <div class="card">
+      <div class="card-header">
+        {{ user.name.first }} {{ user.name.last }} ({{ user.pseudo }})
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">Informations de base</h5>
+        <p class="card-text">
+          Email: {{ user.email }} <br />
+          Date de naissance: {{ user.dateOfBirth | date : "dd/MM/yyyy" }} <br />
+          Téléphone: {{ user.phone }} <br />
+          Etudes: {{ user.study?.studyField }} ({{
+            getStudyYearLabel(user.study?.year!)
+          }})
+        </p>
+
+        <h5 class="card-title">Adresse</h5>
+        <p class="card-text">
+          {{ user.address?.street }} {{ user.address?.nbr }} <br />
+          {{ user.address?.postCode }} {{ user.address?.city }} <br />
+          {{ user.address?.country }}
+        </p>
+
+        <h5 class="card-title">Chapeau</h5>
+        <p class="card-text">
+          Fournisseur: {{ user.cap?.provider }} <br />
+          Date de livraison: {{ user.cap?.deliveryDate | date : "dd/MM/yyyy" }}
+          <br />
+          Etoiles d'or: {{ user.cap?.goldStars }} | Etoiles d'argent:
+          {{ user.cap?.silverStars }} <br />
+          Commentaires: {{ user.cap?.comments }}
+        </p>
+
+        <h5 class="card-title">Associations et participations</h5>
+        <p class="card-text">Cercles: <br />{{ user.cercle }}</p>
+        <p class="card-text">Participations:</p>
+        <ul>
+          <li *ngFor="let participation of user.participations">
+            {{ participation }}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <button [routerLink]="['/usersList']">Retour</button>
+
+      <button
+        *ngIf="!isFriend(user._id)"
+        class="btn btn-primary"
+        (click)="addFriend()"
+      >
+        Ajouter comme ami
+      </button>
+
+      <button
+        *ngIf="isFriend(user._id)"
+        class="btn btn-danger"
+        (click)="removeFriend()"
+      >
+        Supprimer de la liste d'amis
+      </button>
+    </div>
+  </div>
 </div>

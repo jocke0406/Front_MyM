@@ -4,6 +4,7 @@ import { User } from '../../models/user';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
+
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
@@ -12,7 +13,7 @@ import { Subject } from 'rxjs';
 export class UsersListComponent implements OnInit, OnDestroy {
 
   paginatedUsersList: User[] = [];
-  usersPerPage: number = 1;
+  usersPerPage: number = 5;
   currentPage: number = 1;
   usersList: User[] = [];
   totalPages: number = 1;
@@ -52,6 +53,31 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.currentPage = page;
     this.updatePaginatedUsers();
   }
+  getVisiblePages(): number[] {
+    let startPage = Math.max(1, this.currentPage - 2);
+    let endPage = Math.min(this.totalPages, this.currentPage + 2);
+
+    return Array(endPage - startPage + 1).fill(0).map((_, idx) => startPage + idx);
+  }
+
+  years: any[] = [
+    { label: 'Bachelier 1', value: '1' },
+    { label: 'Bachelier 2', value: '2' },
+    { label: 'Bachelier 3', value: '3' },
+    { label: 'Master 1', value: '4' },
+    { label: 'Master 2', value: '5' },
+    { label: 'Master 3', value: '6' },
+    { label: 'Doctorat', value: '7' },
+    { label: 'Diplomé', value: '8' },
+  ];
+
+  getYearLabel(value?: number): string {
+    if (!value) return 'N/A';
+    const yearObj = this.years.find(year => year.value === value.toString());
+    return yearObj ? yearObj.label : 'N/A';
+  }
+
+
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();

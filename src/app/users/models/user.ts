@@ -17,6 +17,8 @@ export class User {
   cap?: Cap;
   student_association?: StudentAssociation;
   friends: string[];
+  cercle: string | null = null;
+  participations: string[] | null = null;
   geolocalisation?: Geolocalisation;
   createdAt?: Date;
   updatedAt?: Date;

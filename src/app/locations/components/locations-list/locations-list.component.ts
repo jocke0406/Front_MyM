@@ -11,6 +11,11 @@ import { Subject } from 'rxjs';
 })
 export class LocationsListComponent implements OnInit, OnDestroy {
   public locationsList!: Location[];
+  paginatedLocationsList: Location[] = [];
+  locationsPerPage: number = 3;
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pagesArray: number[] = [];
   private _unsubscribeAll = new Subject<void>();
 
   constructor(private _locationService: LocationsService) { }
@@ -21,11 +26,36 @@ export class LocationsListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data) => {
           this.locationsList = data.filter((location: Location) => !location.deletedAt);
+          this.setupPagination();
         },
         error: (error) => {
           console.log("Erreur lors du chargement des locations :", error);
         }
       });
+  }
+
+  setupPagination() {
+    this.totalPages = Math.ceil(this.locationsList.length / this.locationsPerPage);
+    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1); // génère un tableau [1, 2, ..., totalPages]
+    this.updatePaginatedLocations();
+  }
+
+
+  updatePaginatedLocations() {
+    const startIndex = (this.currentPage - 1) * this.locationsPerPage;
+    this.paginatedLocationsList = this.locationsList.slice(startIndex, startIndex + this.locationsPerPage);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.updatePaginatedLocations();
+  }
+
+  getVisiblePages(): number[] {
+    let startPage = Math.max(1, this.currentPage - 2);
+    let endPage = Math.min(this.totalPages, this.currentPage + 2);
+
+    return Array(endPage - startPage + 1).fill(0).map((_, idx) => startPage + idx);
   }
 
   ngOnDestroy(): void {

@@ -35,6 +35,21 @@ export class UsersService {
     );
   }
 
+  getUserFull(id: string): Observable<User> {
+    return this._http.get<User>(`${this.url}/${id}/full`).pipe(
+      map((user: User) => {
+        if (user.dateOfBirth) {
+          user.dateOfBirth = new Date(user.dateOfBirth);
+        }
+        return user;
+      }),
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la récupération de user.'));
+      }),
+    );
+  }
+
   deleteUser(id: string): Observable<any> {
     return this._http.delete(`${this.url}/${id}`).pipe(
       catchError(error => {
@@ -43,4 +58,7 @@ export class UsersService {
       })
     );
   }
+
+  addFriend() { };
+  removeFriend() { };
 }
