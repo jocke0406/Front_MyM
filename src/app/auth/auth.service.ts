@@ -28,6 +28,9 @@ export class AuthService {
   private adminConnected = new BehaviorSubject<boolean>(this.isUserAdmin());
   public adminConnected$ = this.adminConnected.asObservable();
 
+  private userIdSubject = new BehaviorSubject<string | null>(this.getUserConnectedIdFromToken());
+  public userConnectedId$ = this.userIdSubject.asObservable()
+
   constructor(private messageService: MessageService, private _jwtHelper: JwtHelperService, private _http: HttpClient, private router: Router) { }
 
 
@@ -56,6 +59,8 @@ export class AuthService {
           localStorage.setItem('token', res.token);
           this.userConnected.next(true);
           const decodedToken = this.decodeToken();
+          const userConnectedId = decodedToken ? decodedToken.id : null;
+          this.userIdSubject.next(userConnectedId);
           if (decodedToken && decodedToken.role === 'masterOfUnivers') {
             this.adminConnected.next(true);
           }
@@ -98,12 +103,19 @@ export class AuthService {
     const decodedToken = this._jwtHelper.decodeToken(token);
     return decodedToken.role === 'masterOfUnivers';
 
-
   }
+
+  private getUserConnectedIdFromToken(): string | null {
+    const decodedToken = this.decodeToken();
+    return decodedToken ? decodedToken._id : null;
+  }
+
+
   logout() {
     localStorage.removeItem('token');
     this.userConnected.next(false);
     this.adminConnected.next(false);
+    this.userIdSubject.next(null);
     this.messageService.add({ severity: 'success', summary: 'Déconnecté', detail: 'Vous avez été déconnecté avec succès.', life: 2000 });
     this.router.navigate(['/']);
   }

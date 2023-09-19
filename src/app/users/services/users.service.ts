@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UsersService {
   url = environment.backUrl + "/users";
   constructor(private _http: HttpClient) { }
@@ -55,6 +56,15 @@ export class UsersService {
       catchError(error => {
         console.error(error);
         return throwError(() => new Error('Oups !?! Erreur lors du profil'));
+      })
+    );
+  }
+
+  getUserFriends(userId: string): Observable<User[]> {
+    return this._http.get<User[]>(`${this.url}/${userId}/friends`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors du profil'))
       })
     );
   }

@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { map, switchMap, filter, takeUntil } from 'rxjs/operators';
+import { Subject, combineLatest } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 
 @Component({
@@ -21,20 +22,54 @@ export class UsersListComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _usersService: UsersService) { }
+  constructor(private _usersService: UsersService, private _auth: AuthService) { }
 
   ngOnInit(): void {
-    this._usersService.getUsersAll().pipe(takeUntil(this._unsubscribeAll)).subscribe({
-      next: (data) => {
-        this.usersList = data
-          .filter((user: User) => (user.deletedAt === null || !user.deletedAt));
+    combineLatest([
+      this._auth.userConnectedId$,
+      this._usersService.getUsersAll()
+    ])
+      .pipe(
+        filter(([userConnectedId, _]) => !!userConnectedId), // on s'assure que l'ID n'est pas null
+        switchMap(([userConnectedId, users]) => {
+          return this._usersService.getUserFriends(userConnectedId!).pipe( // On utilise '!' pour dire à TypeScript que nous sommes sûrs que ce n'est pas null
+            map(friends => [userConnectedId, users, friends])
+          )
+        }), takeUntil(this._unsubscribeAll)
+      )
+      .subscribe((results: (string | User[] | null)[]) => {
+        if (results.length !== 3) {
+          console.error("Mauvais format de données reçu!");
+          return;
+        }
+
+        const currentUserId = results[0] as string;
+        const users = results[1] as User[];
+        const friends = results[2] as User[];
+
+        if (!currentUserId || !users || !friends) {
+          console.error("Des données sont manquantes!");
+          return;
+        }
+
+        const friendsIds = friends.map(friend => friend._id);
+        this.usersList = users
+          .filter(user => user.deletedAt === null || !user.deletedAt)
+          .map(user => {
+            return {
+              ...user,
+              isFriend: friendsIds.includes(user._id)
+            };
+          });
+
         this.setupPagination();
       },
-      error: (error) => {
-        console.log("Une erreur s'est produite lors de la récupération des utilisateurs", error)
-      }
-    })
+        (error: any) => {
+          console.log("Une erreur s'est produite lors de la récupération des données", error);
+        });
+
   }
+
 
   setupPagination() {
     this.totalPages = Math.ceil(this.usersList.length / this.usersPerPage);

@@ -23,6 +23,7 @@ export class User {
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;
+  isFriend?: boolean = false;
 
   constructor(data: any) {
     this._id = data._id
