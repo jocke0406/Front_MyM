@@ -1,16 +1,14 @@
-<div class="card">
+<div class="card m-3">
   <div *ngIf="user">
-    <!-- Image de l'utilisateur -->
     <img
       src="../../../../assets/logo_MyM_DallE.png"
       class="card-img-top"
       alt="{{ user.name.first }} {{ user.name.last }}"
     />
-
-    <!-- Contenu de la carte -->
     <div class="card">
       <div class="card-header">
-        {{ user.name.first }} {{ user.name.last }} ({{ user.pseudo }})
+        {{ user.name.first }} {{ user.name.last }} ({{ user.pseudo }})<br />
+        {{ user.isFriend }}
       </div>
       <div class="card-body">
         <h5 class="card-title">Informations de base</h5>
@@ -51,23 +49,90 @@
       </div>
     </div>
     <div class="card-footer d-flex justify-content-between">
-      <button [routerLink]="['/usersList']">Retour</button>
-
-      <button
-        *ngIf="!isFriend(user._id)"
-        class="btn btn-primary"
-        (click)="addFriend()"
-      >
-        Ajouter comme ami
+      <button [routerLink]="['/usersList']" type="button" class="btn btn-dark">
+        Retour
       </button>
+      <div *ngIf="userSelectedId">
+        <button
+          *ngIf="!(friendStatus$ | async) && !(currentUserId == userSelectedId)"
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#addFriendModal"
+        >
+          Ajouter comme ami
+        </button>
 
-      <button
-        *ngIf="isFriend(user._id)"
-        class="btn btn-danger"
-        (click)="removeFriend()"
-      >
-        Supprimer de la liste d'amis
-      </button>
+        <button
+          *ngIf="friendStatus$ | async"
+          class="btn btn-danger"
+          data-bs-toggle="modal"
+          data-bs-target="#removeFriendModal"
+        >
+          Supprimer de la liste d'amis
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" tabindex="-1" id="addFriendModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmation !</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Fermer"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Veux-tu vraiment commencer à suivre {{ user?.pseudo }} ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          data-bs-dismiss="modal"
+          (click)="addFriend()"
+        >
+          Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" tabindex="-1" id="removeFriendModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Attention !</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Fermer"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Es-tu certain de vouloir arrêter de suivre {{ user?.pseudo }} ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal">
+          Annuler
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          (click)="removeFriend()"
+        >
+          Supprimer
+        </button>
+      </div>
     </div>
   </div>
 </div>

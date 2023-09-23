@@ -21,7 +21,6 @@ export class ColAdminComponent implements OnInit, OnDestroy {
         status => {
           this.userConnectedIsAdmin = status;
           if (this.userConnectedIsAdmin) {
-            console.log("userConnectedId : ", this.userConnectedIsAdmin)
           }
         });
   }

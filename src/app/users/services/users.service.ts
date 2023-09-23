@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError, map } from 'rxjs';
 import { User } from '../models/user';
+import { Event } from '../../events/models/event';
 import { environment } from 'src/environments/environment';
 
 
@@ -69,6 +70,31 @@ export class UsersService {
     );
   }
 
-  addFriend() { };
-  removeFriend() { };
+  addFriend(userConnectedId: string, friendId: string): Observable<User> {
+    return this._http.patch<User>(`${this.url}/${userConnectedId}/addFriend`, { friendId }).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors du profil'))
+      })
+    );
+  };
+
+  removeFriend(userConnectedId: string, friendId: string) {
+    return this._http.patch<User>(`${this.url}/${userConnectedId}/removeFriend`, { friendId }).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors du profil'))
+      })
+    );
+  };
+
+  getUserEvents(userId: string): Observable<Event[]> {
+    return this._http.get<Event[]>(`${this.url}/${userId}/events`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors des events de l utilisateurs'))
+      })
+    );
+  }
+
 }

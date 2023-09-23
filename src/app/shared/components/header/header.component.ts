@@ -28,7 +28,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
             const decodeToken = this._auth.decodeToken();
             this.userConnectedPseudo = decodeToken.pseudo;
             this.userConnectedId = decodeToken._id;
-            console.log("userConnectedId : ", this.userConnectedId)
           }
         });
   }

@@ -20,6 +20,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
   totalPages: number = 1;
   pagesArray: number[] = [];
 
+  currentUserId?: string;
+
   private _unsubscribeAll = new Subject<void>();
 
   constructor(private _usersService: UsersService, private _auth: AuthService) { }
@@ -30,57 +32,62 @@ export class UsersListComponent implements OnInit, OnDestroy {
       this._usersService.getUsersAll()
     ])
       .pipe(
-        filter(([userConnectedId, _]) => !!userConnectedId), // on s'assure que l'ID n'est pas null
+        filter(([userConnectedId, _]) => !!userConnectedId),
         switchMap(([userConnectedId, users]) => {
-          return this._usersService.getUserFriends(userConnectedId!).pipe( // On utilise '!' pour dire à TypeScript que nous sommes sûrs que ce n'est pas null
+          return this._usersService.getUserFriends(userConnectedId!).pipe(
             map(friends => [userConnectedId, users, friends])
           )
         }), takeUntil(this._unsubscribeAll)
       )
-      .subscribe((results: (string | User[] | null)[]) => {
-        if (results.length !== 3) {
-          console.error("Mauvais format de données reçu!");
-          return;
-        }
+      .subscribe({
+        next: (results: (string | User[] | null)[]) => {
+          if (results.length !== 3) {
+            console.error("Mauvais format de données reçu!");
+            return;
+          }
 
-        const currentUserId = results[0] as string;
-        const users = results[1] as User[];
-        const friends = results[2] as User[];
+          this.currentUserId = results[0] as string;
+          const users = results[1] as User[];
+          const friends = results[2] as User[];
 
-        if (!currentUserId || !users || !friends) {
-          console.error("Des données sont manquantes!");
-          return;
-        }
+          if (!this.currentUserId || !users || !friends) {
+            console.error("Des données sont manquantes!");
+            return;
+          }
 
-        const friendsIds = friends.map(friend => friend._id);
-        this.usersList = users
-          .filter(user => user.deletedAt === null || !user.deletedAt)
-          .map(user => {
-            return {
-              ...user,
-              isFriend: friendsIds.includes(user._id)
-            };
-          });
+          const friendsIds = friends.map(friend => friend._id);
+          this.usersList = users
+            .filter(user => user.deletedAt === null || !user.deletedAt)
+            .map(user => {
+              return {
+                ...user,
+                isFriend: friendsIds.includes(user._id)
+              };
+            });
 
-        this.setupPagination();
-      },
-        (error: any) => {
+          this.setupPagination();
+        },
+        error: (error: any) => {
           console.log("Une erreur s'est produite lors de la récupération des données", error);
-        });
+        }
+      });
+  };
 
-  }
+
 
 
   setupPagination() {
     this.totalPages = Math.ceil(this.usersList.length / this.usersPerPage);
-    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1); // génère un tableau [1, 2, ..., totalPages]
+    this.pagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
     this.updatePaginatedUsers();
   }
 
 
   updatePaginatedUsers() {
     const startIndex = (this.currentPage - 1) * this.usersPerPage;
-    this.paginatedUsersList = this.usersList.slice(startIndex, startIndex + this.usersPerPage);
+    const endIndex = startIndex + this.usersPerPage;
+    const paginatedList = this.usersList.slice(startIndex, endIndex);
+    this.paginatedUsersList = this.sortUsersByFriendCount(paginatedList);
   }
 
 
@@ -88,10 +95,10 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.currentPage = page;
     this.updatePaginatedUsers();
   }
+
   getVisiblePages(): number[] {
     let startPage = Math.max(1, this.currentPage - 2);
     let endPage = Math.min(this.totalPages, this.currentPage + 2);
-
     return Array(endPage - startPage + 1).fill(0).map((_, idx) => startPage + idx);
   }
 
@@ -112,7 +119,13 @@ export class UsersListComponent implements OnInit, OnDestroy {
     return yearObj ? yearObj.label : 'N/A';
   }
 
-
+  sortUsersByFriendCount(users: User[]): User[] {
+    return users.sort((a, b) => {
+      const aFriendsCount = a.friends ? a.friends.length : 0;
+      const bFriendsCount = b.friends ? b.friends.length : 0;
+      return bFriendsCount - aFriendsCount;
+    });
+  }
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
