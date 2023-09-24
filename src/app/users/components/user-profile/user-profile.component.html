@@ -4,6 +4,7 @@
       src="../../../../assets/logo_MyM_DallE.png"
       class="card-img-top"
       alt="{{ user.name.first }} {{ user.name.last }}"
+      style="width: 100px; height: 120px"
     />
     <div class="card">
       <div class="card-header">
@@ -38,14 +39,52 @@
           Commentaires: {{ user.cap?.comments }}
         </p>
 
-        <h5 class="card-title">Associations et participations</h5>
-        <p class="card-text">Cercles: <br />{{ user.cercle }}</p>
+        <h5 class="card-title">Associations</h5>
+        <p class="card-text">Cercles: {{ user.cercle }}</p>
         <p class="card-text">Participations:</p>
-        <ul>
-          <li *ngFor="let participation of user.participations">
-            {{ participation }}
-          </li>
-        </ul>
+        <button class="btn btn-primary m-2 w-100" (click)="toggleEvents()">
+          {{ showEvents ? " ^ " : "Voir ou va " + user.pseudo }}
+        </button>
+
+        <div *ngIf="showEvents">
+          <ul class="list-group list-group-flush">
+            <li *ngFor="let event of userEvents" class="list-group-item">
+              {{ event.startAt | date : "dd/MM/yyyy HH:mm"
+              }}<a
+                [routerLink]="['/eventsDetail', event._id]"
+                pTooltip="Voir le Profil de {{ user.pseudo }}"
+                class="btn btn-info float-end"
+              >
+                <i class="bi bi-eye-fill"></i>
+              </a>
+              <br />{{ event.name }}<br />
+              {{ event.description }}<br />
+              participants : {{ event.participants_ids?.length }}
+            </li>
+          </ul>
+        </div>
+        <button class="btn btn-warning m-2 w-100" (click)="toggleFriends()">
+          {{ showFriends ? " ^ " : "Voir les suivis de " + user.pseudo }}
+        </button>
+        <div *ngIf="showFriends">
+          <ul class="list-group list-group-flush">
+            <li
+              *ngFor="let friend of userFriends$ | async"
+              class="list-group-item"
+            >
+              {{ friend.pseudo
+              }}<a
+                [routerLink]="['/userProfile', friend._id]"
+                pTooltip="Voir le Profil de {{ user.pseudo }}"
+                class="btn btn-info float-end"
+              >
+                <i class="bi bi-eye-fill"></i>
+              </a>
+              <br />
+              {{ friend.name.first }} {{ friend.name.last }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="card-footer d-flex justify-content-between">
@@ -78,7 +117,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Confirmation !</h5>
+        <h5 class="modal-title">Sure</h5>
         <button
           type="button"
           class="btn-close"
@@ -109,7 +148,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Attention !</h5>
+        <h5 class="modal-title">Sure ?</h5>
         <button
           type="button"
           class="btn-close"

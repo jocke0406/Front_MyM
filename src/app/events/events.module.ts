@@ -10,6 +10,7 @@ import { EventsFormComponent } from './components/events-form/events-form.compon
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropdownModule } from 'primeng/dropdown';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { DropdownModule } from 'primeng/dropdown';
     EventsDetailComponent, EventsFormComponent
   ],
   imports: [ReactiveFormsModule, BrowserAnimationsModule, ButtonModule, InputTextModule, ToastModule, CalendarModule,
-    CommonModule, DropdownModule
+    CommonModule, DropdownModule, RouterModule
   ],
   providers: []
 })

@@ -1,14 +1,34 @@
-<p>events-list works!</p>
-<ul>
-  <li *ngFor="let event of paginatedEventsList">
-    {{ event._id }}<br />
-    {{ event.name }}<br />
-    {{ event.startAt }}<br />
-    {{ event.endAt }}<br />
-    {{ event.description }}<br />
-    {{ event.participants_ids?.length }}
-  </li>
-</ul>
+<main class="container mt-2">
+  <ul>
+    <div
+      *ngFor="let event of paginatedEventsList"
+      class="card mb-2 shadow"
+      [ngClass]="{
+        'bg-success-subtle': event.isParticipating,
+        'bg-warning-subtle': !event.isParticipating
+      }"
+    >
+      <div class="row">
+        <div class="card-body">
+          <h4>
+            <i>{{ event.name }}</i>
+          </h4>
+
+          <p class="card-text">
+            {{ event.startAt | date : "dd/MM/yyyy HH:mm" }}<br />
+          </p>
+          <p class="card-text">{{ event.description }}<br /></p>
+          <p class="card-text">
+            participants :<i>{{ event.participants_ids?.length }}</i>
+          </p>
+          <a [routerLink]="['/eventsDetail', event._id]" class="btn btn-primary"
+            >Voir l' Event</a
+          >
+        </div>
+      </div>
+    </div>
+  </ul>
+</main>
 <nav aria-label="Page navigation">
   <ul class="pagination justify-content-center">
     <li class="page-item" [class.disabled]="currentPage === 1">

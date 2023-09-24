@@ -12,7 +12,8 @@ export class Event {
   participants?: Participant[];
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date | null
+  deletedAt?: Date | null;
+  isParticipating?: boolean = false;
 
   constructor(data: any) {
     this._id = data._id;

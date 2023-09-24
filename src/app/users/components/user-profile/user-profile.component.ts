@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../models/user';
-import { takeUntil, switchMap, map, tap } from 'rxjs/operators';
-import { BehaviorSubject, Subject, combineLatest, forkJoin, of } from 'rxjs';
+import { takeUntil, switchMap, map, catchError } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subject, combineLatest, forkJoin, of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
-import * as $ from 'jquery';
-
+import { Event } from 'src/app/events/models/event';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,8 +19,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   user?: User;
   userSelectedId?: string;
   friendStatus$ = new BehaviorSubject<boolean>(false);
-
-
+  userFriends$: Observable<User[]> = of([]);
+  userEvents: Event[] = [];
+  showFriends = false;
+  showEvents = false;
   private _unsubscribeAll = new Subject<void>();
 
   constructor(private _route: ActivatedRoute, private _usersService: UsersService,
@@ -127,6 +128,41 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       })
   }
 
+  toggleFriends(): void {
+    if (!this.showFriends) {
+      this.userFriends$ = this._usersService.getUserFriends(this.userSelectedId!);
+    }
+    this.showFriends = !this.showFriends;
+    this.showEvents = false;
+
+  }
+
+  toggleEvents(): void {
+    if (!this.showEvents) {
+      const currentDate = new Date();
+      this._usersService.getUserEvents(this.userSelectedId!)
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe({
+          next: (response) => {
+            const eventsArray = response.userEvents;
+            this.userEvents = eventsArray
+              .filter((event: Event) => !event.deletedAt)
+              .filter((event: Event) => new Date(event.startAt) >= currentDate)
+              .sort((a: Event, b: Event) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime())
+              .map((event: Event) => {
+                return {
+                  ...event,
+                };
+              });
+          },
+          error: (error) => {
+            console.error(error);
+          }
+        });
+    }
+    this.showEvents = !this.showEvents;
+    this.showFriends = false;
+  }
 
 
   ngOnDestroy(): void {

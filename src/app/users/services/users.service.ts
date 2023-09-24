@@ -70,6 +70,14 @@ export class UsersService {
     );
   }
 
+  getUserEvents(userId: string): Observable<any> {
+    return this._http.get<any>(`${this.url}/${userId}/events`).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors des events de l utilisateurs'))
+      })
+    );
+  }
   addFriend(userConnectedId: string, friendId: string): Observable<User> {
     return this._http.patch<User>(`${this.url}/${userConnectedId}/addFriend`, { friendId }).pipe(
       catchError(error => {
@@ -88,13 +96,7 @@ export class UsersService {
     );
   };
 
-  getUserEvents(userId: string): Observable<Event[]> {
-    return this._http.get<Event[]>(`${this.url}/${userId}/events`).pipe(
-      catchError(error => {
-        console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors des events de l utilisateurs'))
-      })
-    );
-  }
+
+
 
 }

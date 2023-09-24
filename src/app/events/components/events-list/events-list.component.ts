@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventsService } from '../../services/events.service';
 import { Event } from '../../models/event';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { takeUntil, filter, map } from 'rxjs/operators';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-events-list',
@@ -10,26 +11,65 @@ import { Subject } from 'rxjs';
   styleUrls: ['./events-list.component.css']
 })
 export class EventsListComponent implements OnInit, OnDestroy {
-
+  currentUserId?: string;
   eventsList!: Event[];
   paginatedEventsList: Event[] = [];
   eventsPerPage: number = 3;
   currentPage: number = 1;
   totalPages: number = 1;
   pagesArray: number[] = [];
+  currentDate = new Date();
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _eventsService: EventsService) { }
+  constructor(private _eventsService: EventsService, private _auth: AuthService) { }
   ngOnInit(): void {
-    this._eventsService.getEventsAll().pipe(takeUntil(this._unsubscribeAll)).subscribe({
-      next: (data) => {
-        this.eventsList = data.filter((event: Event) => !event.deletedAt);
-        this.setupPagination();
-      },
-      error: (error) => {
-        console.log("une erreur s est produite lors de la récupération des events", error)
-      }
-    })
+    combineLatest([
+      this._auth.userConnectedId$,
+      this._eventsService.getEventsAll()
+    ])
+      .pipe(
+        filter(([userConnectedId, _]) => !!userConnectedId),
+        map(([userConnectedId, events]) => {
+          const currentDate = new Date();
+
+          const filteredEvents = events.filter((event: Event) =>
+            !event.deletedAt && new Date(event.startAt) > currentDate
+          );
+
+          const eventsWithParticipation = filteredEvents.map((event: Event) => {
+            return {
+              ...event,
+              isParticipating: event.participants_ids!.includes(userConnectedId!)
+            };
+          });
+
+          return [userConnectedId, eventsWithParticipation];
+        }),
+        takeUntil(this._unsubscribeAll)
+      )
+      .subscribe({
+        next: (results: (string | Event[] | null)[]) => {
+          if (results.length !== 2) {
+            console.error("Mauvais format de données reçu!");
+            return;
+          }
+
+          this.currentUserId = results[0] as string;
+          this.eventsList = results[1] as Event[];
+
+          if (!this.currentUserId || !this.eventsList) {
+            console.error("Des données sont manquantes!");
+            return;
+          }
+
+          this.setupPagination();
+          console.log('currentUserId : ', this.currentUserId)
+
+        },
+        error: (error: any) => {
+          console.log("une erreur s'est produite lors de la récupération des events", error);
+        }
+      });
   }
 
   setupPagination() {

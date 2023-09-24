@@ -97,7 +97,8 @@ export class AuthService {
 
   private isUserAdmin(): boolean {
     const token = localStorage.getItem('token');
-    if (!token) {
+    if (!token || this._jwtHelper.isTokenExpired(token)) {
+      console.warn("Token non valide ou expiré!");
       return false;
     }
     const decodedToken = this._jwtHelper.decodeToken(token);
@@ -106,6 +107,11 @@ export class AuthService {
   }
 
   private getUserConnectedIdFromToken(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token || this._jwtHelper.isTokenExpired(token)) {
+      console.warn("Token non valide ou expiré!");
+      return null;
+    }
     const decodedToken = this.decodeToken();
     return decodedToken ? decodedToken._id : null;
   }
