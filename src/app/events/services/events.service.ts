@@ -67,4 +67,18 @@ export class EventsService {
       })
     );
   }
+
+  eventAddParticipant(eventId: string, userId: string): Observable<Event> {
+    const payloud = { userId, updatedAt: new Date().toISOString() };
+    return this._http.patch<Event>(`${this.url}/${eventId}/addParticipant`, payloud).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de l\'ajout'))
+      })
+    )
+  }
+
+  eventRemoveParticipant(eventId: string) { }
+
+
 }

@@ -78,6 +78,7 @@ export class UsersService {
       })
     );
   }
+
   addFriend(userConnectedId: string, friendId: string): Observable<User> {
     return this._http.patch<User>(`${this.url}/${userConnectedId}/addFriend`, { friendId }).pipe(
       catchError(error => {

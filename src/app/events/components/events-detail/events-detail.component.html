@@ -1,4 +1,4 @@
-<p>events-detail works!</p>
+<p-toast></p-toast>
 <div *ngIf="event">
   {{ event._id }}<br />
   {{ event.name }}<br />
@@ -10,5 +10,11 @@
     {{ event.location[0].address.city }}<br />
   </div>
   <div *ngIf="event"></div>
-  {{ event.participants?.[0]?.name?.first }}
+  {{ event.participants?.[0]?.pseudo }} {{ event.participants?.[0]?._id }}
 </div>
+<button *ngIf="!isCurrentUserParticipating()" (click)="eventAddParticipant()">
+  Assister
+</button>
+<button *ngIf="isCurrentUserParticipating()" (click)="eventRemoveParticipant()">
+  Ne plus assister
+</button>
