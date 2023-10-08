@@ -21,6 +21,8 @@ import { AdminRoutingModule } from './admin/admin.routing.module';
 import { MessageService } from 'primeng/api';
 import { JwtModule } from '@auth0/angular-jwt';
 import { ToastModule } from 'primeng/toast';
+import { DiscoverRoutingModule } from './discover/discover-routing.module';
+import { DiscoverModule } from './discover/discover.module';
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -33,8 +35,8 @@ export function tokenGetter() {
     FooterComponent, ColAdminComponent
   ],
   imports: [
-    BrowserModule, ToastModule,
-    AppRoutingModule, HttpClientModule, LocationsModule, LocationsRoutingModule, AuthModule, AuthRoutingModule,
+    BrowserModule, ToastModule, DiscoverModule,
+    AppRoutingModule, HttpClientModule, DiscoverRoutingModule, LocationsModule, LocationsRoutingModule, AuthModule, AuthRoutingModule,
     EventsRoutingModule, CerclesModule, CerclesRoutingModule, EventsModule, UsersModule, UsersRoutingModule, AdminModule, AdminRoutingModule,
     JwtModule.forRoot({
       config: {

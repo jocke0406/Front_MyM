@@ -6,7 +6,6 @@ import { Subject, combineLatest } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { MessageService } from 'primeng/api';
-import { error } from 'jquery';
 
 @Component({
   selector: 'app-events-detail',
@@ -19,6 +18,8 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
   currentUserId?: string;
 
   private _unsubscribeAll = new Subject<void>();
+
+  showParticipants: boolean = false;
 
   constructor(private _route: ActivatedRoute, private _eventsService: EventsService,
     private _auth: AuthService,
@@ -45,13 +46,10 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
             console.error("Des données sont manquantes !");
             return;
           }
-          console.log('currentUserId : ', this.currentUserId);
         },
         error: (error) => {
           console.log(error);
         }
-
-
       })
   }
 
@@ -67,7 +65,6 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (response: Event) => {
-          console.log('Participant ajouté avec succès', response);
           this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Participant ajouté avec succès!', life: 2000 });
           this.loadEventDetails();
         },
@@ -80,9 +77,27 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
 
   }
 
+  toggleParticipants(): void {
+    this.showParticipants = !this.showParticipants;
+  };
 
 
-  eventRemoveParticipant() { }
+  eventRemoveParticipant() {
+    this._eventsService.eventRemoveParticipant(this.event!._id, this.currentUserId!)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: (response: Event) => {
+          this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Participant annulée avec succès!', life: 2000 });
+          this.loadEventDetails();
+        },
+        error: (error) => {
+          console.log('Erreur lors de la suppression du participant', error);
+          this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Impossible de supprimer le participant', life: 2000 });
+        }
+
+      })
+
+  }
 
   private loadEventDetails() {
     this._route.params.pipe(
@@ -91,7 +106,6 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
     ).subscribe({
       next: (data) => {
         this.event = data;
-        console.log(this.event);
       },
       error: (error) => {
         console.error(error);

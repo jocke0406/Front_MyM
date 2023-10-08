@@ -1,20 +1,59 @@
 <p-toast></p-toast>
-<div *ngIf="event">
-  {{ event._id }}<br />
-  {{ event.name }}<br />
-  {{ event.description }}<br />
-  {{ event.startAt }}<br />
-  {{ event.endAt }}<br />
-  <div *ngIf="event.organizer">{{ event.organizer[0].name }}<br /></div>
-  <div *ngIf="event.location && event.location[0].address">
-    {{ event.location[0].address.city }}<br />
+<div class="card m-3 shadow">
+  <div *ngIf="event">
+    <div class="card-header">
+      <div *ngIf="event.organizer">
+        <h5>{{ event.organizer[0].name }}</h5>
+        présente :
+        <h4>{{ event.name }}</h4>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        {{ event.description }}
+      </p>
+      <h5 class="card-title">Quand ?</h5>
+
+      <p class="card-text">
+        du {{ event.startAt | date : "dd/MM/yyyy HH:mm" }}<br />
+        au {{ event.endAt | date : "dd/MM/yyyy HH:mm" }}<br />
+      </p>
+      <h5 class="card-title">Where ?</h5>
+
+      <div *ngIf="event.location && event.location[0].address">
+        <p class="card-text">
+          {{ event.location[0].name }}<br />
+          {{ event.location[0].address.street }}
+          {{ event.location[0].address.nbr }} {{ event.location[0].address.box
+          }}<br />
+          {{ event.location[0].address.postCode }}
+          {{ event.location[0].address.city }}
+        </p>
+      </div>
+      <button class="btn btn-warning m-2 w-100" (click)="toggleParticipants()">
+        {{ showParticipants ? " ^ " : "Voir les participants " }}
+      </button>
+      <div *ngIf="showParticipants">
+        <p class="card-text" *ngFor="let participant of event?.participants">
+          Prénom: {{ participant.name.first }}<br />
+          Nom: {{ participant.name.last }} <br />
+          Pseudo: {{ participant.pseudo }}
+        </p>
+      </div>
+      <button
+        class="btn btn-success m-2 w-100"
+        *ngIf="!isCurrentUserParticipating()"
+        (click)="eventAddParticipant()"
+      >
+        Assister
+      </button>
+      <button
+        class="btn btn-danger m-2 w-100"
+        *ngIf="isCurrentUserParticipating()"
+        (click)="eventRemoveParticipant()"
+      >
+        Ne plus assister
+      </button>
+    </div>
   </div>
-  <div *ngIf="event"></div>
-  {{ event.participants?.[0]?.pseudo }} {{ event.participants?.[0]?._id }}
 </div>
-<button *ngIf="!isCurrentUserParticipating()" (click)="eventAddParticipant()">
-  Assister
-</button>
-<button *ngIf="isCurrentUserParticipating()" (click)="eventRemoveParticipant()">
-  Ne plus assister
-</button>

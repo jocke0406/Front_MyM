@@ -78,7 +78,16 @@ export class EventsService {
     )
   }
 
-  eventRemoveParticipant(eventId: string) { }
 
+
+  eventRemoveParticipant(eventId: string, userId: string): Observable<Event> {
+    const payloud = { userId };
+    return this._http.patch<Event>(`${this.url}/${eventId}/removeParticipant`, payloud).pipe(
+      catchError(error => {
+        console.error(error);
+        return throwError(() => new Error('Oups !?! Erreur lors de la suppression'))
+      })
+    )
+  }
 
 }

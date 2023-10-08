@@ -26,7 +26,7 @@ export class CerclesListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data) => {
-          this.cerclesList = data.filter((cercle: Cercle) => !cercle.deletedAt);
+          this.cerclesList = data.filter((cercle: Cercle) => !cercle.deletedAt || cercle.deletedAt === null);
           this.setupPagination();
         },
         error: (error) => {

@@ -1,5 +1,82 @@
-<p>cercles-detail works!</p>
-<div *ngIf="eventsOfCercle">
-  {{ eventsOfCercle[0].events?.[0]?.name }}
-  {{ eventsOfCercle[0].events?.[0]?.startAt }}
+<div *ngIf="cercle">
+  <div class="card m-3 shadow">
+    <div class="card-header">
+      <h4>{{ cercle.name }}</h4>
+
+      {{ cercle.description }}
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        {{ cercle.hymne }}
+      </p>
+      <div
+        class="card-text"
+        *ngIf="cercle.address && cercleLocation?.location?.[0]"
+      >
+        {{ cercleLocation?.location?.[0]?.name }}<br />
+        {{ cercleLocation?.location?.[0]?.address?.street
+
+
+        }}{{ cercleLocation?.location?.[0]?.address?.nbr }}<br />
+        {{ cercleLocation?.location?.[0]?.address?.postCode
+        }}{{ cercleLocation?.location?.[0]?.address?.city }}
+      </div>
+      <div class="card-text">
+        <button class="btn btn-warning m-2 w-100" (click)="toggleMembers()">
+          {{
+            showMembers
+              ? " ^ "
+              : "Voir les " + cercle.members_ids?.length + " membres"
+          }}
+        </button>
+        <div *ngIf="showMembers">
+          <ul class="list-group list-group-flush" *ngIf="cercleMembers">
+            <li
+              *ngFor="let member of cercleMembers.members"
+              class="list-group-item"
+            >
+              {{ member.pseudo }}
+              <a
+                [routerLink]="['/userProfile', member._id]"
+                pTooltip="Voir le Profil de {{ member.pseudo }}"
+                class="btn btn-info float-end"
+              >
+                <i class="bi bi-eye-fill"></i>
+              </a>
+              <br />{{ member.name?.first }} {{ member.name?.last }} <br />{{
+                member.study?.studyField
+              }}
+              {{ getStudyYearLabel(member.study?.year!) }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-text">
+        <button class="btn btn-warning m-2 w-100" (click)="toggleEvents()">
+          {{ showEvents ? " ^ " : "Voir les events de" + cercle.name }}
+        </button>
+        <div *ngIf="showEvents">
+          <ul class="list-group list-group-flush" *ngIf="eventsDetails">
+            <li
+              *ngFor="let event of eventsDetails.events"
+              class="list-group-item"
+            >
+              {{ event.name }}
+              <a
+                [routerLink]="['/eventsDetail', event._id]"
+                pTooltip="Voir l' event de {{ event.name }}"
+                class="btn btn-info float-end"
+              >
+                <i class="bi bi-eye-fill"></i> </a
+              ><br />
+              début : {{ event.startAt | date : "dd/MM/yyyy HH:mm" }}<br />
+              fin : {{ event.endAt | date : "dd/MM/yyyy HH:mm" }}<br />
+              participants :
+              {{ event.participants_ids?.length }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

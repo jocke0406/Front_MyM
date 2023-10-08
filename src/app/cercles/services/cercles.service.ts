@@ -45,12 +45,12 @@ export class CerclesService {
 
   getCercleLocation(id: string): Observable<Cercle> {
     return this._http.get<Cercle>(`${this.url}/${id}/location`).pipe(
-
+      map(response => response),
       catchError(
         error => {
           console.error(error);
           return throwError(() => new Error('Oups !?! Erreur lors de la récupération du cercle.'));
-        })
+        }),
     );
   }
 
@@ -81,6 +81,7 @@ export class CerclesService {
       })
     );
   }
+
   deleteCercle(id: string): Observable<any> {
     return this._http.delete(`${this.url}/${id}`).pipe(
       catchError(error => {

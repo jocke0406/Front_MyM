@@ -9,16 +9,14 @@
 
       <!-- Découvrir -->
       <div class="col-auto">
-        <a href="/discover" class="nav-link">
-          <i class="bi bi-search"></i>
+        <a>
+          <i class="bi bi-search" [routerLink]="['/discover']"></i>
         </a>
       </div>
 
       <!-- Mes Événements -->
       <div class="col-auto">
-        <a href="/eventsList" class="nav-link">
-          <i class="bi bi-calendar"></i>
-        </a>
+        <a> <i class="bi bi-calendar" [routerLink]="['/eventsList']"></i> </a>
       </div>
 
       <!-- Plus -->
@@ -33,9 +31,17 @@
           <i class="bi bi-three-dots-vertical"></i>
         </a>
         <ul class="dropdown-menu" aria-labelledby="moreDropdown">
-          <li><a class="dropdown-item" href="/usersList">Compagnons</a></li>
-          <li><a class="dropdown-item" href="/cerclesList">Cercles</a></li>
-          <li><a class="dropdown-item" href="/friends">Mes compagnons</a></li>
+          <li>
+            <a class="dropdown-item" [routerLink]="['/usersList']"
+              >Compagnons</a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" [routerLink]="['/cerclesList']">Cercles</a>
+          </li>
+          <li>
+            <a class="dropdown-item" [routerLink]="['/eventsList']">Events</a>
+          </li>
         </ul>
       </div>
     </div>

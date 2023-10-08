@@ -33,6 +33,7 @@ export class Cercle {
   }
 }
 export class MemberOfCercle {
+  _id?: string;
   pseudo: string;
   email: string;
   name?: {
@@ -70,6 +71,7 @@ export class MemberOfCercle {
   }
 }
 export class EventsOfCercle {
+  _id?: string;
   name: string;
   startAt: Date;
   endAt: Date;

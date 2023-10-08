@@ -9,6 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropdownModule } from 'primeng/dropdown';
+import { RouterModule } from '@angular/router';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
     CerclesFormComponent
   ],
   imports: [
-    CommonModule, DropdownModule, ReactiveFormsModule, ButtonModule, InputTextModule, ToastModule, BrowserAnimationsModule
+    CommonModule, TooltipModule, RouterModule, DropdownModule, ReactiveFormsModule, ButtonModule, InputTextModule, ToastModule, BrowserAnimationsModule
   ],
   providers: []
 })

@@ -1,13 +1,30 @@
-<ul>
-  <li *ngFor="let cercle of paginatedCerclesList">
-    _id : {{ cercle._id }}<br />
-    adresse : {{ cercle.address }}<br />
-    description : {{ cercle.description }}<br />
-    hymne : {{ cercle.hymne }}<br />
-    members : {{ cercle.members_ids }}<br />
-    name : {{ cercle.name }}<br />
-  </li>
-</ul>
+<main class="container mt-2">
+  <ul>
+    <div *ngFor="let cercle of paginatedCerclesList" class="card mb-2 shadow">
+      <div class="row">
+        <div class="card-body">
+          <h4>
+            <i>{{ cercle.name }}</i>
+          </h4>
+
+          <p class="card-text">{{ cercle.description }}<br /></p>
+          <div class="card-text">
+            members :<i>{{ cercle.members_ids!.length }}</i>
+          </div>
+          <p class="card-text">{{ cercle.hymne }}<br /></p>
+
+          <button
+            [routerLink]="['/cerclesDetail', cercle._id]"
+            class="btn btn-primary w-100"
+          >
+            Voir le cercle {{ cercle.name }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </ul>
+</main>
+
 <nav aria-label="Page navigation">
   <ul class="pagination justify-content-center">
     <li class="page-item" [class.disabled]="currentPage === 1">

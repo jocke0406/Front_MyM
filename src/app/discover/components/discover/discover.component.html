@@ -1,0 +1,19 @@
+<p>discover works!</p>
+<div>
+  <h1>Discover</h1>
+
+  <h2>Users</h2>
+  <ul>
+    <li *ngFor="let user of users">{{ user.pseudo }}</li>
+  </ul>
+
+  <h2>Cercles</h2>
+  <ul>
+    <li *ngFor="let cercle of cercles">{{ cercle.name }}</li>
+  </ul>
+
+  <h2>Events</h2>
+  <ul>
+    <li *ngFor="let event of events">{{ event.name }}</li>
+  </ul>
+</div>
