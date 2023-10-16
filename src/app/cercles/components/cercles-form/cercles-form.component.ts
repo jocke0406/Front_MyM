@@ -1,12 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-import { LocationsService } from 'src/app/locations/services/locations.service';
-import { Location } from 'src/app/locations/models/location';
-import { takeUntil, catchError, tap } from 'rxjs';
-import { Subject } from 'rxjs';
-import { CerclesService } from '../../services/cercles.service';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
+import { Subject, catchError, takeUntil, tap } from 'rxjs';
+import { Location } from 'src/app/locations/models/location';
+import { LocationsService } from 'src/app/locations/services/locations.service';
+import { CerclesService } from '../../services/cercles.service';
 
 @Component({
   selector: 'app-cercles-form',

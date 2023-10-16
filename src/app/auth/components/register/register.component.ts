@@ -1,15 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, ValidatorFn, AbstractControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { CerclesService } from 'src/app/cercles/services/cercles.service';
-import { Subject, takeUntil, tap, catchError, of } from 'rxjs';
-import { Cercle } from 'src/app/cercles/models/cercle';
-import { AuthService } from '../../auth.service';
-import { User } from 'src/app/users/models/user';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Subject, catchError, of, takeUntil, tap } from 'rxjs';
+import { delay } from "rxjs/operators";
+import { Cercle } from 'src/app/cercles/models/cercle';
+import { CerclesService } from 'src/app/cercles/services/cercles.service';
+import { User } from 'src/app/users/models/user';
 import { UsersService } from 'src/app/users/services/users.service';
-import { delay } from "rxjs/operators"
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-register',

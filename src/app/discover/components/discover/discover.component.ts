@@ -5,6 +5,8 @@ import { EventsService } from '../../../events/services/events.service';
 import { User } from 'src/app/users/models/user';
 import { Cercle } from 'src/app/cercles/models/cercle';
 import { Event } from 'src/app/events/models/event';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-discover',
@@ -13,21 +15,27 @@ import { Event } from 'src/app/events/models/event';
 })
 export class DiscoverComponent implements OnInit {
 
+  searchForm!: FormGroup;
+  users!: User[];
+  cercles!: Cercle[];
+  events!: Event[];
+
 
   constructor(
+    private _fb: FormBuilder,
     private _userstService: UsersService,
     private _cerclesService: CerclesService,
     private _eventsService: EventsService
   ) { }
 
-  users!: User[];
-  cercles!: Cercle[];
-  events!: Event[];
 
   ngOnInit(): void {
     this.loadUsers();
     this.loadCercles();
     this.loadEvents();
+    this.searchForm = this._fb.group({
+      searchQuery: ['']
+    });
   }
 
   loadUsers() {
@@ -47,5 +55,13 @@ export class DiscoverComponent implements OnInit {
     this._eventsService.getEventsAll().subscribe(data => {
       this.events = data;
     });
+  }
+  performUserSearch() {
+    const query = this.searchForm.value.searchQuery.toLowerCase();
+    const filteredUsers = this.users.filter(user =>
+      user.pseudo.toLowerCase().includes(query) ||
+      user.email.toLowerCase().includes(query)
+    );
+    console.log('Utilisateurs trouvés:', filteredUsers);
   }
 }

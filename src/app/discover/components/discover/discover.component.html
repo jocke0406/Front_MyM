@@ -1,6 +1,14 @@
 <p>discover works!</p>
 <div>
   <h1>Discover</h1>
+  <form [formGroup]="searchForm" (ngSubmit)="performUserSearch()">
+    <input
+      type="text"
+      formControlName="searchQuery"
+      placeholder="Recherche utilisateur..."
+    />
+    <button type="submit">Rechercher</button>
+  </form>
 
   <h2>Users</h2>
   <ul>

@@ -59,8 +59,7 @@ export class AuthService {
           localStorage.setItem('token', res.token);
           this.userConnected.next(true);
           const decodedToken = this.decodeToken();
-          const userConnectedId = decodedToken ? decodedToken.id : null;
-          this.userIdSubject.next(userConnectedId);
+          this.userIdSubject.next(this.getUserConnectedIdFromToken());
           if (decodedToken && decodedToken.role === 'masterOfUnivers') {
             this.adminConnected.next(true);
           }

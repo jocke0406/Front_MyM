@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LocationsService } from '../../../locations/services/locations.service'
-import { Location } from 'src/app/locations/models/location';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
+import { Location } from 'src/app/locations/models/location';
+import { LocationsService } from '../../../locations/services/locations.service';
 
 @Component({
   selector: 'app-admin-locations',

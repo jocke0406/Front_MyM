@@ -6,6 +6,8 @@ import { Subject, combineLatest } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { MessageService } from 'primeng/api';
+import { Location as AngularLocation } from '@angular/common';
+
 
 @Component({
   selector: 'app-events-detail',
@@ -22,7 +24,7 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
   showParticipants: boolean = false;
 
   constructor(private _route: ActivatedRoute, private _eventsService: EventsService,
-    private _auth: AuthService,
+    private _auth: AuthService, private _location: AngularLocation,
     private _messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -111,6 +113,9 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
         console.error(error);
       }
     });
+  }
+  goBack() {
+    this._location.back();
   }
 
   ngOnDestroy(): void {

@@ -17,12 +17,20 @@
         {{ cercleLocation?.location?.[0]?.address?.street
 
 
+
+
+
+
         }}{{ cercleLocation?.location?.[0]?.address?.nbr }}<br />
         {{ cercleLocation?.location?.[0]?.address?.postCode
+
+
+
+
         }}{{ cercleLocation?.location?.[0]?.address?.city }}
       </div>
       <div class="card-text">
-        <button class="btn btn-warning m-2 w-100" (click)="toggleMembers()">
+        <button class="btn btn-primary m-2 w-100" (click)="toggleMembers()">
           {{
             showMembers
               ? " ^ "
@@ -53,7 +61,7 @@
       </div>
       <div class="card-text">
         <button class="btn btn-warning m-2 w-100" (click)="toggleEvents()">
-          {{ showEvents ? " ^ " : "Voir les events de" + cercle.name }}
+          {{ showEvents ? " ^ " : "Voir les events de " + cercle.name }}
         </button>
         <div *ngIf="showEvents">
           <ul class="list-group list-group-flush" *ngIf="eventsDetails">
@@ -76,6 +84,11 @@
             </li>
           </ul>
         </div>
+      </div>
+      <div class="card-footer d-flex justify-content-between">
+        <button (click)="goBack()" type="button" class="btn btn-dark">
+          Retour
+        </button>
       </div>
     </div>
   </div>

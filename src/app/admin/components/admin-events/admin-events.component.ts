@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
 import { Event } from 'src/app/events/models/event';
 import { EventsService } from '../../../events/services/events.service';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-admin-events',

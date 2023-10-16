@@ -88,7 +88,7 @@
       </div>
     </div>
     <div class="card-footer d-flex justify-content-between">
-      <button [routerLink]="['/usersList']" type="button" class="btn btn-dark">
+      <button (click)="goBack()" type="button" class="btn btn-dark">
         Retour
       </button>
       <div *ngIf="userSelectedId">

@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CerclesService } from '../../services/cercles.service';
-import { Cercle, MemberOfCercle } from '../../models/cercle';
-import { takeUntil, switchMap } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
+import { Cercle } from '../../models/cercle';
+import { CerclesService } from '../../services/cercles.service';
+import { Location as AngularLocation } from '@angular/common';
 
 @Component({
   selector: 'app-cercles-detail',
@@ -21,7 +22,7 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
 
   constructor(
-    private _cerclesService: CerclesService,
+    private _cerclesService: CerclesService, private _location: AngularLocation,
     private _route: ActivatedRoute
   ) { }
 
@@ -34,7 +35,6 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
         this.cercle = data;
         if (this.cercle.address) {
           this.loadCercleAdress()
-          console.log(this.cercleLocation)
         }
 
       },
@@ -56,7 +56,7 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data: Cercle) => {
-          this.cercleLocation = data;
+          this.cercleMembers = data;
         },
         error: (error) => {
           console.error('Erreur lors du chargement des détails des membres:', error);
@@ -95,7 +95,6 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
           console.error('Erreur lors du chargement adresse :', error);
         },
       })
-
   }
 
   getStudyYearLabel(year: number): string {
@@ -114,8 +113,10 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
     }
 
     return 'N/A';
+  }
 
-
+  goBack() {
+    this._location.back();
   }
 
   ngOnDestroy(): void {

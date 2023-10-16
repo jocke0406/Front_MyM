@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../../auth.service';
 import { Router } from '@angular/router';
-import { Subject, takeUntil, delay, tap, catchError, of } from 'rxjs';
 import { MessageService } from 'primeng/api';
+import { Subject, catchError, delay, of, takeUntil, tap } from 'rxjs';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-login',

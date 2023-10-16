@@ -16,7 +16,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   paginatedUsersList: User[] = [];
   usersPerPage: number = 5;
   currentPage: number = 1;
-  usersList: User[] = [];
+  usersList!: User[];
   totalPages: number = 1;
   pagesArray: number[] = [];
 
@@ -27,6 +27,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
   constructor(private _usersService: UsersService, private _auth: AuthService) { }
 
   ngOnInit(): void {
+
     combineLatest([
       this._auth.userConnectedId$,
       this._usersService.getUsersAll()

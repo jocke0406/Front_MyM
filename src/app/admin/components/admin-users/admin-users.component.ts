@@ -1,9 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UsersService } from 'src/app/users/services/users.service';
-import { User } from 'src/app/users/models/user';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { Subject, takeUntil } from 'rxjs';
+import { User } from 'src/app/users/models/user';
+import { UsersService } from 'src/app/users/services/users.service';
 
 
 

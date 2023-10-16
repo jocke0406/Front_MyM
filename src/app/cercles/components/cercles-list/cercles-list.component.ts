@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CerclesService } from '../../services/cercles.service';
-import { Cercle } from '../../models/cercle';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Cercle } from '../../models/cercle';
+import { CerclesService } from '../../services/cercles.service';
 
 @Component({
   selector: 'app-cercles-list',

@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable, Subject, combineLatest, forkJoin, of } fro
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Event } from 'src/app/events/models/event';
+import { Location as AngularLocation } from '@angular/common';
 
 @Component({
   selector: 'app-user-profile',
@@ -25,7 +26,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   showEvents = false;
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _route: ActivatedRoute, private _usersService: UsersService,
+  constructor(private _route: ActivatedRoute, private _usersService: UsersService, private _location: AngularLocation,
     private _auth: AuthService) { }
 
 
@@ -163,7 +164,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.showEvents = !this.showEvents;
     this.showFriends = false;
   }
-
+  goBack() {
+    this._location.back();
+  }
 
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
