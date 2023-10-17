@@ -4,11 +4,11 @@ import { Location } from "src/app/locations/models/location";
 
 export class Cercle {
   _id?: string;
-  name?: string;
+  name: string;
   hymne?: string;
   address?: string;
   description?: string;
-  members_ids?: string[];
+  members_ids: string[] | [];
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: Date | null;

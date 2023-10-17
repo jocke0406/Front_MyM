@@ -1,27 +1,216 @@
-<p>discover works!</p>
-<div>
-  <h1>Discover</h1>
-  <form [formGroup]="searchForm" (ngSubmit)="performUserSearch()">
-    <input
-      type="text"
-      formControlName="searchQuery"
-      placeholder="Recherche utilisateur..."
-    />
-    <button type="submit">Rechercher</button>
-  </form>
+<main class="container mt-2">
+  <div class="row">
+    <div class="col-12">
+      <button
+        type="button"
+        class="btn btn-primary w-100 btn-lg btn-block mb-3"
+        (click)="toggleUsers()"
+      >
+        {{
+          showUsers ? "Masquer les Utilisateurs" : "Afficher les Utilisateurs"
+        }}
+      </button>
+    </div>
+  </div>
 
-  <h2>Users</h2>
-  <ul>
-    <li *ngFor="let user of users">{{ user.pseudo }}</li>
-  </ul>
+  <div class="card mb-2 shadow" *ngIf="showUsers">
+    <div class="card-body text-success"><h4>Au Top !</h4></div>
+    <div class="card-body">
+      <div *ngFor="let user of topUsers">
+        <div class="row mb-2">
+          <div class="col-4">
+            <img
+              src="../../../../assets/logo_MyM_DallE.png"
+              alt="Photo de {{ user.pseudo }}"
+              class="card-img-top"
+              style="width: 100px; height: 120px"
+            />
+          </div>
+          <div class="col-8">
+            <h5 class="card-title">{{ user.pseudo }}</h5>
+            <p class="card-text">{{ user.name.first }} {{ user.name.last }}</p>
+            <a
+              [routerLink]="['/userProfile', user._id]"
+              class="btn btn-outline-success float-end"
+              >Voir le Profil</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <form [formGroup]="userSearchForm">
+        <span class="p-float-label">
+          <input
+            id="username"
+            type="text"
+            pInputText
+            formControlName="query"
+            (input)="performUserSearch()"
+          />
+          <label for="username">Trouve un Compagnon</label>
+        </span>
+      </form>
+      <div *ngIf="filteredUsers.length > 0">
+        <div *ngFor="let user of filteredUsers">
+          <h5 class="text-success">{{ user.pseudo }}</h5>
+          <div class="d-flex justify-content-between align-items-start">
+            <p class="text-start">
+              {{ user.name.first }} {{ user.name.last }}
+              <br />
+              {{ user.friends.length }} Compagnons
+            </p>
+            <a
+              [routerLink]="['/userProfile', user._id]"
+              pTooltip="Voir le Profil de {{ user.pseudo }}"
+              class="btn btn-info"
+            >
+              <i class="bi bi-eye-fill"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="filteredUsers.length === 0 && userSearchForm.value.query">
+        Aucun résultat ne correspond à votre recherche.
+      </div>
+    </div>
+  </div>
 
-  <h2>Cercles</h2>
-  <ul>
-    <li *ngFor="let cercle of cercles">{{ cercle.name }}</li>
-  </ul>
+  <div class="row">
+    <div class="col-12">
+      <button
+        type="button"
+        class="btn btn-warning btn-lg btn-block w-100"
+        (click)="toggleEvents()"
+      >
+        {{ showEvents ? "Masquer les Events" : "Afficher les Events" }}
+      </button>
+    </div>
+  </div>
+  <div class="card mb-2 shadow" *ngIf="showEvents">
+    <div class="card-body text-success"><h4>Bientôt !</h4></div>
+    <div class="card-body">
+      <div *ngFor="let event of nextEvents">
+        <div class="row mb-2">
+          <h5 class="card-title text-primary">
+            {{ event.startAt | date : "dd/MM/yyyy" }} {{ event.name }}
+          </h5>
+          <p class="card-text">
+            {{ event.description }} <br />
+            Participants : {{ event.participants_ids?.length }}
+            <a
+              [routerLink]="['/eventsDetail', event._id]"
+              class="btn btn-primary float-end"
+              >Voir l' Event</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <form [formGroup]="eventSearchForm">
+        <span class="p-float-label">
+          <input
+            id="eventName"
+            type="text"
+            pInputText
+            formControlName="query"
+            (input)="performEventSearch()"
+          />
+          <label for="eventName">Trouve un Event</label>
+        </span>
+      </form>
+      <div *ngIf="filteredEvents.length > 0">
+        <div *ngFor="let event of filteredEvents">
+          <h5 class="text-success">{{ event.name }}</h5>
+          <div class="d-flex justify-content-between align-items-start">
+            <p class="text-start">
+              {{ event.description }}
+              <br />
+              {{ event.participants_ids?.length }} Compagnons
+            </p>
+            <a
+              [routerLink]="['/eventsDetail', event._id]"
+              pTooltip="Consulter  {{ event.name }}"
+              class="btn btn-info"
+            >
+              <i class="bi bi-eye-fill"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="filteredUsers.length === 0 && eventSearchForm.value.query">
+        Aucun résultat ne correspond à votre recherche.
+      </div>
+    </div>
+  </div>
 
-  <h2>Events</h2>
-  <ul>
-    <li *ngFor="let event of events">{{ event.name }}</li>
-  </ul>
-</div>
+  <div class="row">
+    <div class="col-12">
+      <button
+        type="button"
+        class="btn btn-success w-100 btn-lg btn-block mt-3"
+        (click)="toggleCercles()"
+      >
+        {{ showCercles ? "^" : "Cercles" }}
+      </button>
+    </div>
+  </div>
+  <div class="card mb-2 shadow" *ngIf="showCercles">
+    <div class="card-body text-success"><h4>Au Top !</h4></div>
+    <div class="card-body">
+      <div *ngFor="let cercle of topCercles">
+        <div class="row mb-2">
+          <h5 class="card-title text-primary">
+            {{ cercle.name }}
+          </h5>
+          <p class="card-text">
+            {{ cercle.description }} <br />
+            Membres : {{ cercle.members_ids.length }}
+            <a
+              [routerLink]="['/cerclesDetail', cercle._id]"
+              class="btn btn-primary float-end"
+              >Voir le cercle</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer">
+      <form [formGroup]="cercleSearchForm">
+        <span class="p-float-label">
+          <input
+            id="cerclename"
+            type="text"
+            pInputText
+            formControlName="query"
+            (input)="performCercleSearch()"
+          />
+          <label for="cerclename">Trouve un Cercle</label>
+        </span>
+      </form>
+      <div *ngIf="filteredCercles.length > 0">
+        <div *ngFor="let cercle of filteredCercles">
+          <h5 class="text-success">{{ cercle.name }}</h5>
+          <div class="d-flex justify-content-between align-items-start">
+            <p class="text-start">
+              {{ cercle.deletedAt }}
+              <br />
+              {{ cercle.members_ids.length }} Membres
+            </p>
+            <a
+              [routerLink]="['/cerclesDetail', cercle._id]"
+              pTooltip="Voir  {{ cercle.name }}"
+              class="btn btn-info"
+            >
+              <i class="bi bi-eye-fill"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="filteredUsers.length === 0 && userSearchForm.value.query">
+        Aucun résultat ne correspond à votre recherche.
+      </div>
+    </div>
+  </div>
+</main>
