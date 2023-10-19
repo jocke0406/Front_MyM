@@ -8,13 +8,13 @@ import { AdminCerclesComponent } from './components/admin-cercles/admin-cercles.
 import { AdminEventsComponent } from './components/admin-events/admin-events.component';
 import { AdminLocationsComponent } from './components/admin-locations/admin-locations.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
-
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
-  declarations: [AdminCerclesComponent, AdminEventsComponent, AdminUsersComponent, AdminLocationsComponent],
+  declarations: [AdminCerclesComponent, HomePageComponent, AdminEventsComponent, AdminUsersComponent, AdminLocationsComponent],
   imports: [
     CommonModule, ToastModule, RouterModule, TooltipModule, HttpClientModule, BrowserAnimationsModule
   ],

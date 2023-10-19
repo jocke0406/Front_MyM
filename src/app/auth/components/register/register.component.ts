@@ -152,16 +152,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this._auth.submitUser(formData)
           .pipe(
             tap(() => {
-              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Création réussie !' });
+              this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Création réussie ! Tu peux à présent te connecter' });
             }),
             catchError((error) => {
               console.error("Oups, création échouée", error);
-              this._messageService.add({ severity: 'error', summary: 'Erreur', detail: 'Création échouée. Tu peux à présent te connecter' });
+              let detailMessage = "Oups, création échouée";
+              if (error.status === 400 && error.error.message) {
+                detailMessage = "Un utilisateur avec cet email existe déjà.";
+              }
+              this._messageService.add({ severity: 'error', summary: 'Erreur', detail: detailMessage });
               return of(null);
             }),
             delay(2010),
             tap(() => {
-              this._route.navigate(['/login']);
+              this._route.navigate(['/']);
             }),
             takeUntil(this._unsubscribeAll),
           )

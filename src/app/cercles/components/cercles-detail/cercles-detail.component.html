@@ -21,8 +21,10 @@
 
 
 
+
         }}{{ cercleLocation?.location?.[0]?.address?.nbr }}<br />
         {{ cercleLocation?.location?.[0]?.address?.postCode
+
 
 
 
@@ -34,7 +36,7 @@
           {{
             showMembers
               ? " ^ "
-              : "Voir les " + cercle.members_ids?.length + " membres"
+              : "Voir les " + cercle.members_ids.length + " membres"
           }}
         </button>
         <div *ngIf="showMembers">

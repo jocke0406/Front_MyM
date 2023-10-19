@@ -38,7 +38,7 @@ export class AuthService {
     return this._http.post<User>(`${this.url}`, registrationForm).pipe(
       catchError(error => {
         console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors de l\' envoi du formulaire.'));
+        return throwError(() => error);
       })
     );
   }
