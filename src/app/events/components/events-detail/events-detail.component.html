@@ -35,8 +35,16 @@
       </button>
       <div *ngIf="showParticipants">
         <p class="card-text" *ngFor="let participant of event?.participants">
-          Prénom: {{ participant.name.first }}<br />
-          Nom: {{ participant.name.last }} <br />
+          Prénom: {{ participant.name.first }}
+          <a
+            [routerLink]="['/userProfile', participant._id]"
+            pTooltip="Voir le Profil de {{ participant.pseudo }}"
+            class="btn btn-info float-end"
+          >
+            <i class="bi bi-eye-fill"></i> </a
+          ><br />
+          Nom: {{ participant.name.last }}
+
           Pseudo: {{ participant.pseudo }}
         </p>
       </div>

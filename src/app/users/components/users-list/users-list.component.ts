@@ -1,18 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UsersService } from '../../services/users.service';
-import { User } from '../../models/user';
-import { map, switchMap, filter, takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, combineLatest } from 'rxjs';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
-
+import { User } from '../../models/user';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.css']
+  styleUrls: ['./users-list.component.css'],
 })
 export class UsersListComponent implements OnInit, OnDestroy {
-
   paginatedUsersList: User[] = [];
   usersPerPage: number = 5;
   currentPage: number = 1;
@@ -24,26 +22,29 @@ export class UsersListComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _usersService: UsersService, private _auth: AuthService) { }
+  constructor(
+    private _usersService: UsersService,
+    private _auth: AuthService
+  ) { }
 
   ngOnInit(): void {
-
     combineLatest([
       this._auth.userConnectedId$,
-      this._usersService.getUsersAll()
+      this._usersService.getUsersAll(),
     ])
       .pipe(
         filter(([userConnectedId, _]) => !!userConnectedId),
         switchMap(([userConnectedId, users]) => {
-          return this._usersService.getUserFriends(userConnectedId!).pipe(
-            map(friends => [userConnectedId, users, friends])
-          )
-        }), takeUntil(this._unsubscribeAll)
+          return this._usersService
+            .getUserFriends(userConnectedId!)
+            .pipe(map((friends) => [userConnectedId, users, friends]));
+        }),
+        takeUntil(this._unsubscribeAll)
       )
       .subscribe({
         next: (results: (string | User[] | null)[]) => {
           if (results.length !== 3) {
-            console.error("Mauvais format de données reçu!");
+            console.error('Mauvais format de données reçu!');
             return;
           }
 
@@ -52,30 +53,30 @@ export class UsersListComponent implements OnInit, OnDestroy {
           const friends = results[2] as User[];
 
           if (!this.currentUserId || !users || !friends) {
-            console.error("Des données sont manquantes!");
+            console.error('Des données sont manquantes!');
             return;
           }
 
-          const friendsIds = friends.map(friend => friend._id);
+          const friendsIds = friends.map((friend) => friend._id);
           this.usersList = users
-            .filter(user => user.deletedAt === null || !user.deletedAt)
-            .map(user => {
+            .filter((user) => user.deletedAt === null || !user.deletedAt)
+            .map((user) => {
               return {
                 ...user,
-                isFriend: friendsIds.includes(user._id)
+                isFriend: friendsIds.includes(user._id),
               };
             });
 
           this.setupPagination();
         },
         error: (error: any) => {
-          console.log("Une erreur s'est produite lors de la récupération des données", error);
-        }
+          console.log(
+            "Une erreur s'est produite lors de la récupération des données",
+            error
+          );
+        },
       });
-  };
-
-
-
+  }
 
   setupPagination() {
     this.totalPages = Math.ceil(this.usersList.length / this.usersPerPage);
@@ -83,14 +84,12 @@ export class UsersListComponent implements OnInit, OnDestroy {
     this.updatePaginatedUsers();
   }
 
-
   updatePaginatedUsers() {
     const startIndex = (this.currentPage - 1) * this.usersPerPage;
     const endIndex = startIndex + this.usersPerPage;
     const paginatedList = this.usersList.slice(startIndex, endIndex);
     this.paginatedUsersList = this.sortUsersByFriendCount(paginatedList);
   }
-
 
   goToPage(page: number) {
     this.currentPage = page;
@@ -100,7 +99,9 @@ export class UsersListComponent implements OnInit, OnDestroy {
   getVisiblePages(): number[] {
     let startPage = Math.max(1, this.currentPage - 2);
     let endPage = Math.min(this.totalPages, this.currentPage + 2);
-    return Array(endPage - startPage + 1).fill(0).map((_, idx) => startPage + idx);
+    return Array(endPage - startPage + 1)
+      .fill(0)
+      .map((_, idx) => startPage + idx);
   }
 
   years: any[] = [
@@ -116,7 +117,7 @@ export class UsersListComponent implements OnInit, OnDestroy {
 
   getYearLabel(value?: number): string {
     if (!value) return 'N/A';
-    const yearObj = this.years.find(year => year.value === value.toString());
+    const yearObj = this.years.find((year) => year.value === value.toString());
     return yearObj ? yearObj.label : 'N/A';
   }
 

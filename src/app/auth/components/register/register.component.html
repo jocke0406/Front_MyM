@@ -230,7 +230,6 @@
         />
       </div>
     </div>
-    <!-- Study -->
     <div formGroupName="study">
       <div class="row mb-2">
         <div class="col-7">
@@ -240,7 +239,6 @@
             formControlName="studyField"
             placeholder="Etudes Poursuivies"
           ></p-dropdown>
-          <!-- Messages de validation ici -->
         </div>
 
         <div class="col-4">
@@ -249,16 +247,14 @@
             formControlName="year"
             placeholder="Année"
           ></p-dropdown>
-          <!-- Messages de validation ici -->
         </div>
       </div>
     </div>
-    <!-- CAP -->
 
     <div formGroupName="cap">
       <div class="row">
         <div class="col ms-2">
-          <label for="hasCap">Calotte</label>
+          <label for="hasCap">Coiffe</label>
           <p-radioButton
             class="ms-2"
             name="hasCap"
@@ -336,7 +332,6 @@
         "
       >
         <div class="row mt-2">
-          <!-- Dropdown pour les associations -->
           <div class="col-6 align-items-center pt-3">
             <p-dropdown
               [options]="cerclesList"
@@ -358,17 +353,20 @@
         </div>
       </div>
     </div>
-    <button
-      pButton
-      type="submit"
-      label="Envoyer"
-      [disabled]="!registrationForm.valid"
-    ></button>
+    <div class="d-flex justify-content-center mt-3">
+      <button
+        class="w-100"
+        pButton
+        type="submit"
+        label="Envoyer"
+        [disabled]="!registrationForm.valid"
+      ></button>
+    </div>
   </form>
-  <button
-    pButton
-    type="button"
-    label="Show Success"
-    (click)="showSuccess()"
-  ></button>
+
+  <div class="card-footer ms-2 d-flex justify-content-between mt-3">
+    <button (click)="goBack()" type="button" class="btn btn-dark">
+      Retour
+    </button>
+  </div>
 </div>

@@ -1,26 +1,25 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError, map } from 'rxjs';
-import { User } from '../models/user';
-import { Event } from '../../events/models/event';
+import { Injectable } from '@angular/core';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
-
+import { User } from '../models/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class UsersService {
-  url = environment.backUrl + "/users";
+  url = environment.backUrl + '/users';
   constructor(private _http: HttpClient) { }
   getUsersAll(): Observable<User[]> {
     return this._http.get<User[]>(`${this.url}`).pipe(
-      catchError(error => {
+      catchError((error) => {
         console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors de la récupération des users.'));
-      }),
+        return throwError(
+          () => new Error('Oups !?! Erreur lors de la récupération des users.')
+        );
+      })
     );
-  };
+  }
 
   getUsersOne(id: string): Observable<User> {
     return this._http.get<User>(`${this.url}/${id}`).pipe(
@@ -30,10 +29,12 @@ export class UsersService {
         }
         return user;
       }),
-      catchError(error => {
+      catchError((error) => {
         console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors de la récupération de user.'));
-      }),
+        return throwError(
+          () => new Error('Oups !?! Erreur lors de la récupération de user.')
+        );
+      })
     );
   }
 
@@ -45,16 +46,18 @@ export class UsersService {
         }
         return user;
       }),
-      catchError(error => {
+      catchError((error) => {
         console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors de la récupération de user.'));
-      }),
+        return throwError(
+          () => new Error('Oups !?! Erreur lors de la récupération de user.')
+        );
+      })
     );
   }
 
   deleteUser(id: string): Observable<any> {
     return this._http.delete(`${this.url}/${id}`).pipe(
-      catchError(error => {
+      catchError((error) => {
         console.error(error);
         return throwError(() => new Error('Oups !?! Erreur lors du profil'));
       })
@@ -63,41 +66,43 @@ export class UsersService {
 
   getUserFriends(userId: string): Observable<User[]> {
     return this._http.get<User[]>(`${this.url}/${userId}/friends`).pipe(
-      catchError(error => {
+      catchError((error) => {
         console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors du profil'))
+        return throwError(() => new Error('Oups !?! Erreur lors du profil'));
       })
     );
   }
 
   getUserEvents(userId: string): Observable<any> {
     return this._http.get<any>(`${this.url}/${userId}/events`).pipe(
-      catchError(error => {
+      catchError((error) => {
         console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors des events de l utilisateurs'))
+        return throwError(
+          () => new Error('Oups !?! Erreur lors des events de l utilisateurs')
+        );
       })
     );
   }
 
   addFriend(userConnectedId: string, friendId: string): Observable<User> {
-    return this._http.patch<User>(`${this.url}/${userConnectedId}/addFriend`, { friendId }).pipe(
-      catchError(error => {
-        console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors du profil'))
-      })
-    );
-  };
+    return this._http
+      .patch<User>(`${this.url}/${userConnectedId}/addFriend`, { friendId })
+      .pipe(
+        catchError((error) => {
+          console.error(error);
+          return throwError(() => new Error('Oups !?! Erreur lors du profil'));
+        })
+      );
+  }
 
   removeFriend(userConnectedId: string, friendId: string) {
-    return this._http.patch<User>(`${this.url}/${userConnectedId}/removeFriend`, { friendId }).pipe(
-      catchError(error => {
-        console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors du profil'))
-      })
-    );
-  };
-
-
-
-
+    return this._http
+      .patch<User>(`${this.url}/${userConnectedId}/removeFriend`, { friendId })
+      .pipe(
+        catchError((error) => {
+          console.error(error);
+          return throwError(() => new Error('Oups !?! Erreur lors du profil'));
+        })
+      );
+  }
 }

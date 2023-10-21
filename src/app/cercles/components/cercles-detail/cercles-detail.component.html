@@ -14,22 +14,10 @@
         *ngIf="cercle.address && cercleLocation?.location?.[0]"
       >
         {{ cercleLocation?.location?.[0]?.name }}<br />
-        {{ cercleLocation?.location?.[0]?.address?.street
-
-
-
-
-
-
-
-        }}{{ cercleLocation?.location?.[0]?.address?.nbr }}<br />
-        {{ cercleLocation?.location?.[0]?.address?.postCode
-
-
-
-
-
-        }}{{ cercleLocation?.location?.[0]?.address?.city }}
+        {{ cercleLocation?.location?.[0]?.address?.street}}
+        {{ cercleLocation?.location?.[0]?.address?.nbr }}<br />
+        {{ cercleLocation?.location?.[0]?.address?.postCode}}
+        {{ cercleLocation?.location?.[0]?.address?.city }}
       </div>
       <div class="card-text">
         <button class="btn btn-primary m-2 w-100" (click)="toggleMembers()">

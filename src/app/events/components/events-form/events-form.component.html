@@ -4,7 +4,9 @@
   <form [formGroup]="eventForm" (ngSubmit)="save()">
     <div class="row mb-3">
       <div class="col-3 d-flex align-items-center">
-        <label for="name"><h6>Titre :</h6></label>
+        <label for="name">
+          <h6>Titre :</h6>
+        </label>
       </div>
       <div class="col">
         <input
@@ -36,7 +38,9 @@
 
     <div class="row mb-3">
       <div class="col-3 d-flex align-items-center">
-        <label for="startAt"><h6>Début :</h6></label>
+        <label for="startAt">
+          <h6>Début :</h6>
+        </label>
       </div>
       <div class="col">
         <p-calendar
@@ -70,7 +74,9 @@
 
     <div class="row mb-3">
       <div class="col-3 d-flex align-items-center">
-        <label for="endAt"><h6>Fin :</h6></label>
+        <label for="endAt">
+          <h6>Fin :</h6>
+        </label>
       </div>
       <div class="col">
         <p-calendar
@@ -102,7 +108,9 @@
 
     <div class="row mb-3">
       <div class="col-3 d-flex align-items-center">
-        <label for="description"><h6>Description</h6></label>
+        <label for="description">
+          <h6>Description</h6>
+        </label>
       </div>
       <div class="col">
         <textarea
@@ -129,7 +137,9 @@
 
     <div class="row mb-3">
       <div class="col-3 d-flex align-items-center">
-        <label for="lieu_id"><h6>Lieu :</h6></label>
+        <label for="lieu_id">
+          <h6>Lieu :</h6>
+        </label>
       </div>
       <div class="col">
         <p-dropdown
@@ -159,7 +169,9 @@
 
     <div class="row mb-3">
       <div class="col-3 d-flex align-items-center">
-        <label for="organizer"><h6>Organisteur:</h6></label>
+        <label for="organizer">
+          <h6>Organisteur:</h6>
+        </label>
       </div>
       <div class="col">
         <p-dropdown
@@ -194,4 +206,9 @@
       ></p-button>
     </div>
   </form>
+  <div class="card-footer ms-2 d-flex justify-content-between">
+    <button (click)="goBack()" type="button" class="btn btn-dark">
+      Retour
+    </button>
+  </div>
 </div>

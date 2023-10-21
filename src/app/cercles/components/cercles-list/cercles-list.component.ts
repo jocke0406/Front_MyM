@@ -7,10 +7,9 @@ import { CerclesService } from '../../services/cercles.service';
 @Component({
   selector: 'app-cercles-list',
   templateUrl: './cercles-list.component.html',
-  styleUrls: ['./cercles-list.component.css']
+  styleUrls: ['./cercles-list.component.css'],
 })
 export class CerclesListComponent implements OnInit, OnDestroy {
-
   paginatedCerclesList: Cercle[] = [];
   cerclesPerPage: number = 3;
   currentPage: number = 1;
@@ -19,22 +18,23 @@ export class CerclesListComponent implements OnInit, OnDestroy {
   pagesArray: number[] = [];
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _cerclesService: CerclesService) { };
+  constructor(private _cerclesService: CerclesService) { }
 
   ngOnInit(): void {
-    this._cerclesService.getCerclessAll()
+    this._cerclesService
+      .getCerclessAll()
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data) => {
-          this.cerclesList = data.filter((cercle: Cercle) => !cercle.deletedAt || cercle.deletedAt === null);
+          this.cerclesList = data.filter(
+            (cercle: Cercle) => !cercle.deletedAt || cercle.deletedAt === null
+          );
           this.setupPagination();
         },
         error: (error) => {
           console.log(error);
-        }
-      }
-
-      );
+        },
+      });
   }
 
   setupPagination() {
@@ -43,10 +43,12 @@ export class CerclesListComponent implements OnInit, OnDestroy {
     this.updatePaginatedCercles();
   }
 
-
   updatePaginatedCercles() {
     const startIndex = (this.currentPage - 1) * this.cerclesPerPage;
-    this.paginatedCerclesList = this.cerclesList.slice(startIndex, startIndex + this.cerclesPerPage);
+    this.paginatedCerclesList = this.cerclesList.slice(
+      startIndex,
+      startIndex + this.cerclesPerPage
+    );
   }
 
   goToPage(page: number) {
@@ -57,8 +59,11 @@ export class CerclesListComponent implements OnInit, OnDestroy {
     let startPage = Math.max(1, this.currentPage - 2);
     let endPage = Math.min(this.totalPages, this.currentPage + 2);
 
-    return Array(endPage - startPage + 1).fill(0).map((_, idx) => startPage + idx);
+    return Array(endPage - startPage + 1)
+      .fill(0)
+      .map((_, idx) => startPage + idx);
   }
+
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();

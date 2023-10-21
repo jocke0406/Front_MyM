@@ -2,14 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DiscoverComponent } from './components/discover/discover.component';
 
-const routes: Routes = [
-  { path: 'discover', component: DiscoverComponent },
-
-];
+const routes: Routes = [{ path: 'discover', component: DiscoverComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-
 export class DiscoverRoutingModule { }

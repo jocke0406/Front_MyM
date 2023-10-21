@@ -1,20 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { UsersService } from '../../services/users.service';
-import { User } from '../../models/user';
-import { takeUntil, switchMap, map, catchError } from 'rxjs/operators';
-import { BehaviorSubject, Observable, Subject, combineLatest, forkJoin, of } from 'rxjs';
+import { Location as AngularLocation } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  combineLatest,
+  forkJoin,
+  of,
+} from 'rxjs';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
 import { Event } from 'src/app/events/models/event';
-import { Location as AngularLocation } from '@angular/common';
+import { User } from '../../models/user';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  styleUrls: ['./user-profile.component.css'],
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
-
   friendsList: string[] = [];
   currentUserId?: string;
   user?: User;
@@ -26,42 +32,42 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   showEvents = false;
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _route: ActivatedRoute, private _usersService: UsersService, private _location: AngularLocation,
-    private _auth: AuthService) { }
-
+  constructor(
+    private _route: ActivatedRoute,
+    private _usersService: UsersService,
+    private _location: AngularLocation,
+    private _auth: AuthService
+  ) { }
 
   ngOnInit(): void {
-    combineLatest([
-      this._route.params,
-      this._auth.userConnectedId$
-    ]).pipe(
-      switchMap(([params, userConnectedId]) => {
-        this.userSelectedId = params['id'];
+    combineLatest([this._route.params, this._auth.userConnectedId$])
+      .pipe(
+        switchMap(([params, userConnectedId]) => {
+          this.userSelectedId = params['id'];
 
-        this.currentUserId = userConnectedId!;
-        return forkJoin({
-          user: this._usersService.getUserFull(this.userSelectedId!),
-          friends: this._usersService.getUserFriends(userConnectedId!),
-
-        });
-      }),
-      map(({ user, friends }) => {
-        this.friendsList = friends.map(friend => friend._id);
-        const isFriend = this.friendsList.includes(this.userSelectedId!);
-        this.friendStatus$.next(isFriend);
-        return { user, isFriend };
-      }), takeUntil(this._unsubscribeAll)
-    ).subscribe(
-      {
+          this.currentUserId = userConnectedId!;
+          return forkJoin({
+            user: this._usersService.getUserFull(this.userSelectedId!),
+            friends: this._usersService.getUserFriends(userConnectedId!),
+          });
+        }),
+        map(({ user, friends }) => {
+          this.friendsList = friends.map((friend) => friend._id);
+          const isFriend = this.friendsList.includes(this.userSelectedId!);
+          this.friendStatus$.next(isFriend);
+          return { user, isFriend };
+        }),
+        takeUntil(this._unsubscribeAll)
+      )
+      .subscribe({
         next: ({ user, isFriend }) => {
           this.user = user;
           this.user.isFriend = isFriend;
         },
         error: (error) => {
-          console.error("Oups, une petite erreur est survenue!", error);
-        }
-      }
-    )
+          console.error('Oups, une petite erreur est survenue!', error);
+        },
+      });
   }
 
   getStudyYearLabel(year: number): string {
@@ -80,8 +86,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
 
     return 'N/A';
-
-
   }
 
   isFriend(userId: string): boolean {
@@ -89,11 +93,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   addFriend() {
-    console.log(this.currentUserId!, this.userSelectedId!)
-    this._usersService.addFriend(this.currentUserId!, this.userSelectedId!)
+    console.log(this.currentUserId!, this.userSelectedId!);
+    this._usersService
+      .addFriend(this.currentUserId!, this.userSelectedId!)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
-        next: updateUser => {
+        next: (updateUser) => {
           this.user!.isFriend = true;
           this.friendStatus$.next(true);
           if (this.user!.friends) {
@@ -103,16 +108,17 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           }
         },
         error: (error) => {
-          console.error("Oups, une petite erreur est survenue!", error);
-        }
-      })
+          console.error('Oups, une petite erreur est survenue!', error);
+        },
+      });
   }
 
   removeFriend() {
-    this._usersService.removeFriend(this.currentUserId!, this.userSelectedId!)
+    this._usersService
+      .removeFriend(this.currentUserId!, this.userSelectedId!)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
-        next: updateUser => {
+        next: (updateUser) => {
           this.user!.isFriend = false;
           this.friendStatus$.next(false);
           if (this.user!.friends) {
@@ -124,24 +130,29 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         },
 
         error: (error) => {
-          console.error("Oups, une petite erreur est survenue lors de la tentative de suppression d'un ami!", error);
-        }
-      })
+          console.error(
+            "Oups, une petite erreur est survenue lors de la tentative de suppression d'un ami!",
+            error
+          );
+        },
+      });
   }
 
   toggleFriends(): void {
     if (!this.showFriends) {
-      this.userFriends$ = this._usersService.getUserFriends(this.userSelectedId!);
+      this.userFriends$ = this._usersService.getUserFriends(
+        this.userSelectedId!
+      );
     }
     this.showFriends = !this.showFriends;
     this.showEvents = false;
-
   }
 
   toggleEvents(): void {
     if (!this.showEvents) {
       const currentDate = new Date();
-      this._usersService.getUserEvents(this.userSelectedId!)
+      this._usersService
+        .getUserEvents(this.userSelectedId!)
         .pipe(takeUntil(this._unsubscribeAll))
         .subscribe({
           next: (response) => {
@@ -149,7 +160,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
             this.userEvents = eventsArray
               .filter((event: Event) => !event.deletedAt)
               .filter((event: Event) => new Date(event.startAt) >= currentDate)
-              .sort((a: Event, b: Event) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime())
+              .sort(
+                (a: Event, b: Event) =>
+                  new Date(a.startAt).getTime() - new Date(b.startAt).getTime()
+              )
               .map((event: Event) => {
                 return {
                   ...event,
@@ -158,7 +172,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             console.error(error);
-          }
+          },
         });
     }
     this.showEvents = !this.showEvents;

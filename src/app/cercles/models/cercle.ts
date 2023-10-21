@@ -1,6 +1,4 @@
-import { Location } from "src/app/locations/models/location";
-
-
+import { Location } from 'src/app/locations/models/location';
 
 export class Cercle {
   _id?: string;
@@ -28,7 +26,9 @@ export class Cercle {
     this.updatedAt = new Date(data.updatedAt);
     this.deletedAt = data.deletedAt ? new Date(data.deletedAt) : null;
     if (data.members) {
-      this.members = data.members.map((member: any) => new MemberOfCercle(member));
+      this.members = data.members.map(
+        (member: any) => new MemberOfCercle(member)
+      );
     }
   }
 }
@@ -44,29 +44,29 @@ export class MemberOfCercle {
   study?: {
     studyField: string;
     year: number;
-  }
+  };
   phone?: string;
   photo?: string;
   cap?: {
-    hasCap: boolean
-  }
+    hasCap: boolean;
+  };
 
   constructor(data: any) {
     this.pseudo = data.pseudo;
     this.email = data.email;
     this.name = {
       first: data.name.first,
-      last: data.name.last
+      last: data.name.last,
     };
     this.dateOfBirth = new Date(data.dateOfBirth);
     this.study = {
       studyField: data.study.studyField,
-      year: data.study.year
+      year: data.study.year,
     };
     this.phone = data.phone;
     this.photo = data.photo;
     this.cap = {
-      hasCap: data.hasCap
+      hasCap: data.hasCap,
     };
   }
 }

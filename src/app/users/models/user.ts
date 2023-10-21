@@ -26,7 +26,7 @@ export class User {
   isFriend?: boolean = false;
 
   constructor(data: any) {
-    this._id = data._id
+    this._id = data._id;
     this.name = data.name;
     this.pseudo = data.pseudo;
     this.email = data.email;
@@ -37,7 +37,9 @@ export class User {
     this.photo = data.photo || '/images/imageDefaultUser.jpg';
     this.cap = new Cap(data.cap);
     if (data.student_association) {
-      this.student_association = new StudentAssociation(data.student_association);
+      this.student_association = new StudentAssociation(
+        data.student_association
+      );
     }
     this.friends = data.friends || [];
     if (data.geolocalisation) {

@@ -1,28 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/auth/auth.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-col-admin',
   templateUrl: './col-admin.component.html',
-  styleUrls: ['./col-admin.component.css']
+  styleUrls: ['./col-admin.component.css'],
 })
 export class ColAdminComponent implements OnInit, OnDestroy {
-
   private _unsubscribeAll = new Subject<void>();
   userConnectedIsAdmin: boolean = false;
 
-  constructor(private _auth: AuthService) { };
+  constructor(private _auth: AuthService) { }
   ngOnInit(): void {
     this._auth.adminConnected$
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(
-        status => {
-          this.userConnectedIsAdmin = status;
-          if (this.userConnectedIsAdmin) {
-          }
-        });
+      .subscribe((status) => {
+        this.userConnectedIsAdmin = status;
+        if (this.userConnectedIsAdmin) {
+        }
+      });
   }
 
   logout() {

@@ -1,21 +1,20 @@
+import { Location as AngularLocation } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UsersService } from '../../../users/services/users.service';
-import { CerclesService } from '../../../cercles/services/cercles.service';
-import { EventsService } from '../../../events/services/events.service';
-import { User } from 'src/app/users/models/user';
-import { Cercle } from 'src/app/cercles/models/cercle';
-import { Event } from 'src/app/events/models/event';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
-
+import { Cercle } from 'src/app/cercles/models/cercle';
+import { Event } from 'src/app/events/models/event';
+import { User } from 'src/app/users/models/user';
+import { CerclesService } from '../../../cercles/services/cercles.service';
+import { EventsService } from '../../../events/services/events.service';
+import { UsersService } from '../../../users/services/users.service';
 
 @Component({
   selector: 'app-discover',
   templateUrl: './discover.component.html',
-  styleUrls: ['./discover.component.css']
+  styleUrls: ['./discover.component.css'],
 })
 export class DiscoverComponent implements OnInit, OnDestroy {
-
   private _unsubscribeAll = new Subject<void>();
 
   showUsers: boolean = false;
@@ -38,19 +37,19 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder,
     private _userstService: UsersService,
     private _eventsService: EventsService,
-    private _cerclesService: CerclesService
+    private _cerclesService: CerclesService,
+    private _location: AngularLocation
   ) { }
-
 
   ngOnInit(): void {
     this.userSearchForm = this._fb.group({
-      query: ['']
+      query: [''],
     });
     this.eventSearchForm = this._fb.group({
-      query: ['']
+      query: [''],
     });
     this.cercleSearchForm = this._fb.group({
-      query: ['']
+      query: [''],
     });
   }
 
@@ -64,7 +63,6 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     }
   }
 
-
   toggleEvents() {
     this.showEvents = !this.showEvents;
     if (this.showEvents && !this.events) {
@@ -73,7 +71,6 @@ export class DiscoverComponent implements OnInit, OnDestroy {
       this.eventSearchForm.reset();
       this.filteredEvents = [];
     }
-
   }
 
   toggleCercles() {
@@ -87,10 +84,13 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   }
 
   loadUsers() {
-    this._userstService.getUsersAll().pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(data => {
-        this.users = data
-          .filter(user => user.deletedAt === null || user.deletedAt === undefined);
+    this._userstService
+      .getUsersAll()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data) => {
+        this.users = data.filter(
+          (user) => user.deletedAt === null || user.deletedAt === undefined
+        );
         this.topUsers = [...this.users]
           .sort((a, b) => b.friends.length - a.friends.length)
           .slice(0, 3);
@@ -98,22 +98,34 @@ export class DiscoverComponent implements OnInit, OnDestroy {
   }
 
   loadEvents() {
-    this._eventsService.getEventsAll().pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(data => {
-        this.events = data.filter(event =>
-          (new Date(event.startAt) >= new Date()) && (event.deletedAt === null || event.deletedAt === undefined));
+    this._eventsService
+      .getEventsAll()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data) => {
+        this.events = data.filter(
+          (event) =>
+            new Date(event.startAt) >= new Date() &&
+            (event.deletedAt === null || event.deletedAt === undefined)
+        );
 
         this.nextEvents = [...this.events]
-          .sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime())
+          .sort(
+            (a, b) =>
+              new Date(a.startAt).getTime() - new Date(b.startAt).getTime()
+          )
           .slice(0, 3);
       });
   }
 
   loadCercles() {
-    this._cerclesService.getCerclessAll().pipe(takeUntil(this._unsubscribeAll))
-      .subscribe(data => {
-        this.cercles = data
-          .filter(cercle => cercle.deletedAt === null || cercle.deletedAt === undefined);
+    this._cerclesService
+      .getCerclessAll()
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((data) => {
+        this.cercles = data.filter(
+          (cercle) =>
+            cercle.deletedAt === null || cercle.deletedAt === undefined
+        );
         this.topCercles = [...this.cercles]
           .sort((a, b) => b.members_ids.length - a.members_ids.length)
           .slice(0, 3);
@@ -122,25 +134,30 @@ export class DiscoverComponent implements OnInit, OnDestroy {
 
   performUserSearch() {
     const query = this.userSearchForm.value.query.toLowerCase();
-    this.filteredUsers = this.users.filter(user =>
-      user.pseudo.toLowerCase().includes(query) || user.name.first.toLowerCase().includes(query)
-      || user.name.last.toLowerCase().includes(query)
+    this.filteredUsers = this.users.filter(
+      (user) =>
+        user.pseudo.toLowerCase().includes(query) ||
+        user.name.first.toLowerCase().includes(query) ||
+        user.name.last.toLowerCase().includes(query)
     );
   }
 
   performEventSearch() {
     const query = this.eventSearchForm.value.query.toLowerCase();
-    this.filteredEvents = this.events.filter(event =>
+    this.filteredEvents = this.events.filter((event) =>
       event.name.toLowerCase().includes(query)
     );
   }
 
   performCercleSearch() {
     const query = this.cercleSearchForm.value.query.toLowerCase();
-    this.filteredCercles = this.cercles.filter(cercle =>
+    this.filteredCercles = this.cercles.filter((cercle) =>
       cercle.name.toLowerCase().includes(query)
     );
-    console.log(this.filteredEvents)
+    console.log(this.filteredEvents);
+  }
+  goBack() {
+    this._location.back();
   }
 
   ngOnDestroy(): void {

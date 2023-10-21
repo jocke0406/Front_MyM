@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { EventsService } from '../../services/events.service';
-import { Event } from '../../models/event';
-import { takeUntil, filter, map } from 'rxjs/operators';
-import { Observable, Subject, combineLatest } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, combineLatest } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/auth.service';
+import { Event } from '../../models/event';
+import { EventsService } from '../../services/events.service';
 
 @Component({
   selector: 'app-events-list',
   templateUrl: './events-list.component.html',
-  styleUrls: ['./events-list.component.css']
+  styleUrls: ['./events-list.component.css'],
 })
 export class EventsListComponent implements OnInit, OnDestroy {
   currentUserId?: string;
@@ -21,25 +21,31 @@ export class EventsListComponent implements OnInit, OnDestroy {
   currentDate = new Date();
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _eventsService: EventsService, private _auth: AuthService) { }
+  constructor(
+    private _eventsService: EventsService,
+    private _auth: AuthService
+  ) { }
   ngOnInit(): void {
     combineLatest([
       this._auth.userConnectedId$,
-      this._eventsService.getEventsAll()
+      this._eventsService.getEventsAll(),
     ])
       .pipe(
         filter(([userConnectedId, _]) => !!userConnectedId),
         map(([userConnectedId, events]) => {
           const currentDate = new Date();
 
-          const filteredEvents = events.filter((event: Event) =>
-            !event.deletedAt && new Date(event.startAt) > currentDate
+          const filteredEvents = events.filter(
+            (event: Event) =>
+              !event.deletedAt && new Date(event.startAt) > currentDate
           );
 
           const eventsWithParticipation = filteredEvents.map((event: Event) => {
             return {
               ...event,
-              isParticipating: event.participants_ids!.includes(userConnectedId!)
+              isParticipating: event.participants_ids!.includes(
+                userConnectedId!
+              ),
             };
           });
 
@@ -50,7 +56,7 @@ export class EventsListComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (results: (string | Event[] | null)[]) => {
           if (results.length !== 2) {
-            console.error("Mauvais format de données reçu!");
+            console.error('Mauvais format de données reçu!');
             return;
           }
 
@@ -58,17 +64,19 @@ export class EventsListComponent implements OnInit, OnDestroy {
           this.eventsList = results[1] as Event[];
 
           if (!this.currentUserId || !this.eventsList) {
-            console.error("Des données sont manquantes!");
+            console.error('Des données sont manquantes!');
             return;
           }
 
           this.setupPagination();
-          console.log('currentUserId : ', this.currentUserId)
-
+          console.log('currentUserId : ', this.currentUserId);
         },
         error: (error: any) => {
-          console.log("une erreur s'est produite lors de la récupération des events", error);
-        }
+          console.log(
+            "une erreur s'est produite lors de la récupération des events",
+            error
+          );
+        },
       });
   }
 
@@ -78,10 +86,12 @@ export class EventsListComponent implements OnInit, OnDestroy {
     this.updatePaginatedEvents();
   }
 
-
   updatePaginatedEvents() {
     const startIndex = (this.currentPage - 1) * this.eventsPerPage;
-    this.paginatedEventsList = this.eventsList.slice(startIndex, startIndex + this.eventsPerPage);
+    this.paginatedEventsList = this.eventsList.slice(
+      startIndex,
+      startIndex + this.eventsPerPage
+    );
   }
 
   goToPage(page: number) {
@@ -92,7 +102,9 @@ export class EventsListComponent implements OnInit, OnDestroy {
     let startPage = Math.max(1, this.currentPage - 2);
     let endPage = Math.min(this.totalPages, this.currentPage + 2);
 
-    return Array(endPage - startPage + 1).fill(0).map((_, idx) => startPage + idx);
+    return Array(endPage - startPage + 1)
+      .fill(0)
+      .map((_, idx) => startPage + idx);
   }
 
   ngOnDestroy(): void {

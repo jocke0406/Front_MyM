@@ -9,7 +9,6 @@ export class Location {
   updatedAt: Date;
   deletedAt?: Date | null;
 
-
   constructor(data: any) {
     this._id = data._id;
     this.name = data.name;
@@ -19,7 +18,9 @@ export class Location {
       this.geolocalisation = new Geolocalisation(data.geolocalisation);
     }
     if (data.eventsByLocation) {
-      this.eventsByLocation = data.eventsByLocation.map((event: any) => new EventByLocation(event));
+      this.eventsByLocation = data.eventsByLocation.map(
+        (event: any) => new EventByLocation(event)
+      );
     }
     this.createdAt = new Date(data.createdAt);
     this.updatedAt = new Date(data.updatedAt);
@@ -71,7 +72,9 @@ export class EventByLocation {
     this.organizer = data.organizer;
     this.participants_ids = data.participants_ids;
     if (data.participants) {
-      this.participants = data.participants.map((participant: any) => new Participant(participant));
+      this.participants = data.participants.map(
+        (participant: any) => new Participant(participant)
+      );
     }
   }
 }
@@ -85,4 +88,3 @@ export class Participant {
     this.pseudo = data.pseudo;
   }
 }
-

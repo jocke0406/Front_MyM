@@ -1,15 +1,15 @@
+import { Location as AngularLocation } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { Cercle } from '../../models/cercle';
 import { CerclesService } from '../../services/cercles.service';
-import { Location as AngularLocation } from '@angular/common';
 
 @Component({
   selector: 'app-cercles-detail',
   templateUrl: './cercles-detail.component.html',
-  styleUrls: ['./cercles-detail.component.css']
+  styleUrls: ['./cercles-detail.component.css'],
 })
 export class CerclesDetailComponent implements OnInit, OnDestroy {
   cercle!: Cercle;
@@ -22,26 +22,28 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
 
   constructor(
-    private _cerclesService: CerclesService, private _location: AngularLocation,
+    private _cerclesService: CerclesService,
+    private _location: AngularLocation,
     private _route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this._route.params.pipe(
-      switchMap(({ id }) => this._cerclesService.getCerclesOne(id)),
-      takeUntil(this._unsubscribeAll)
-    ).subscribe({
-      next: (data) => {
-        this.cercle = data;
-        if (this.cercle.address) {
-          this.loadCercleAdress()
-        }
-
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+    this._route.params
+      .pipe(
+        switchMap(({ id }) => this._cerclesService.getCerclesOne(id)),
+        takeUntil(this._unsubscribeAll)
+      )
+      .subscribe({
+        next: (data) => {
+          this.cercle = data;
+          if (this.cercle.address) {
+            this.loadCercleAdress();
+          }
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
   }
 
   toggleMembers(): void {
@@ -49,31 +51,41 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
     if (this.showMembers) {
       this.loadCercleMembers();
     }
-  };
+  }
 
   loadCercleMembers(): void {
-    this._cerclesService.getCerclesMembers(this.cercle._id!)
+    this._cerclesService
+      .getCerclesMembers(this.cercle._id!)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data: Cercle) => {
           this.cercleMembers = data;
         },
         error: (error) => {
-          console.error('Erreur lors du chargement des détails des membres:', error);
+          console.error(
+            'Erreur lors du chargement des détails des membres:',
+            error
+          );
         },
       });
   }
 
   loadCercleEvents(): void {
-    this._cerclesService.getCercleEvents(this.cercle._id!).pipe(takeUntil(this._unsubscribeAll)).subscribe({
-      next: (data: Cercle[]) => {
-        this.eventsDetails = data[0];
-        console.log('Détails des events chargés avec succès!', data);
-      },
-      error: (error) => {
-        console.error('Erreur lors du chargement des détails des events:', error);
-      },
-    })
+    this._cerclesService
+      .getCercleEvents(this.cercle._id!)
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe({
+        next: (data: Cercle[]) => {
+          this.eventsDetails = data[0];
+          console.log('Détails des events chargés avec succès!', data);
+        },
+        error: (error) => {
+          console.error(
+            'Erreur lors du chargement des détails des events:',
+            error
+          );
+        },
+      });
   }
 
   toggleEvents() {
@@ -84,7 +96,8 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
   }
 
   loadCercleAdress(): void {
-    this._cerclesService.getCercleLocation(this.cercle._id!)
+    this._cerclesService
+      .getCercleLocation(this.cercle._id!)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data: Cercle) => {
@@ -94,7 +107,7 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
         error: (error) => {
           console.error('Erreur lors du chargement adresse :', error);
         },
-      })
+      });
   }
 
   getStudyYearLabel(year: number): string {

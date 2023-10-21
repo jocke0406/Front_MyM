@@ -6,15 +6,15 @@
         class="btn btn-primary w-100 btn-lg btn-block mb-3"
         (click)="toggleUsers()"
       >
-        {{
-          showUsers ? "Masquer les Utilisateurs" : "Afficher les Utilisateurs"
-        }}
+        {{ showUsers ? " ^ " : "Afficher les Utilisateurs" }}
       </button>
     </div>
   </div>
 
   <div class="card mb-2 shadow" *ngIf="showUsers">
-    <div class="card-body text-success"><h4>Au Top !</h4></div>
+    <div class="card-body text-success">
+      <h4>Au Top !</h4>
+    </div>
     <div class="card-body">
       <div *ngFor="let user of topUsers">
         <div class="row mb-2">
@@ -83,12 +83,14 @@
         class="btn btn-warning btn-lg btn-block w-100"
         (click)="toggleEvents()"
       >
-        {{ showEvents ? "Masquer les Events" : "Afficher les Events" }}
+        {{ showEvents ? " ^ " : "Afficher les Events" }}
       </button>
     </div>
   </div>
   <div class="card mb-2 shadow" *ngIf="showEvents">
-    <div class="card-body text-success"><h4>Bientôt !</h4></div>
+    <div class="card-body text-success">
+      <h4>Bientôt !</h4>
+    </div>
     <div class="card-body">
       <div *ngFor="let event of nextEvents">
         <div class="row mb-2">
@@ -157,7 +159,9 @@
     </div>
   </div>
   <div class="card mb-2 shadow" *ngIf="showCercles">
-    <div class="card-body text-success"><h4>Au Top !</h4></div>
+    <div class="card-body text-success">
+      <h4>Au Top !</h4>
+    </div>
     <div class="card-body">
       <div *ngFor="let cercle of topCercles">
         <div class="row mb-2">
@@ -211,6 +215,17 @@
       <div *ngIf="filteredUsers.length === 0 && userSearchForm.value.query">
         Aucun résultat ne correspond à votre recherche.
       </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <button
+        (click)="goBack()"
+        type="button"
+        class="btn btn-dark w-100 btn-lg btn-block mt-3"
+      >
+        Retour
+      </button>
     </div>
   </div>
 </main>

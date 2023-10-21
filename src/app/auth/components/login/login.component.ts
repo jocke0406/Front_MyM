@@ -8,31 +8,44 @@ import { AuthService } from '../../auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
-
 export class LoginComponent implements OnInit, OnDestroy {
-
   private _unsubscribeAll = new Subject<void>();
   loginForm!: FormGroup;
-  constructor(private _messagesService: MessageService, private _router: Router, private _formBuilder: FormBuilder, private _authService: AuthService) { }
+  constructor(
+    private _messagesService: MessageService,
+    private _router: Router,
+    private _formBuilder: FormBuilder,
+    private _authService: AuthService
+  ) { }
   ngOnInit(): void {
     this.loginForm = this._formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this._authService.login(this.loginForm.value.email, this.loginForm.value.password)
+      this._authService
+        .login(this.loginForm.value.email, this.loginForm.value.password)
         .pipe(
           tap(() => {
-            this._messagesService.add({ severity: 'success', summary: 'Succès', detail: 'Connexion réussie!', life: 2000 });
+            this._messagesService.add({
+              severity: 'success',
+              summary: 'Succès',
+              detail: 'Connexion réussie!',
+              life: 2000,
+            });
           }),
           catchError((error) => {
             this._messagesService.add({
-              severity: 'error', summary: 'Erreur', detail: error.error.message || "Une erreur s'est produite pendant la connexion."
+              severity: 'error',
+              summary: 'Erreur',
+              detail:
+                error.error.message ||
+                "Une erreur s'est produite pendant la connexion.",
             });
             return of(null);
           }),
@@ -41,9 +54,15 @@ export class LoginComponent implements OnInit, OnDestroy {
             this._router.navigate(['/']);
           }),
           takeUntil(this._unsubscribeAll)
-        ).subscribe();
+        )
+        .subscribe();
     } else {
-      this._messagesService.add({ severity: 'warn', summary: 'Attention', detail: 'Veuillez remplir correctement le formulaire.', life: 2000 });
+      this._messagesService.add({
+        severity: 'warn',
+        summary: 'Attention',
+        detail: 'Veuillez remplir correctement le formulaire.',
+        life: 2000,
+      });
     }
   }
 
