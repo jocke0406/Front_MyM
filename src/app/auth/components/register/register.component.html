@@ -1,5 +1,6 @@
 <p-toast></p-toast>
-<h1 class="text-center mt-3 mb-3">Inscription</h1>
+<h1 *ngIf="!id" class="text-center mt-3 mb-3">Inscription</h1>
+<h1 *ngIf="id" class="text-center mt-3 mb-3">Mon Compte</h1>
 <div class="shadow-lg pt-3 pb-3 bg-body-tertiary rounded">
   <form [formGroup]="registrationForm" (ngSubmit)="save()">
     <div formGroupName="name">
@@ -355,10 +356,19 @@
     </div>
     <div class="d-flex justify-content-center mt-3">
       <button
+        *ngIf="id"
         class="w-100"
         pButton
         type="submit"
-        label="Envoyer"
+        label="Modifier"
+        [disabled]="!registrationForm.valid"
+      ></button>
+      <button
+        *ngIf="!id"
+        class="w-100"
+        pButton
+        type="submit"
+        label="S' inscrire"
         [disabled]="!registrationForm.valid"
       ></button>
     </div>

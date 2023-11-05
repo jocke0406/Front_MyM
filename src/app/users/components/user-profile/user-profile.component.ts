@@ -93,7 +93,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   addFriend() {
-    console.log(this.currentUserId!, this.userSelectedId!);
     this._usersService
       .addFriend(this.currentUserId!, this.userSelectedId!)
       .pipe(takeUntil(this._unsubscribeAll))

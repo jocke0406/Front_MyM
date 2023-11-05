@@ -1,5 +1,12 @@
 <main class="container mt-2">
   <div class="row">
+    <img
+      class="mx-auto d-block"
+      src="../../../../assets/users.png"
+      style="width: 240px; height: 200px"
+    />
+  </div>
+  <div class="row">
     <div class="col-12">
       <button
         type="button"
@@ -20,7 +27,7 @@
         <div class="row mb-2">
           <div class="col-4">
             <img
-              src="../../../../assets/logo_MyM_DallE.png"
+              src="../../../../assets/calotte.jpg"
               alt="Photo de {{ user.pseudo }}"
               class="card-img-top"
               style="width: 100px; height: 120px"
@@ -75,6 +82,13 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <img
+      class="mx-auto d-block"
+      src="../../../../assets/soiree.png"
+      style="width: 240px; height: 200px"
+    />
+  </div>
 
   <div class="row">
     <div class="col-12">
@@ -102,7 +116,7 @@
             Participants : {{ event.participants_ids?.length }}
             <a
               [routerLink]="['/eventsDetail', event._id]"
-              class="btn btn-primary float-end"
+              class="btn btn-outline-success float-end"
               >Voir l' Event</a
             >
           </p>
@@ -146,7 +160,13 @@
       </div>
     </div>
   </div>
-
+  <div class="row">
+    <img
+      class="mx-auto d-block"
+      src="../../../../assets/location.png"
+      style="width: 240px; height: 200px"
+    />
+  </div>
   <div class="row">
     <div class="col-12">
       <button
@@ -173,7 +193,7 @@
             Membres : {{ cercle.members_ids.length }}
             <a
               [routerLink]="['/cerclesDetail', cercle._id]"
-              class="btn btn-primary float-end"
+              class="btn btn-outline-success float-end"
               >Voir le cercle</a
             >
           </p>

@@ -154,7 +154,6 @@ export class DiscoverComponent implements OnInit, OnDestroy {
     this.filteredCercles = this.cercles.filter((cercle) =>
       cercle.name.toLowerCase().includes(query)
     );
-    console.log(this.filteredEvents);
   }
   goBack() {
     this._location.back();

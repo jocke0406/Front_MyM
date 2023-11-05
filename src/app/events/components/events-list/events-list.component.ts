@@ -69,7 +69,6 @@ export class EventsListComponent implements OnInit, OnDestroy {
           }
 
           this.setupPagination();
-          console.log('currentUserId : ', this.currentUserId);
         },
         error: (error: any) => {
           console.log(
