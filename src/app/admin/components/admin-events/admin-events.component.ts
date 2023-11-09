@@ -28,8 +28,28 @@ export class AdminEventsComponent implements OnInit, OnDestroy {
         }
       });
   }
-  sortEventsByName() { }
-  sortEventsByStartDate() { }
+  sortEventsByName(): void {
+    this.eventsList.sort((a, b) => {
+      if (a.name && b.name && a.name < b.name) {
+        return -1;
+      }
+      if (a.name && b.name && a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    })
+  }
+  sortEventsByStartDate() {
+    this.eventsList.sort((a, b) => {
+      if (a.startAt && b.startAt && a.startAt < b.startAt) {
+        return -1;
+      }
+      if (a.startAt && b.startAt && a.startAt > b.startAt) {
+        return 1;
+      }
+      return 0;
+    })
+  }
 
   deleteEvent(eventId: string): void {
     this._eventsService.deleteEvent(eventId)

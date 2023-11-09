@@ -58,7 +58,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
         }
       });
   }
-  sortUsersByPseudo() {
+  sortUsersByPseudo(): void {
     this.usersList.sort((a, b) => {
       if (a.pseudo < b.pseudo) {
         return -1;
@@ -69,7 +69,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       return 0;
     })
   }
-  sortUsersByName() {
+  sortUsersByName(): void {
     this.usersList.sort((a, b) => {
       if (a.name?.last && b.name?.last && a.name?.last < b.name?.last) {
         return -1;
@@ -80,7 +80,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       return 0;
     })
   }
-  sortUsersByFirst() {
+  sortUsersByFirst(): void {
     this.usersList.sort((a, b) => {
       if (a.name?.first && b.name?.first && a.name?.first < b.name?.first) {
         return -1;

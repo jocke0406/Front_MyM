@@ -59,7 +59,17 @@ export class AdminLocationsComponent implements OnInit, OnDestroy {
       });
   }
 
-
+  sortLocationsByName(): void {
+    this.locationsList.sort((a, b) => {
+      if (a.name && b.name && a.name < b.name) {
+        return -1;
+      }
+      if (a.name && b.name && a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    })
+  }
 
 
 
