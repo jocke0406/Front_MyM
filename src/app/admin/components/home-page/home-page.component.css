@@ -1,0 +1,27 @@
+.animation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 600px;
+  font-size: 2em;
+}
+
+.word {
+  display: inline-block;
+  opacity: 0;
+}
+
+.content-container {
+  position: relative; /* Cette position est relative pour les enfants absolus */
+}
+
+.background-image {
+  position: absolute;
+  margin-left: 200px;
+  left: 0;
+  top: 0;
+  width: 50%;
+  height: 30%;
+  z-index: -1;
+  object-fit: cover;
+}

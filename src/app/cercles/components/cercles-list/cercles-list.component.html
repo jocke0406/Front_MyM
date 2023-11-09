@@ -11,8 +11,11 @@
           <div class="card-text">
             members :<i>{{ cercle.members_ids!.length }}</i>
           </div>
-          <p class="card-text">{{ cercle.hymne }}<br /></p>
-
+          <img
+            class="mx-auto d-block"
+            src="../../../../assets/location.png"
+            style="width: 180px; height: 140px"
+          />
           <button
             [routerLink]="['/cerclesDetail', cercle._id]"
             class="btn btn-primary w-100"

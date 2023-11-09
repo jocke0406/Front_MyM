@@ -1,8 +1,47 @@
-<!-- home.component.html -->
-<div class="container text-center">
+<main
+  class="content-container d-flex flex-column justify-content-center min-vh-100"
+>
   <div class="row">
-    <div class="col">Make</div>
-    <div class="col">Your</div>
-    <div class="col">Mousse</div>
+    <div class="col-10 ms-2">
+      <h1 class="animation">
+        <span class="word"> Make </span>
+        <span class="word"> Your </span>
+
+        <span class="word"> Mousse </span>
+        <img src="../../../../assets/soiree.png" class="background-image" />
+      </h1>
+    </div>
   </div>
-</div>
+
+  <div class="row">
+    <div class="d-grid gap-2 col-9 mx-auto">
+      <button
+        class="btn btn-warning"
+        [routerLink]="['/login']"
+        type="button"
+        *ngIf="!isConnected"
+      >
+        Se Connecter
+      </button>
+
+      <a
+        class="btn btn-success"
+        [routerLink]="['/registration']"
+        type="button"
+        *ngIf="!isConnected"
+        >S'Inscrire</a
+      >
+    </div>
+  </div>
+  <div class="row">
+    <div class="d-grid gap-2 col-9 mx-auto">
+      <a
+        class="btn btn-dark"
+        type="button"
+        *ngIf="isConnected"
+        (click)="logout()"
+        >Se deconnecter
+      </a>
+    </div>
+  </div>
+</main>

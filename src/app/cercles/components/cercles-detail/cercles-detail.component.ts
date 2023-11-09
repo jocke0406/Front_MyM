@@ -77,7 +77,6 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data: Cercle[]) => {
           this.eventsDetails = data[0];
-          console.log('Détails des events chargés avec succès!', data);
         },
         error: (error) => {
           console.error(
@@ -102,7 +101,6 @@ export class CerclesDetailComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data: Cercle) => {
           this.cercleLocation = data;
-          console.log('Détails adresse chargés avec succès!', data);
         },
         error: (error) => {
           console.error('Erreur lors du chargement adresse :', error);

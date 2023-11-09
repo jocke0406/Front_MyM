@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import jwtDecode from 'jwt-decode';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
+import { BehaviorSubject, switchMap, Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../users/models/user';
 
@@ -16,8 +16,9 @@ interface AuthResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  url = environment.backUrl + '/users';
-  urlLogin = environment.backUrl + '/login';
+  private url = environment.backUrl + '/users';
+  private urlLogin = environment.backUrl + '/login';
+  private urlCsrfToken = environment.backUrl + '/api/csrf-token';
 
   private userConnected = new BehaviorSubject<boolean>(this.isUserConnected());
   public userConnected$ = this.userConnected.asObservable();
@@ -57,26 +58,39 @@ export class AuthService {
     );
   }
 
+  getCsrfToken(): Observable<{ csrfToken: string }> {
+    return this._http.get<{ csrfToken: string }>(this.urlCsrfToken, { withCredentials: true });
+  }
+
   login(email: string, password: string): Observable<AuthResponse> {
-    return this._http
-      .post<AuthResponse>(`${this.urlLogin}`, { email, password })
-      .pipe(
-        tap((res) => {
-          localStorage.setItem('token', res.token);
-          this.userConnected.next(true);
-          const decodedToken = this.decodeToken();
-          this.userIdSubject.next(this.getUserConnectedIdFromToken());
-          if (decodedToken && decodedToken.role === 'masterOfUnivers') {
-            this.adminConnected.next(true);
-          } else {
-            this.adminConnected.next(false);
-          }
-        }),
-        catchError((error) => {
-          console.error('Oups ! Houston nous avons un problème', error);
-          return throwError(() => error);
-        })
-      );
+    // Récupérez d'abord le token CSRF
+    return this.getCsrfToken().pipe(
+      switchMap((csrfData) => {
+        // Stockez le token CSRF
+        localStorage.setItem('csrfToken', csrfData.csrfToken);
+        // Préparez les headers
+        const headers = { 'CSRF-Token': csrfData.csrfToken };
+        // Effectuez la requête de connexion avec les données de l'utilisateur et les headers rajouter :{ headers, withCredentials: true }
+        return this._http.post<AuthResponse>(this.urlLogin, { email, password },);
+      }),
+      tap((res) => {
+        // Stockez le token de l'utilisateur et mettez à jour le statut de connexion
+        localStorage.setItem('token', res.token);
+        this.userConnected.next(true);
+        const decodedToken = this.decodeToken();
+        this.userIdSubject.next(this.getUserConnectedIdFromToken());
+        if (decodedToken && decodedToken.role === 'masterOfUnivers') {
+          this.adminConnected.next(true);
+        } else {
+          this.adminConnected.next(false);
+        }
+      }),
+      catchError((error) => {
+        // Gestion des erreurs
+        console.error('Oups ! Houston nous avons un problème', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   decodeToken(): any {
@@ -170,6 +184,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('csrfToken');
     this.userConnected.next(false);
     this.adminConnected.next(false);
     this.userIdSubject.next(null);

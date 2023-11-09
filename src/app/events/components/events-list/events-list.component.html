@@ -21,9 +21,17 @@
           <p class="card-text">
             participants :<i>{{ event.participants_ids?.length }}</i>
           </p>
-          <a [routerLink]="['/eventsDetail', event._id]" class="btn btn-primary"
-            >Voir l' Event</a
-          >
+          <div class="d-flex align-items-center">
+            <a
+              [routerLink]="['/eventsDetail', event._id]"
+              class="btn btn-primary"
+              >Voir l' Event</a
+            ><img
+              class="mx-auto d-block"
+              src="../../../../assets/soiree.png"
+              style="width: 180px; height: 140px"
+            />
+          </div>
         </div>
       </div>
     </div>
