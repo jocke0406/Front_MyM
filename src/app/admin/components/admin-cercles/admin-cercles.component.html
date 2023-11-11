@@ -15,9 +15,9 @@
       <thead>
         <tr>
           <th scope="col-10">
-            <a (click)="sortCerclesByName()"
-              >Dénomination : <i class="bi bi-caret-down-fill"></i
-            ></a>
+            <button class="btn" (click)="sortCerclesByName()">
+              Dénomination <i class="bi bi-caret-down-fill"></i>
+            </button>
           </th>
 
           <th scope="col-1 text-end"><i class="bi bi-pencil-fill"></i></th>
@@ -39,13 +39,13 @@
           </td>
 
           <td class="col-1">
-            <a
+            <button
               class="btn btn-secondary"
               pTooltip="Supprimer le Cercle"
               (click)="cercle._id && deleteCercle(cercle._id)"
             >
               <i class="bi bi-trash-fill"></i>
-            </a>
+            </button>
           </td>
         </tr>
       </tbody>

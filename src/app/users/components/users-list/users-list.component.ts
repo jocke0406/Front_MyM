@@ -12,10 +12,10 @@ import { UsersService } from '../../services/users.service';
 })
 export class UsersListComponent implements OnInit, OnDestroy {
   paginatedUsersList: User[] = [];
-  usersPerPage: number = 5;
-  currentPage: number = 1;
+  usersPerPage = 5;
+  currentPage = 1;
   usersList!: User[];
-  totalPages: number = 1;
+  totalPages = 1;
   pagesArray: number[] = [];
 
   currentUserId?: string;
@@ -97,8 +97,8 @@ export class UsersListComponent implements OnInit, OnDestroy {
   }
 
   getVisiblePages(): number[] {
-    let startPage = Math.max(1, this.currentPage - 2);
-    let endPage = Math.min(this.totalPages, this.currentPage + 2);
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages, this.currentPage + 2);
     return Array(endPage - startPage + 1)
       .fill(0)
       .map((_, idx) => startPage + idx);

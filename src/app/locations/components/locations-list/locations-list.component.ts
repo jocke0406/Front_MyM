@@ -13,9 +13,9 @@ export class LocationsListComponent implements OnInit, OnDestroy {
 
   public locationsList!: Location[];
   paginatedLocationsList: Location[] = [];
-  locationsPerPage: number = 3;
-  currentPage: number = 1;
-  totalPages: number = 1;
+  locationsPerPage = 3;
+  currentPage = 1;
+  totalPages = 1;
   pagesArray: number[] = [];
   private _unsubscribeAll = new Subject<void>();
 
@@ -60,8 +60,8 @@ export class LocationsListComponent implements OnInit, OnDestroy {
   }
 
   getVisiblePages(): number[] {
-    let startPage = Math.max(1, this.currentPage - 2);
-    let endPage = Math.min(this.totalPages, this.currentPage + 2);
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages, this.currentPage + 2);
 
     return Array(endPage - startPage + 1)
       .fill(0)

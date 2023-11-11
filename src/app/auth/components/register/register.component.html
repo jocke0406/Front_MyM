@@ -360,17 +360,19 @@
         class="w-100"
         pButton
         type="submit"
-        label="Modifier"
         [disabled]="!registrationForm.valid"
-      ></button>
+      >
+        Modifier
+      </button>
       <button
         *ngIf="!id"
         class="w-100"
         pButton
         type="submit"
-        label="S' inscrire"
         [disabled]="!registrationForm.valid"
-      ></button>
+      >
+        S' inscrire
+      </button>
     </div>
   </form>
 

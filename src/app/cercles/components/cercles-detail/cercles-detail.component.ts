@@ -13,8 +13,8 @@ import { CerclesService } from '../../services/cercles.service';
 })
 export class CerclesDetailComponent implements OnInit, OnDestroy {
   cercle!: Cercle;
-  showMembers: boolean = false;
-  showEvents: boolean = false;
+  showMembers = false;
+  showEvents = false;
   cercleMembers!: Cercle;
   eventsDetails!: Cercle;
   cercleLocation: Cercle | null = null;

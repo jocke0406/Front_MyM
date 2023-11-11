@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
-  isUserConnected: boolean = false;
+  isUserConnected = false;
   userConnectedPseudo: string | null = null;
   userConnectedId: string | null = null;
 

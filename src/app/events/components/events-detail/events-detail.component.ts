@@ -21,7 +21,7 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
 
   private _unsubscribeAll = new Subject<void>();
 
-  showParticipants: boolean = false;
+  showParticipants = false;
 
   constructor(private _route: ActivatedRoute, private _eventsService: EventsService,
     private _auth: AuthService, private _location: AngularLocation,
@@ -81,7 +81,7 @@ export class EventsDetailComponent implements OnInit, OnDestroy {
 
   toggleParticipants(): void {
     this.showParticipants = !this.showParticipants;
-  };
+  }
 
 
   eventRemoveParticipant() {

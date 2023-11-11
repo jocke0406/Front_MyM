@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class ColAdminComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
-  userConnectedIsAdmin: boolean = false;
+  userConnectedIsAdmin = false;
 
   constructor(private _auth: AuthService) { }
   ngOnInit(): void {
@@ -18,8 +18,7 @@ export class ColAdminComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((status) => {
         this.userConnectedIsAdmin = status;
-        if (this.userConnectedIsAdmin) {
-        }
+
       });
   }
 

@@ -43,7 +43,7 @@ export class ForgotPasswordComponent implements OnDestroy, OnInit {
             this._messageService.add({
               severity: 'error',
               summary: 'Erreur',
-              detail: error.message,
+              detail: error.error.message,
               life: 2000,
             });
           },

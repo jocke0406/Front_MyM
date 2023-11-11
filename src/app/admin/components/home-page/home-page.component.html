@@ -8,7 +8,11 @@
         <span class="word"> Your </span>
 
         <span class="word"> Mousse </span>
-        <img src="../../../../assets/soiree.png" class="background-image" />
+        <img
+          src="../../../../assets/soiree.png"
+          class="background-image"
+          alt="image icone soirée"
+        />
       </h1>
     </div>
   </div>
@@ -35,13 +39,14 @@
   </div>
   <div class="row">
     <div class="d-grid gap-2 col-9 mx-auto">
-      <a
+      <button
         class="btn btn-dark"
         type="button"
         *ngIf="isConnected"
         (click)="logout()"
-        >Se deconnecter
-      </a>
+      >
+        Se deconnecter
+      </button>
     </div>
   </div>
 </main>

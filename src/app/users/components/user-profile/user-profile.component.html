@@ -1,6 +1,7 @@
 <div class="card m-3">
   <div *ngIf="user">
     <img
+      alt="image icone user"
       class="mx-auto d-block"
       src="../../../../assets/user.png"
       style="width: 180px; height: 140px"
@@ -92,7 +93,10 @@
       </button>
       <div *ngIf="userSelectedId">
         <button
-          *ngIf="!(friendStatus$ | async) && !(currentUserId == userSelectedId)"
+          *ngIf="
+            (friendStatus$ | async) === false &&
+            currentUserId !== userSelectedId
+          "
           class="btn btn-success"
           data-bs-toggle="modal"
           data-bs-target="#addFriendModal"

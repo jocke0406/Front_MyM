@@ -154,7 +154,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   matchPasswords(control: AbstractControl): { [key: string]: boolean } | null {
-    const group = control as FormGroup; // Ici on cast en FormGroup
+    const group = control as FormGroup;
     const password = group.get('password')?.value;
     const confirmPassword = group.get('confirmPassword')?.value;
 

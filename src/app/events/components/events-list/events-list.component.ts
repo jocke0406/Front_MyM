@@ -14,9 +14,9 @@ export class EventsListComponent implements OnInit, OnDestroy {
   currentUserId?: string;
   eventsList!: Event[];
   paginatedEventsList: Event[] = [];
-  eventsPerPage: number = 3;
-  currentPage: number = 1;
-  totalPages: number = 1;
+  eventsPerPage = 3;
+  currentPage = 1;
+  totalPages = 1;
   pagesArray: number[] = [];
   currentDate = new Date();
   private _unsubscribeAll = new Subject<void>();
@@ -98,8 +98,8 @@ export class EventsListComponent implements OnInit, OnDestroy {
     this.updatePaginatedEvents();
   }
   getVisiblePages(): number[] {
-    let startPage = Math.max(1, this.currentPage - 2);
-    let endPage = Math.min(this.totalPages, this.currentPage + 2);
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages, this.currentPage + 2);
 
     return Array(endPage - startPage + 1)
       .fill(0)

@@ -13,7 +13,7 @@ export class AdminCerclesComponent implements OnInit, OnDestroy {
   cerclesList!: Cercle[];
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _cerclesService: CerclesService, private _messageService: MessageService) { };
+  constructor(private _cerclesService: CerclesService, private _messageService: MessageService) { }
   ngOnInit(): void {
     this._cerclesService.getCerclessAll()
       .pipe(takeUntil(this._unsubscribeAll))

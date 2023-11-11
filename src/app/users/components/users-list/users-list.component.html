@@ -4,8 +4,8 @@
       class="card mb-2 shadow"
       *ngFor="let user of paginatedUsersList"
       [ngClass]="{
-        'bg-success-subtle': user.isFriend && currentUserId != user._id,
-        'bg-warning-subtle': !user.isFriend && currentUserId != user._id
+        'bg-success-subtle': user.isFriend && currentUserId !== user._id,
+        'bg-warning-subtle': !user.isFriend && currentUserId !== user._id
       }"
     >
       <div class="row">

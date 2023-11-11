@@ -6,19 +6,19 @@
       <thead>
         <tr>
           <th scope="col-4">
-            <a (click)="sortUsersByPseudo()"
-              >Pseudo : <i class="bi bi-caret-down-fill"></i
-            ></a>
+            <button (click)="sortUsersByPseudo()" class="btn">
+              Pseudo : <i class="bi bi-caret-down-fill"></i>
+            </button>
           </th>
           <th scope="col-3">
-            <a (click)="sortUsersByName()"
-              >Nom : <i class="bi bi-caret-down-fill"></i
-            ></a>
+            <button (click)="sortUsersByName()" class="btn">
+              Nom : <i class="bi bi-caret-down-fill"></i>
+            </button>
           </th>
           <th scope="col-3">
-            <a (click)="sortUsersByFirst()"
-              >Prénom : <i class="bi bi-caret-down-fill"></i
-            ></a>
+            <button (click)="sortUsersByFirst()" class="btn">
+              Prénom : <i class="bi bi-caret-down-fill"></i>
+            </button>
           </th>
           <th scope="col-1 text-end"><i class="bi bi-eye-fill"></i></th>
           <th scope="col-1 text-end"><i class="bi bi-trash-fill"></i></th>
@@ -41,13 +41,13 @@
           </td>
 
           <td class="col-1">
-            <a
+            <button
               class="btn btn-secondary"
               pTooltip="Bannir {{ user.pseudo }}"
               (click)="user._id && deleteUser(user._id)"
             >
               <i class="bi bi-trash-fill"></i>
-            </a>
+            </button>
           </td>
         </tr>
       </tbody>

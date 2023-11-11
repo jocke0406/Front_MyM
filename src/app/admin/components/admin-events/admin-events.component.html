@@ -15,14 +15,15 @@
       <thead>
         <tr>
           <th scope="col">
-            <a (click)="sortEventsByName()"
-              >Nom <i class="bi bi-caret-down-fill"></i
-            ></a>
+            <button class="btn" (click)="sortEventsByName()">
+              Nom <i class="bi bi-caret-down-fill"></i>
+            </button>
           </th>
+
           <th scope="col">
-            <a (click)="sortEventsByStartDate()"
-              >Début <i class="bi bi-caret-down-fill"></i
-            ></a>
+            <button class="btn" (click)="sortEventsByStartDate()">
+              Début <i class="bi bi-caret-down-fill"></i>
+            </button>
           </th>
           <th scope="col">Fin</th>
           <th scope="col-1 text-end"><i class="bi bi-pencil-fill"></i></th>
@@ -45,12 +46,13 @@
           </td>
 
           <td class="col-1">
-            <a
+            <button
               class="btn btn-secondary"
-              pTooltip="Supprimer l' Evénement"
+              pTooltip="Supprimer l'Événement"
               (click)="event._id && deleteEvent(event._id)"
-              ><i class="bi bi-trash-fill"></i
-            ></a>
+            >
+              <i class="bi bi-trash-fill"></i>
+            </button>
           </td>
         </tr>
       </tbody>

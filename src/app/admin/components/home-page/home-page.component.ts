@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
 
-declare var anime: any;
+declare const anime: any;
 
 @Component({
   selector: 'app-home-page',
@@ -11,7 +11,7 @@ declare var anime: any;
 })
 export class HomePageComponent implements AfterViewInit, OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
-  isConnected: boolean = false;
+  isConnected = false;
   constructor(private _auth: AuthService) { }
 
   ngOnInit(): void {
@@ -19,7 +19,6 @@ export class HomePageComponent implements AfterViewInit, OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((state: boolean) => {
         this.isConnected = state;
-        console.log('User Connected = ' + this.isConnected)
       });
   }
   ngAfterViewInit(): void {

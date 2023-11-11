@@ -17,9 +17,9 @@ import { UsersService } from '../../../users/services/users.service';
 export class DiscoverComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
 
-  showUsers: boolean = false;
-  showEvents: boolean = false;
-  showCercles: boolean = false;
+  showUsers = false;
+  showEvents = false;
+  showCercles = false;
   userSearchForm!: FormGroup;
   eventSearchForm!: FormGroup;
   cercleSearchForm!: FormGroup;

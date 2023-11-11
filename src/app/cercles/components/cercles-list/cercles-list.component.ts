@@ -11,10 +11,10 @@ import { CerclesService } from '../../services/cercles.service';
 })
 export class CerclesListComponent implements OnInit, OnDestroy {
   paginatedCerclesList: Cercle[] = [];
-  cerclesPerPage: number = 3;
-  currentPage: number = 1;
+  cerclesPerPage = 3;
+  currentPage = 1;
   cerclesList: Cercle[] = [];
-  totalPages: number = 1;
+  totalPages = 1;
   pagesArray: number[] = [];
   private _unsubscribeAll = new Subject<void>();
 
@@ -56,8 +56,8 @@ export class CerclesListComponent implements OnInit, OnDestroy {
     this.updatePaginatedCercles();
   }
   getVisiblePages(): number[] {
-    let startPage = Math.max(1, this.currentPage - 2);
-    let endPage = Math.min(this.totalPages, this.currentPage + 2);
+    const startPage = Math.max(1, this.currentPage - 2);
+    const endPage = Math.min(this.totalPages, this.currentPage + 2);
 
     return Array(endPage - startPage + 1)
       .fill(0)

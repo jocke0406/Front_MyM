@@ -34,9 +34,13 @@
         </li>
 
         <li>
-          <a *ngIf="isUserConnected" class="dropdown-item" (click)="logout()"
-            >Se déconnecter</a
+          <button
+            *ngIf="isUserConnected"
+            class="btn btn-link dropdown-item"
+            (click)="logout()"
           >
+            Se déconnecter
+          </button>
         </li>
         <li>
           <a

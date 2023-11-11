@@ -13,7 +13,7 @@ export class AdminEventsComponent implements OnInit, OnDestroy {
   eventsList!: Event[];
   private _unsubscribeAll = new Subject<void>();
 
-  constructor(private _messageService: MessageService, private _eventsService: EventsService) { };
+  constructor(private _messageService: MessageService, private _eventsService: EventsService) { }
 
 
   ngOnInit(): void {

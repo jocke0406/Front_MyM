@@ -18,13 +18,11 @@ const routes: Routes = [
   {
     path: 'auth/forgot-password',
     component: ForgotPasswordComponent,
-    canActivate: [AuthGuardService],
   },
   { path: 'auth/reset-password', component: ResetPasswordComponent },
   {
     path: 'auth/change-password',
     component: ChangePasswordComponent,
-    canActivate: [AuthGuardService],
   },
 ];
 
