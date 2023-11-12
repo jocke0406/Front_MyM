@@ -48,7 +48,7 @@ export class AuthService {
   }
 
   updateUser(id: string, registrationForm: User): Observable<User> {
-    return this._http.patch<User>(`${this.url}/${id}`, registrationForm).pipe(
+    return this._http.patch<User>(`${this.urlLogin}/${id}`, registrationForm).pipe(
       catchError((error) => {
         console.error(error);
         return throwError(
@@ -58,41 +58,28 @@ export class AuthService {
     );
   }
 
-  getCsrfToken(): Observable<{ csrfToken: string }> {
-    return this._http.get<{ csrfToken: string }>(this.urlCsrfToken, { withCredentials: true });
-  }
 
   login(email: string, password: string): Observable<AuthResponse> {
-    // Récupérez d'abord le token CSRF
-    return this.getCsrfToken().pipe(
-      switchMap((csrfData) => {
-        // Stockez le token CSRF
-        localStorage.setItem('csrfToken', csrfData.csrfToken);
-        // Préparez les headers
-        const headers = { 'CSRF-Token': csrfData.csrfToken };
-        // Effectuez la requête de connexion avec les données de l'utilisateur et les headers rajouter :{ headers, withCredentials: true }
-        return this._http.post<AuthResponse>(this.urlLogin, { email, password },);
-      }),
-      tap((res) => {
-        // Stockez le token de l'utilisateur et mettez à jour le statut de connexion
-        localStorage.setItem('token', res.token);
-        this.userConnected.next(true);
-        const decodedToken = this.decodeToken();
-        this.userIdSubject.next(this.getUserConnectedIdFromToken());
-        if (decodedToken && decodedToken.role === 'masterOfUnivers') {
-          this.adminConnected.next(true);
-        } else {
-          this.adminConnected.next(false);
-        }
-      }),
-      catchError((error) => {
-        // Gestion des erreurs
-        console.error('Oups ! Houston nous avons un problème', error);
-        return throwError(() => error);
-      })
-    );
+    return this._http
+      .post<AuthResponse>(`${this.urlLogin}`, { email, password })
+      .pipe(
+        tap((res) => {
+          localStorage.setItem('token', res.token);
+          this.userConnected.next(true);
+          const decodedToken = this.decodeToken();
+          this.userIdSubject.next(this.getUserConnectedIdFromToken());
+          if (decodedToken && decodedToken.role === 'masterOfUnivers') {
+            this.adminConnected.next(true);
+          } else {
+            this.adminConnected.next(false);
+          }
+        }),
+        catchError((error) => {
+          console.error('Oups ! Houston nous avons un problème', error);
+          return throwError(() => error);
+        })
+      );
   }
-
   decodeToken(): any {
     const token = localStorage.getItem('token');
     if (token) {

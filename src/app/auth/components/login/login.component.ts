@@ -24,7 +24,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
     });
+
+
   }
+
 
   onSubmit(): void {
     if (this.loginForm.valid) {

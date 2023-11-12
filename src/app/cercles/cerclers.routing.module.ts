@@ -10,7 +10,6 @@ const routes: Routes = [
   {
     path: 'cerclesList',
     component: CerclesListComponent,
-    canActivate: [AuthGuardService],
   },
   {
     path: 'cerclesDetail/:id',
