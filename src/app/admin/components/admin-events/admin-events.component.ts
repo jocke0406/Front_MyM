@@ -56,7 +56,7 @@ export class AdminEventsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: () => {
-          this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Endroit supprimé avec succès' });
+          this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Event supprimé avec succès' });
           this.refreshEvents();
         },
         error: (error) => {

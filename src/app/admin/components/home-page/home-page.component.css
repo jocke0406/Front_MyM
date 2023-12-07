@@ -17,11 +17,20 @@
 
 .background-image {
   position: absolute;
-  margin-left: 200px;
   left: 0;
   top: 0;
-  width: 50%;
-  height: 30%;
+  width: 100%; /* Pleine largeur sur les mobiles */
+  height: auto; /* Hauteur automatique pour conserver l'aspect ratio */
   z-index: -1;
   object-fit: cover;
+}
+@media (min-width: 992px) {
+  .background-image {
+    width: 50%;
+  }
+}
+@media (min-width: 768px) {
+  .background-image {
+    width: 70%;
+  }
 }

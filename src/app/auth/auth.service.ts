@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import jwtDecode from 'jwt-decode';
 import { MessageService } from 'primeng/api';
-import { BehaviorSubject, switchMap, Observable, catchError, tap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../users/models/user';
 
@@ -18,7 +18,6 @@ interface AuthResponse {
 export class AuthService {
   private url = environment.backUrl + '/users';
   private urlLogin = environment.backUrl + '/login';
-  private urlCsrfToken = environment.backUrl + '/api/csrf-token';
 
   private userConnected = new BehaviorSubject<boolean>(this.isUserConnected());
   public userConnected$ = this.userConnected.asObservable();
@@ -48,7 +47,7 @@ export class AuthService {
   }
 
   updateUser(id: string, registrationForm: User): Observable<User> {
-    return this._http.patch<User>(`${this.urlLogin}/${id}`, registrationForm).pipe(
+    return this._http.patch<User>(`${this.url}/${id}`, registrationForm).pipe(
       catchError((error) => {
         console.error(error);
         return throwError(
@@ -171,16 +170,29 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('csrfToken');
     this.userConnected.next(false);
     this.adminConnected.next(false);
     this.userIdSubject.next(null);
+
     this.messageService.add({
-      severity: 'success',
+      severity: 'error',
       summary: 'Déconnecté',
       detail: 'Vous avez été déconnecté avec succès.',
       life: 2000,
     });
-    this.router.navigate(['/']);
+    setTimeout(() => {
+      this.router.navigate(['/']);
+    }, 2000);
+
+    console.log(this.isUserConnected(), this.isUserAdmin());
+  }
+
+  deleteUser(id: string) {
+    return this._http.delete(`${this.url}/${id}?force=1`)
+      .pipe(
+        catchError((error) => {
+          return throwError(() => new Error('Erreur lors de la suppression'));
+        })
+      );
   }
 }

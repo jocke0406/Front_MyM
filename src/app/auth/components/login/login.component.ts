@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             });
             return of(null);
           }),
-          delay(2100),
+
           tap(() => {
             this._router.navigate(['/']);
           }),

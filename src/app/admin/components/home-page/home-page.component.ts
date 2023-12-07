@@ -1,7 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
-
 declare const anime: any;
 
 @Component({
@@ -23,6 +22,12 @@ export class HomePageComponent implements AfterViewInit, OnInit, OnDestroy {
   }
   ngAfterViewInit(): void {
     const words = document.querySelectorAll('.word');
+    anime({
+      targets: '.background-image',
+      opacity: [0, 1],
+      duration: 2000,
+      easing: 'easeInOutQuad'
+    });
     anime({
       targets: words[0],
       translateY: [100, -250],

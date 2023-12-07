@@ -55,13 +55,13 @@ export class UsersService {
     );
   }
 
-  deleteUser(id: string): Observable<any> {
-    return this._http.delete(`${this.url}/${id}`).pipe(
-      catchError((error) => {
-        console.error(error);
-        return throwError(() => new Error('Oups !?! Erreur lors du profil'));
-      })
-    );
+  deleteUser(id: string) {
+    return this._http.delete(`${this.url}/${id}?force=1`)
+      .pipe(
+        catchError((error) => {
+          return throwError(() => new Error('Erreur lors de la suppression'));
+        })
+      );
   }
 
   getUserFriends(userId: string): Observable<User[]> {

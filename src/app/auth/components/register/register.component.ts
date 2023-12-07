@@ -240,6 +240,22 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this._location.back();
   }
 
+  goodBy() {
+    if (this.id) {
+      this._auth.deleteUser(this.id)
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe({
+          next: (response) => {
+            this._messageService.add({ severity: 'success', summary: 'Succès', detail: 'Plus des notres !' });
+            this._auth.logout();
+          },
+          error: (error) => {
+            this._messageService.add({ severity: 'error', summary: 'Erreur', detail: error.message || 'Une erreur est survenue' });
+          }
+        });
+    }
+
+  }
   ngOnDestroy(): void {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();

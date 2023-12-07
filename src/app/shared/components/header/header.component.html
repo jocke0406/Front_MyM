@@ -1,5 +1,7 @@
-<p-toast></p-toast>
-<nav class="navbar navbar-expand-lg navbar-light bg-warning">
+<p-toast
+  [breakpoints]="{ '920px': { width: '100%', right: '0', left: '0' } }"
+></p-toast>
+<nav class="navbar navbar-expand navbar-light bg-warning">
   <div class="container-fluid">
     <span *ngIf="isUserConnected">Salut, {{ userConnectedPseudo }}!</span>
     <span *ngIf="!isUserConnected">Non connecté</span>
